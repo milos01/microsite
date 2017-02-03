@@ -26,14 +26,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#"><img src="img/webueno-logo-admin.png" alt="Webueno Logo"></a>
+        <a class="navbar-brand" href="{!! route('home') !!}"><img src="img/webueno-logo-admin.png" alt="Webueno Logo"></a>
       </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav main-menu-border">
         <li class="active"><a href="#">WEBSITES <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">TOKENSd</a></li>
+        <li><a href="#">TOKENS</a></li>
         <li><a href="#">SUPPORT</a></li>     
       </ul>
       <ul id="dd" class="nav navbar-nav">        
@@ -42,8 +42,8 @@
             <ul class="dropdown-menu">
             <li><p class="user-name">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</p><p class="user-email">{{Auth::user()->email}}</p></li>
               <li role="separator" class="divider"></li>
-              <li class="subdrop-mobile"><a href="{{ url('/profile') }}">Settings</a></li>           
-              <li class="subdrop-mobile"><a href="{{ url('/logout') }}">Logout</a></li>
+              <li class="subdrop-mobile"><a href="{!! route('profile') !!}">Settings</a></li>           
+              <li class="subdrop-mobile"><a href="{!! route('logout') !!}">Logout</a></li>
             </ul>
          </li>
         </ul>  
@@ -51,7 +51,7 @@
     </div><!-- /.container-fluid -->
   </nav>
   <!-- HEADER end -->
-
+  
   @yield('contentDashboard')
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

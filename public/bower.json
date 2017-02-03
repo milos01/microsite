@@ -1,0 +1,18 @@
+{
+  "name": "microsite",
+  "homepage": "https://github.com/milos01/microsite",
+  "authors": [
+    "milos01 <milosa942@gmail.com>"
+  ],
+  "description": "microsite service",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

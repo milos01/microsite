@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 /node_modules
 /public/img
 /public/storage
 /public/hot
+/public/bower_components
 /storage/*.key
 /vendor
 /.idea

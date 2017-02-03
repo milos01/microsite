@@ -17,4 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+
+Route::group(['middleware' => 'auth'], function () {
+	//Home routes
+	Route::get('/home', 'HomeController@index')->name('home');
+
+	//User routes
+	Route::get('/profile', 'UserController@profile')->name('profile');
+	Route::put('/deactivate', 'UserController@deactivateUser')->name('deactivate');
+});
