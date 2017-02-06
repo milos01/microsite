@@ -14,5 +14,10 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "restangular": "^1.6.1",
+    "angular-bootstrap": "^2.5.0"
+  }
 }

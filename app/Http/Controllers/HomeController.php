@@ -25,4 +25,9 @@ class HomeController extends Controller
     {
         return view('homeCenter');
     }
+
+    public function showEditTemplate(){
+        return view('modals.editUserModal');
+    }
+
 }

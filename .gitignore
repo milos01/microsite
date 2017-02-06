@@ -3,6 +3,7 @@
 /public/storage
 /public/hot
 /public/bower_components
+/public/font-awesome
 /storage/*.key
 /vendor
 /.idea
