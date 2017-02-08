@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use Auth;
+use Auth, Hash;
 
 class UserController extends Controller
 {
@@ -32,19 +32,33 @@ class UserController extends Controller
     /**
      * Update logged user info.
      *
-     * @return \Illuminate\Http\Response!!!!!!!!!!!!
+     * @return \Illuminate\Http\Response
      */
     public function updateInfo(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required',
-        ]);
-    	if($request->email){
-    		$user = User::find(Auth::id());
-    		$user->email = $request->email;
-    		$user->save();
-    		// return back();
-    	}
+        $user = User::find(Auth::id());
+    	if($request->editType === 'email'){
+            $this->validate($request, [
+                'email' => 'required|email|max:255|unique:users',
+            ]);
 
+    		
+    		$user->email = $request->email;
+    	}else if($request->editType === 'phone'){
+            $this->validate($request, [
+                'phone' => 'required|numeric',
+            ]);
+
+            $user->phone = $request->phone;
+        }else if($request->editType === 'password'){
+            $this->validate($request, [
+                'oldPassword' => 'required|old_password:' . Auth::user()->password,
+                'password' => 'required|min:3'
+            ],['old_password' => 'It is not your current password.']);
+
+            $user->password = Hash::make($request->password);
+        }
+        $user->save();
+        return response($user, 200);
     }
 }

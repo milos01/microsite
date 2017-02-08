@@ -43,29 +43,43 @@
         <div ng-show="edType === 'email'">
         <label for="email" class="col-md-4 control-label" style="text-align: right;">Email</label>
         <div class="col-md-6">
-          <input id="email" type="text" class="form-control" name="email" style="margin-top: -9px" ng-model="email">
+          <input id="email" type="text" class="form-control" name="email" style="margin-top: -9px; margin-left: -15px" ng-model="email">
+          
         </div>
         </div>
+
 
         <div ng-show="edType === 'password'">
-        <label for="email" class="col-md-4 control-label" style="text-align: right;">Password</label>
-        <div class="col-md-6">
-          <input id="email1" type="text" class="form-control" name="email1" style="margin-top: -9px" ng-model="email1">
-        </div>
-        </div>
+        <div class="container" style="height:0px">
+            <label for="oldPassword" class="col-md-4 control-label" style="text-align: right;">Old password</label>
+            <div class="col-md-6">
+              <input id="oldPassword" type="text" class="form-control" name="oldPassword" style="margin-top: -9px; margin-left: -15px" ng-model="oldPassword">
+            </div>
 
+            <label for="password" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">New password</label>
+            <div class="col-md-6" style="margin-top: 20px">
+              <input id="password" type="text" class="form-control" name="password" style="margin-top: -9px; margin-left: -15px" ng-model="password">
+            </div>
+        </div>
+        </div>
         <div ng-show="edType === 'phone'">
-        <label for="email" class="col-md-4 control-label" style="text-align: right;">Phone</label>
+        <label for="phone" class="col-md-4 control-label" style="text-align: right;">Phone</label>
         <div class="col-md-6">
-          <input id="email2" type="text" class="form-control" name="email2" style="margin-top: -9px" ng-model="email2">
+          <input id="phone" type="text" class="form-control" name="phone" style="margin-top: -9px;margin-left: -15px" ng-model="phone">
         </div>
         </div>
-
+        
       </div>
     </form>
+    <div class="col-md-12" style="margin-top: -6px;color: #CC2121">
+            @{{error.email[0]}}
+            @{{error.phone[0]}}
+            @{{error.oldPassword[0]}}
+            @{{error.password[0]}}
+    </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" ng-click="cancel()" data-dismiss="modal">Close</button>
-  <button type="submit" class="btn btn-primary" ng-click="submitForm(edType)" style="background: #f8951d; border-color: #f8951d">Update email</button>
+  <button type="submit" class="btn btn-primary" ng-click="submitForm(edType)" style="background: #f8951d; border-color: #f8951d">Update @{{edType}}</button>
 </div>
   

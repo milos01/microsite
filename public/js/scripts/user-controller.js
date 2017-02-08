@@ -20,10 +20,13 @@ app.controller('editUserCtrl', function($scope, $uibModalInstance, UserResource)
 	$scope.submitForm = function(editType){
 		userEditInfo = {
 			editType: editType,
-			email: $scope.email
+			email: $scope.email,
+			phone: $scope.phone,
+			oldPassword: $scope.oldPassword,
+			password: $scope.password
 		};
-		UserResource.updateUser(userEditInfo).then(function(){
-			console.log(editType);
+		UserResource.updateUser(userEditInfo).then(function(item){
+			$scope.error = item.data;
 		});
 		
 	}
