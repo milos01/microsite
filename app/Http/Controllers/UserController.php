@@ -37,7 +37,16 @@ class UserController extends Controller
     public function updateInfo(Request $request)
     {
         $user = User::find(Auth::id());
-    	if($request->editType === 'email'){
+        if($request->editType === 'user'){
+            $this->validate($request, [
+                'firstName' => 'required|max:255',
+                'lastName' => 'required|max:255',
+            ]);
+
+            
+            $user->first_name = $request->firstName;
+            $user->last_name = $request->lastName;
+        }else if($request->editType === 'email'){
             $this->validate($request, [
                 'email' => 'required|email|max:255|unique:users',
             ]);

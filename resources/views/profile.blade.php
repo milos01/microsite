@@ -15,7 +15,7 @@
       </ul>
     </div>
     <div class="col-xs-12 col-sm-10 side-content">
-      <p class="full-name">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</p>
+      <p class="full-name">{{Auth::user()->first_name}} {{Auth::user()->last_name}}<a class="edit" ng-click="openReportModal('user')">edit</a></p>
       <ul>
         <li>
           <p><span class="type">Email: </span>{{Auth::user()->email}}<a class="edit" ng-click="openReportModal('email')">edit</a></p>

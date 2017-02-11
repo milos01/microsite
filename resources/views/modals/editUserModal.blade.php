@@ -48,19 +48,31 @@
         </div>
         </div>
 
+        <div ng-show="edType === 'user'">
+            <div class="container" style="height:0px">
+                <label for="firstName" class="col-md-4 control-label" style="text-align: right;">First name</label>
+                <div class="col-md-6">
+                  <input id="firstName" type="text" class="form-control" name="firstName" style="margin-top: -9px; margin-left: -15px" ng-model="firstName">
+                </div>
 
-        <div ng-show="edType === 'password'">
-        <div class="container" style="height:0px">
-            <label for="oldPassword" class="col-md-4 control-label" style="text-align: right;">Old password</label>
-            <div class="col-md-6">
-              <input id="oldPassword" type="text" class="form-control" name="oldPassword" style="margin-top: -9px; margin-left: -15px" ng-model="oldPassword">
-            </div>
-
-            <label for="password" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">New password</label>
-            <div class="col-md-6" style="margin-top: 20px">
-              <input id="password" type="text" class="form-control" name="password" style="margin-top: -9px; margin-left: -15px" ng-model="password">
+                <label for="lastName" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">Last name</label>
+                <div class="col-md-6" style="margin-top: 20px">
+                  <input id="lastName" type="text" class="form-control" name="lastName" style="margin-top: -9px; margin-left: -15px" ng-model="lastName">
+                </div>
             </div>
         </div>
+        <div ng-show="edType === 'password'">
+            <div class="container" style="height:0px">
+                <label for="oldPassword" class="col-md-4 control-label" style="text-align: right;">Old password</label>
+                <div class="col-md-6">
+                  <input id="oldPassword" type="text" class="form-control" name="oldPassword" style="margin-top: -9px; margin-left: -15px" ng-model="oldPassword">
+                </div>
+
+                <label for="password" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">New password</label>
+                <div class="col-md-6" style="margin-top: 20px">
+                  <input id="password" type="text" class="form-control" name="password" style="margin-top: -9px; margin-left: -15px" ng-model="password">
+                </div>
+            </div>
         </div>
         <div ng-show="edType === 'phone'">
         <label for="phone" class="col-md-4 control-label" style="text-align: right;">Phone</label>
@@ -72,6 +84,8 @@
       </div>
     </form>
     <div class="col-md-12" style="margin-top: -6px;color: #CC2121">
+            @{{error.firstName[0]}}
+            @{{error.lastName[0]}}
             @{{error.email[0]}}
             @{{error.phone[0]}}
             @{{error.oldPassword[0]}}

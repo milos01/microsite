@@ -16,9 +16,11 @@ app.controller('profileController', function($scope, $uibModal, $log){
     };
 });
 
-app.controller('editUserCtrl', function($scope, $uibModalInstance, UserResource){
+app.controller('editUserCtrl', function($scope, $window, $uibModalInstance, UserResource){
 	$scope.submitForm = function(editType){
 		userEditInfo = {
+			firstName: $scope.firstName,
+			lastName: $scope.lastName,
 			editType: editType,
 			email: $scope.email,
 			phone: $scope.phone,
@@ -26,7 +28,11 @@ app.controller('editUserCtrl', function($scope, $uibModalInstance, UserResource)
 			password: $scope.password
 		};
 		UserResource.updateUser(userEditInfo).then(function(item){
-			$scope.error = item.data;
+			if(item.data){
+				$scope.error = item.data;
+			}else{
+				$window.location.reload();
+			}
 		});
 		
 	}
