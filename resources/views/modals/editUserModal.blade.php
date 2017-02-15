@@ -43,7 +43,7 @@
         <div ng-show="edType === 'email'">
         <label for="email" class="col-md-4 control-label" style="text-align: right;">Email</label>
         <div class="col-md-6">
-          <input id="email" type="text" class="form-control" name="email" style="margin-top: -9px; margin-left: -15px" ng-model="email">
+          <input id="email" type="text" class="form-control" name="email" style="margin-top: -9px; margin-left: -15px" ng-model="email" placeholder="{{Auth::user()->email}}">
           
         </div>
         </div>
@@ -52,12 +52,12 @@
             <div class="container" style="height:0px">
                 <label for="firstName" class="col-md-4 control-label" style="text-align: right;">First name</label>
                 <div class="col-md-6">
-                  <input id="firstName" type="text" class="form-control" name="firstName" style="margin-top: -9px; margin-left: -15px" ng-model="firstName">
+                  <input id="firstName" type="text" class="form-control" name="firstName" style="margin-top: -9px; margin-left: -15px" ng-model="firstName" placeholder="{{Auth::user()->first_name}}">
                 </div>
 
                 <label for="lastName" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">Last name</label>
                 <div class="col-md-6" style="margin-top: 20px">
-                  <input id="lastName" type="text" class="form-control" name="lastName" style="margin-top: -9px; margin-left: -15px" ng-model="lastName">
+                  <input id="lastName" type="text" class="form-control" name="lastName" style="margin-top: -9px; margin-left: -15px" ng-model="lastName" placeholder="{{Auth::user()->last_name}}">
                 </div>
             </div>
         </div>
@@ -65,19 +65,19 @@
             <div class="container" style="height:0px">
                 <label for="oldPassword" class="col-md-4 control-label" style="text-align: right;">Old password</label>
                 <div class="col-md-6">
-                  <input id="oldPassword" type="text" class="form-control" name="oldPassword" style="margin-top: -9px; margin-left: -15px" ng-model="oldPassword">
+                  <input id="oldPassword" type="password" class="form-control" name="oldPassword" style="margin-top: -9px; margin-left: -15px" ng-model="oldPassword">
                 </div>
 
                 <label for="password" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">New password</label>
                 <div class="col-md-6" style="margin-top: 20px">
-                  <input id="password" type="text" class="form-control" name="password" style="margin-top: -9px; margin-left: -15px" ng-model="password">
+                  <input id="password" type="password" class="form-control" name="password" style="margin-top: -9px; margin-left: -15px" ng-model="password">
                 </div>
             </div>
         </div>
         <div ng-show="edType === 'phone'">
         <label for="phone" class="col-md-4 control-label" style="text-align: right;">Phone</label>
         <div class="col-md-6">
-          <input id="phone" type="text" class="form-control" name="phone" style="margin-top: -9px;margin-left: -15px" ng-model="phone">
+          <input id="phone" type="text" class="form-control" name="phone" style="margin-top: -9px;margin-left: -15px" ng-model="phone" placeholder="{{Auth::user()->phone}}">
         </div>
         </div>
         

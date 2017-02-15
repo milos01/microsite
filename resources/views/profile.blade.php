@@ -11,7 +11,7 @@
       <ul>
         <li>PROFILE</li>
         <li><a href="{!! route('billing') !!}">BILLING</a></li>
-        <li><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button></li>
+        <li><a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button></a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-10 side-content">

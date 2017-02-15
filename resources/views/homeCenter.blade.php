@@ -54,6 +54,6 @@
     <!-- first row ends -->
 
     <!-- add website button -->
-    <button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button>
-  </div>
+    <a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button>
+  </div></a>
 @endsection

@@ -30,4 +30,8 @@ class HomeController extends Controller
         return view('modals.editUserModal');
     }
 
+    public function showNewSitePage(){
+        return view('newsite');
+    }
+
 }

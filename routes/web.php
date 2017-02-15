@@ -19,9 +19,10 @@ Auth::routes();
 
 
 Route::group(['middleware' => 'auth'], function () {
-	//Home routes
+	//Paging routes
 	Route::get('/home', 'HomeController@index')->name('home');
-	Route::get('/template/showEditTemplate', 'HomeController@showEditTemplate')->name('home');
+	Route::get('/template/showEditTemplate', 'HomeController@showEditTemplate');
+	Route::get('/new', 'HomeController@showNewSitePage')->name('new');
 
 	//User routes
 	Route::get('/profile', 'UserController@profile')->name('profile');
@@ -31,4 +32,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Billing routes
 	Route::get('/billing', 'BillingController@billing')->name('billing');
+
 });

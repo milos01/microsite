@@ -55,4 +55,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Role');
     }
+
+    /**
+     * Get the websites for the user.
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Website');
+    }
 }
