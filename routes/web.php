@@ -29,6 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('/deactivate', 'UserController@deactivateUser')->name('deactivate');
 	Route::put('/api/update', 'UserController@updateInfo')->name('update');
 	
+	//Website routes
+	Route::post('/api/website', 'WebsiteController@newWebsite');
 
 	//Billing routes
 	Route::get('/billing', 'BillingController@billing')->name('billing');

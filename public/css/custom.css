@@ -756,3 +756,12 @@ tr {background-color: transparent !important;}
 		text-align: left;
 	}
 }
+
+#toggleSelectButton{
+	display: none;
+}
+
+
+#imageHolder:hover #toggleSelectButton{
+	display: inline;
+}

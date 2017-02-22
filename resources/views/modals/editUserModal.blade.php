@@ -37,19 +37,18 @@
   <h5 class="modal-title" id="exampleModalLabel">Update @{{edType}}</h5>
 </div>
 <div class="modal-body">
-    <form name="editForm" novalidate>
-     {{ csrf_field() }}     
-      <div class="form-group" style="padding: 20px 20px">
-        <div ng-show="edType === 'email'">
-        <label for="email" class="col-md-4 control-label" style="text-align: right;">Email</label>
-        <div class="col-md-6">
-          <input id="email" type="text" class="form-control" name="email" style="margin-top: -9px; margin-left: -15px" ng-model="email" placeholder="{{Auth::user()->email}}">
-          
-        </div>
-        </div>
+    <div class="container" style="padding-bottom: 0px ">
+        <form name="editForm" novalidate>
+         {{ csrf_field() }}     
+          <div class="form-group" style="padding: 20px 20px; margin-bottom: 0px">
+            <div ng-show="edType === 'email'">
+                <label for="email" class="col-md-4 control-label" style="text-align: right;">Email</label>
+                <div class="col-md-6">
+                  <input id="email" type="text" class="form-control" name="email" style="margin-top: -9px; margin-left: -15px" ng-model="email" placeholder="{{Auth::user()->email}}">
+                </div>
+            </div>
 
-        <div ng-show="edType === 'user'">
-            <div class="container" style="height:0px">
+            <div ng-show="edType === 'user'">
                 <label for="firstName" class="col-md-4 control-label" style="text-align: right;">First name</label>
                 <div class="col-md-6">
                   <input id="firstName" type="text" class="form-control" name="firstName" style="margin-top: -9px; margin-left: -15px" ng-model="firstName" placeholder="{{Auth::user()->first_name}}">
@@ -60,36 +59,36 @@
                   <input id="lastName" type="text" class="form-control" name="lastName" style="margin-top: -9px; margin-left: -15px" ng-model="lastName" placeholder="{{Auth::user()->last_name}}">
                 </div>
             </div>
-        </div>
-        <div ng-show="edType === 'password'">
-            <div class="container" style="height:0px">
-                <label for="oldPassword" class="col-md-4 control-label" style="text-align: right;">Old password</label>
-                <div class="col-md-6">
-                  <input id="oldPassword" type="password" class="form-control" name="oldPassword" style="margin-top: -9px; margin-left: -15px" ng-model="oldPassword">
-                </div>
+            <div ng-show="edType === 'password'">
+                
+                    <label for="oldPassword" class="col-md-4 control-label" style="text-align: right;">Old password</label>
+                    <div class="col-md-6">
+                      <input id="oldPassword" type="password" class="form-control" name="oldPassword" style="margin-top: -9px; margin-left: -15px" ng-model="oldPassword">
+                    </div>
 
-                <label for="password" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">New password</label>
-                <div class="col-md-6" style="margin-top: 20px">
-                  <input id="password" type="password" class="form-control" name="password" style="margin-top: -9px; margin-left: -15px" ng-model="password">
-                </div>
+                    <label for="password" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">New password</label>
+                    <div class="col-md-6" style="margin-top: 20px">
+                      <input id="password" type="password" class="form-control" name="password" style="margin-top: -9px; margin-left: -15px" ng-model="password">
+                    </div>
+              
             </div>
-        </div>
-        <div ng-show="edType === 'phone'">
-        <label for="phone" class="col-md-4 control-label" style="text-align: right;">Phone</label>
-        <div class="col-md-6">
-          <input id="phone" type="text" class="form-control" name="phone" style="margin-top: -9px;margin-left: -15px" ng-model="phone" placeholder="{{Auth::user()->phone}}">
-        </div>
-        </div>
-        
-      </div>
-    </form>
-    <div class="col-md-12" style="margin-top: -6px;color: #CC2121">
+            <div ng-show="edType === 'phone'">
+            <label for="phone" class="col-md-4 control-label" style="text-align: right;">Phone</label>
+            <div class="col-md-6">
+              <input id="phone" type="text" class="form-control" name="phone" style="margin-top: -9px;margin-left: -15px" ng-model="phone" placeholder="{{Auth::user()->phone}}">
+            </div>
+            </div>
+            
+          </div>
+        </form>
+        <div class="col-md-12" style="margin-top:11px;color: #CC2121">
             @{{error.firstName[0]}}
             @{{error.lastName[0]}}
             @{{error.email[0]}}
             @{{error.phone[0]}}
             @{{error.oldPassword[0]}}
             @{{error.password[0]}}
+        </div>
     </div>
 </div>
 <div class="modal-footer">

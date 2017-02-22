@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Theme;
 
 class HomeController extends Controller
 {
@@ -31,7 +32,8 @@ class HomeController extends Controller
     }
 
     public function showNewSitePage(){
-        return view('newsite');
+        $themes = Theme::all();
+        return view('newsite')->with('themes', $themes);
     }
 
 }

@@ -59,7 +59,7 @@ class User extends Authenticatable
     /**
      * Get the websites for the user.
      */
-    public function comments()
+    public function websites()
     {
         return $this->hasMany('App\Website');
     }

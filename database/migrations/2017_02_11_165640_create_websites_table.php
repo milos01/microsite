@@ -15,6 +15,10 @@ class CreateWebsitesTable extends Migration
     {
         Schema::create('websites', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('company_name');
+            $table->string('title');
+            $table->string('domain');
+            $table->boolean('active');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('theme_id')->unsigned();

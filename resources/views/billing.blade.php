@@ -20,7 +20,9 @@
       <div class="usage-title-wrapper">
         <p class="usage-title">Usage</p> 
       </div>      
-        <div class="usage-wrapper">  
+        <div class="usage-wrapper"> 
+
+        
           <table class="table">
             <thead>
               <th>Website</th>
@@ -28,17 +30,20 @@
               <th>Domain</th>
               <th>Created</th>
               <th>Monthly Price</th>
-            </thead>       
+            </thead>  
             <tbody>
+              @foreach($websites as $website)
               <tr>
-                <td>My Plumbing Website</td>
-                <td>9576</td>
-                <td>www.nyplumber.com</td>
-                <td>11/9/2016</td>
-                <td>$75</td>
+                <td>{{$website->title}}</td>
+                <td>{{$website->theme->theme_id}}</td>
+                <td>{{$website->domain}}</td>
+                <td>@dateformat($website->created_at)</td>
+                <td>${{$website->theme->price}}</td>
               </tr>
+               @endforeach
             </tbody> 
           </table>
+          
         </div><!-- usage ends -->
 
       <!-- Automated Payments -->   
