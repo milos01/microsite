@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Auth;
+use Braintree_ClientToken;
 
 class BillingController extends Controller
 {
@@ -16,6 +17,25 @@ class BillingController extends Controller
     public function billing(){
     	$user = User::findorFail(Auth::id());
     	$nonactivesites = $user->websites()->with('theme')->get();
-    	return view('billing')->with('websites', $nonactivesites); 
+    	$totalSum = 0;
+    	foreach ($nonactivesites as $key => $website) {
+    		$totalSum += $website->theme->price;
+    	}
+    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum)); 
+    }
+
+    /**
+     * Generate braintree client token.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generateBraintreeToken(Request $request){
+    	return response()->json([
+		    'token' => Braintree_ClientToken::generate(),
+		]);
+    }
+
+    public function checkout(Request $request){
+    	dd($request->all());
     }
 }

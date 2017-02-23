@@ -34,5 +34,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Billing routes
 	Route::get('/billing', 'BillingController@billing')->name('billing');
+	Route::get('/api/generateToken', 'BillingController@generateBraintreeToken');
+	Route::post('/checkout', 'BillingController@checkout')->name('checkout');
 
 });

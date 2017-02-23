@@ -9,7 +9,7 @@
       <ul>
         <li><a href="{!! route('profile') !!}">PROFILE</a></li>
         <li>BILLING</li>
-        <li><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button></li>
+        <li><a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button></a></li>
       </ul>
     </div>
     <!-- tabs -->
@@ -30,6 +30,7 @@
               <th>Domain</th>
               <th>Created</th>
               <th>Monthly Price</th>
+              <th>Status</th>
             </thead>  
             <tbody>
               @foreach($websites as $website)
@@ -39,6 +40,11 @@
                 <td>{{$website->domain}}</td>
                 <td>@dateformat($website->created_at)</td>
                 <td>${{$website->theme->price}}</td>
+                @if($website->active === 1)
+                 <td>Active</td>
+                @else
+                 <td>Not active</td>
+                @endif
               </tr>
                @endforeach
             </tbody> 
@@ -86,9 +92,49 @@
       </div>
         <div class="payment-method-wrapper">  
           <ul class="nav nav-tabs">
-            <p class="payment-method-text">Please enter your preferred payment method below. You can use a credit card or prepay through PayPal.</p>
-            <li role="presentation" class="active"><a href="#">STRIPE</a></li>
-            <li role="presentation"><a href="#">PAYPALL</a></li>
+             <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox" ng-controller="braintreeController">
+                            <div class="ibox-content">
+                                <div class="panel-group payments-method" id="accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" style="background: white">
+                                        <h2>Summary</h2>
+                                            <strong>Payment for solving task</strong> <br/>
+                                            <strong>Price:</strong> <span class="text-navy">${{$totalSum}}</span>
+
+                                                        <p class="m-t">
+                                                            
+                                                            Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
+
+                                                        </p>
+                                            <h4 class="panel-title" style="margin-top: 20px">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapsePP" style="color:#1c84c6;text-decoration: none">Choose method</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapsePP" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form method="post" action="{!! route('checkout') !!}">
+                                                              {{ csrf_field() }}
+                                                              <div id="dropin-container"></div>
+                                                           
+                                                              <input type="submit" class="btn btn-default" value="Make payment" style="margin-top: 20px">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </ul>  
         </div>  
       </div>  
@@ -115,4 +161,5 @@
             </tbody> 
           </table>
         </div>
+        <script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
 @endsection
