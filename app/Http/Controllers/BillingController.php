@@ -16,12 +16,13 @@ class BillingController extends Controller
      */
     public function billing(){
     	$user = User::findorFail(Auth::id());
-    	$nonactivesites = $user->websites()->with('theme')->get();
+    	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
     	$totalSum = 0;
     	foreach ($nonactivesites as $key => $website) {
     		$totalSum += $website->theme->price;
     	}
-    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum)); 
+    	// $invoices = $user->invoices();
+    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum));
     }
 
     /**
@@ -36,6 +37,23 @@ class BillingController extends Controller
     }
 
     public function checkout(Request $request){
-    	dd($request->all());
+    	// dd($request->all());
+    	$token = $request->get('payment_method_nonce');
+    	$user = Auth::user();
+    	$user->newSubscription('main', '9qk6')->create($token);
+    	return back();
+
+    }
+
+    public function cancelSubscription(){
+    	$user = Auth::user();
+    	$user->subscription('main')->cancel();
+    	return back();
+    }
+
+    public function renewSubscription(){
+    	$user = Auth::user();
+    	$user->subscription('main')->resume();
+    	return back();
     }
 }

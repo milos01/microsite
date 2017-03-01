@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Website;
+use Carbon\Carbon;
 use Auth;
 
 class WebsiteController extends Controller
@@ -14,6 +15,7 @@ class WebsiteController extends Controller
                 'websiteTitle' => 'required|max:255',
                 'domain' => 'required|max:255',
         ]);
+        $now = Carbon::now();
 
         $website = new Website();
         $website->company_name = $request->companyName;
@@ -22,8 +24,12 @@ class WebsiteController extends Controller
         $website->active = 0;
         $website->user_id = Auth::id();
         $website->theme_id = $request->theme_id;
+        $website->expire_at = $now->addMonth();
 
-        if($website->save()){
+        $user = Auth::user();
+        $user->trial_ends_at = Carbon::now()->addDays(15);
+
+        if($website->save() && $user->save()){
         	return response($website, 200);
         }
     }

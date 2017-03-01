@@ -18,7 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth']], function () {
 	//Paging routes
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('/template/showEditTemplate', 'HomeController@showEditTemplate');
@@ -36,5 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/billing', 'BillingController@billing')->name('billing');
 	Route::get('/api/generateToken', 'BillingController@generateBraintreeToken');
 	Route::post('/checkout', 'BillingController@checkout')->name('checkout');
+	Route::get('/cancelsub', 'BillingController@cancelSubscription')->name('cancelSubscription');
+	Route::get('/renewsub', 'BillingController@renewSubscription')->name('renewSubscription');
 
 });

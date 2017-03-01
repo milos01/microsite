@@ -29,8 +29,10 @@
               <th>Theme ID</th>
               <th>Domain</th>
               <th>Created</th>
-              <th>Monthly Price</th>
+              <th>Expire</th>
               <th>Status</th>
+              <th>Monthly Price</th>
+              
             </thead>  
             <tbody>
               @foreach($websites as $website)
@@ -39,19 +41,22 @@
                 <td>{{$website->theme->theme_id}}</td>
                 <td>{{$website->domain}}</td>
                 <td>@dateformat($website->created_at)</td>
-                <td>${{$website->theme->price}}</td>
+                <td>@dateformat($website->expire_at)</td>
                 @if($website->active === 1)
                  <td>Active</td>
                 @else
                  <td>Not active</td>
                 @endif
+                <td>${{$website->theme->price}}</td>
               </tr>
                @endforeach
             </tbody> 
-          </table>
-          
-        </div><!-- usage ends -->
 
+          </table>
+           <hr style="border-top-color: #d8d8d8">
+           <span class="pull-left" style="margin-left: 10px"><h4>total: ${{$totalSum}}</h4></span>
+        </div><!-- usage ends -->
+      @if(count($websites))
       <!-- Automated Payments -->   
       <div id="table-row" class="row automated-payment-row">   
       <!-- Table Title -->      
@@ -95,13 +100,13 @@
              <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="ibox" ng-controller="braintreeController">
-                            <div class="ibox-content">
+                        <div class="ibox">
+                        @if (!Auth::user()->subscribed('main'))
+                            <div class="ibox-content" ng-controller="braintreeController">
                                 <div class="panel-group payments-method" id="accordion">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" style="background: white">
                                         <h2>Summary</h2>
-                                            <strong>Payment for solving task</strong> <br/>
                                             <strong>Price:</strong> <span class="text-navy">${{$totalSum}}</span>
 
                                                         <p class="m-t">
@@ -117,10 +122,11 @@
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-12">
+
                                                         <form method="post" action="{!! route('checkout') !!}">
                                                               {{ csrf_field() }}
                                                               <div id="dropin-container"></div>
-                                                           
+                                                              
                                                               <input type="submit" class="btn btn-default" value="Make payment" style="margin-top: 20px">
                                                         </form>
                                                     </div>
@@ -131,6 +137,24 @@
                                     </div>
                                 </div>
                             </div>
+                            @elseif(Auth::user()->subscription('main')->onGracePeriod())
+                              <div class="panel-heading" style="background: white">
+                                <h2>Grace period</h2>
+                                <p class="m-t">
+                                    Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
+                                </p>
+                                <a href="{!! route('renewSubscription') !!}" type="button" class="btn btn-default">Renew subscription</a>
+                              </div>
+                            @else
+                            <div class="panel-heading" style="background: white">
+                              <h2>Subscription</h2>
+                              <p class="m-t">
+                                  Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
+                              </p>
+                              <a href="{!! route('cancelSubscription') !!}" type="button" class="btn btn-default">Cancel subscription</a>
+                            </div>
+                            @endif
+                            
                         </div>
                     </div>
                 </div>
@@ -146,6 +170,7 @@
       </div>     
         <div class="billing-history-wrapper">  
           <table class="table">
+                
             <thead>
               <th>Date</th>
               <th>Description</th>
@@ -161,5 +186,9 @@
             </tbody> 
           </table>
         </div>
+        </div>
+        @else
+          
+        @endif
         <script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
 @endsection
