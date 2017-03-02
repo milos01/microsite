@@ -768,3 +768,15 @@ tr {background-color: transparent !important;}
 #imageHolder:hover #toggleSelectButton{
 	display: inline;
 }
+
+.nameEditField{
+	border: none;
+    border-bottom: 1px solid #f89559;
+    background: #efeded;
+    height: 30px;
+    font-weight: 500;
+    font-size: 24px;
+    width: 150px;
+    margin-bottom: 24px;
+    outline: none;
+}

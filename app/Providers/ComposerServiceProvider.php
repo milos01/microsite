@@ -16,7 +16,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         // Using class based composers...
         View::composer(
-            'homeCenter', 'App\Http\ViewComposers\UserTrialComposer'
+            'templates.notifyBar', 'App\Http\ViewComposers\UserTrialComposer'
         );
 
         // Using Closure based composers...

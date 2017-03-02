@@ -1,7 +1,6 @@
 @extends('layouts.home')
 
 @section('contentDashboard')
-
   <!-- CONTENT -->   
   <!-- title -->
   <div class="container" ng-controller="profileController">
@@ -15,7 +14,11 @@
       </ul>
     </div>
     <div class="col-xs-12 col-sm-10 side-content">
-      <p class="full-name">{{Auth::user()->first_name}} {{Auth::user()->last_name}}<a class="edit" ng-click="openReportModal('user')">edit</a></p>
+      <p class="full-name" id="hideOriginalName">{{Auth::user()->first_name}} {{Auth::user()->last_name}}<a class="edit" ng-click="showEditField({{Auth::user()}})">edit</a></p>
+      <div ng-show="showEdit" ng-cloak>
+        <input type="text" name="fullNemeEdit" ng-model="firstName" name="firstName" class="nameEditField">
+        <input type="text" name="fullNemeEdit" ng-model="lastName" name="lastName" class="nameEditField" style="margin-left: 10px"> <a class="edit" ng-click="submitForm('user')">change</a>
+      </div>
       <ul>
         <li>
           <p><span class="type">Email: </span>{{Auth::user()->email}}<a class="edit" ng-click="openReportModal('email')">edit</a></p>

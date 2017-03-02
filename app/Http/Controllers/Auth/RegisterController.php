@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
-
+    protected $now;
     /**
      * Create a new controller instance.
      *
@@ -37,6 +38,9 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->now = Carbon::now();
+    
+
     }
 
     /**
@@ -71,6 +75,7 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'role_id' => 2,
             'password' => bcrypt($data['password']),
+            'trial_ends_at' => $this->now->addDays(15),
         ]);
     }
 }
