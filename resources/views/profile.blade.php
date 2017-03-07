@@ -48,11 +48,11 @@
          </li>
         </li>
       </ul>
-      <form method="POST" action="{!! route('deactivate') !!}">
+    </div>
+    <form method="POST" action="{!! route('deactivate') !!}">
         {{ method_field('PUT') }}
         {{ csrf_field() }}
         <button type="submit" class="deactivate-button">Deactivate Account</button>
-      </form>
-    </div>
+    </form>
   </div> 
 @endsection
