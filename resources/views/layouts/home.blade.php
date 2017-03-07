@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Dashboard</title>
+    <title>
+      @yield('title')
+    </title>
     <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
@@ -21,6 +23,7 @@
   </head>
   <body ng-app="micrositeApp">
   <!-- HEADER start -->
+    @section('navbar')
     <nav class="navbar navbar-default">
       <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -46,7 +49,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="img/account-icon.png" alt="Account icon"></a>
             <ul class="dropdown-menu">
-            <li><p class="user-name">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</p><p class="user-email">{{Auth::user()->email}}</p></li>
+            <li>
+            @if(Auth::check())
+              <p class="user-name">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</p><p class="user-email">{{Auth::user()->email}}</p>
+            @endif
+            </li>
               <li role="separator" class="divider"></li>
               <li class="subdrop-mobile"><a href="{!! route('profile') !!}">Settings</a></li>           
               <li class="subdrop-mobile"><a href="{!! route('logout') !!}">Logout</a></li>
@@ -56,6 +63,7 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
+  @show
   <!-- HEADER end -->
   
   @yield('contentDashboard')
