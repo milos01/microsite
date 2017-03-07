@@ -16,8 +16,15 @@
     <div class="col-xs-12 col-sm-10 side-content">
       <p class="full-name" id="hideOriginalName">{{Auth::user()->first_name}} {{Auth::user()->last_name}}<a class="edit" ng-click="showEditField({{Auth::user()}})">edit</a></p>
       <div ng-show="showEdit" ng-cloak>
-        <input type="text" name="fullNemeEdit" ng-model="firstName" name="firstName" class="nameEditField">
-        <input type="text" name="fullNemeEdit" ng-model="lastName" name="lastName" class="nameEditField" style="margin-left: 10px"> <a class="edit" ng-click="submitForm('user')">change</a>
+      <form name="editNameForm" novalidate>
+        <span class="form-group" ng-class="{ 'has-error' : editNameForm.firstName.$invalid && !editNameForm.firstName.$pristine }">
+          <input type="text" ng-model="firstName" name="firstName" class="form-control nameEditField" required>
+        </span>
+        <span class="form-group" ng-class="{ 'has-error' : editNameForm.lastName.$invalid && !editNameForm.lastName.$pristine }">
+          <input type="text" ng-model="lastName" name="lastName" class="form-control nameEditField" style="margin-left: 10px" required>
+        </span>
+         <a class="edit" ng-click="submitForm('user')">change</a>
+      </form>
       </div>
       <ul>
         <li>
