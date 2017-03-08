@@ -40,8 +40,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav main-menu-border">
-        <li class="active"><a href="#">WEBSITES <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">TOKENS</a></li>
+        <li {{{ (Request::is('home') ? 'class=active' : '') }}}><a href="{!! route('home') !!}">WEBSITES <span class="sr-only">(current)</span></a></li>
+        <li {{{ (Request::is('tokens') ? 'class=active' : '') }}}><a href="{!! route('tokens') !!}">TOKENS</a></li>
         <li><a href="#">SUPPORT</a></li>     
       </ul>
       <ul id="dd" class="nav navbar-nav">

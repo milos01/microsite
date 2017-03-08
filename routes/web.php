@@ -39,4 +39,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/cancelsub', 'BillingController@cancelSubscription')->name('cancelSubscription');
 	Route::get('/renewsub', 'BillingController@renewSubscription')->name('renewSubscription');
 
+	//Token routes
+	Route::get('/tokens', 'TokenController@showTokenPage')->name('tokens');
+	Route::get('/content_elements', 'TokenController@showElementsPage')->name('elements');
+
 });
