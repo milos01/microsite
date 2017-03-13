@@ -888,17 +888,10 @@ tr {background-color: transparent !important;}
 }
 
  .add-element-expanded select {
- 	 height: 50px;
-     width: 100%;
-     margin-top: 20px;
-     padding-left: 20px;
-     color: #a9a9a9;
-     border: 0;
-     background-color: #e9e7e7;
-     font-style: italic;
+ 
  }
 
-  .add-element-expanded textarea { 
+ .add-element-expanded textarea { 
     width: 100%;
     resize: none;
     padding: 10px 20px;

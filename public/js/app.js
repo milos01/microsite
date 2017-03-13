@@ -1,5 +1,5 @@
 (function (angular) {
-app = angular.module('micrositeApp', ['restangular', 'ui.bootstrap'])
+app = angular.module('micrositeApp', ['restangular', 'ui.bootstrap', 'ui.select2'])
 .run(function(Restangular, $log) {
 		var headers = {
 			'Content-Type' : 'Application/json',
