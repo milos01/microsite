@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//Website routes
 	Route::post('/api/website', 'WebsiteController@newWebsite');
+	Route::get('/api/user/websites', 'WebsiteController@userSites');
 
 	//Billing routes
 	Route::get('/billing', 'BillingController@billing')->name('billing');

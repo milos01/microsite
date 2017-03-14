@@ -1,0 +1,20 @@
+<div class="add-element-expanded">
+      <p>Please attach files from which developer can use content and paste URL with short explanation where excatly developer should implement content</p>
+      <select ui-select2 ng-model="userSite" data-placeholder="Choose site" style="width: 100%;color: #a9a9a9;border: 0;background-color: #e9e7e7;font-style: italic;border-radius: 10px">
+          <option value=""></option>
+          <option ng-repeat="site in sites" value="">{{site.domain}}</option>
+      </select>
+       <input type="text" id="element-page-url" name="element-page-url" placeholder="Type or past e URL of the page where content needs to be implemented" ng-model="test"/>
+       <input type="text" id="element-section-desc" name="element-section-desc" placeholder="Describe shortly which section" onfocus="this.placeholder = ''"/>
+     
+      <select ui-select2="{minimumResultsForSearch: -1}" ng-model="elementType" data-placeholder="Choose element type: Healdine, Paragraph, Image" style="width: 100%;color: #a9a9a9;border: 0;background-color: #e9e7e7;font-style: italic;border-radius: 10px; margin-top: 20px">
+          <option value=""></option>
+          <option value="one">Healdine</option>
+          <option value="two">Paragraph</option>
+          <option value="three">Image</option>
+      </select>
+       <div class="element-btns-wrapper">
+        <button class="btn btn-default element-cancel-btn">CANCEL</button>
+        <button class="btn btn-default element-save-btn" ng-click="saveElement()">SAVE</button>
+      </div>
+</div>

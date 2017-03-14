@@ -30,6 +30,11 @@
 	      $scope.receves.splice(idx, 1);
 	    }
 
+	    $scope.updateElement = function(idx, cont){
+	    	cont.myValue = false;
+	    	$scope.receves.splice(idx, 1);
+	    }
+
 	    $scope.showExtraFields = function(field, form){
 	    	form.currentHeadline = '';
 	    	form.newHeadline = '';

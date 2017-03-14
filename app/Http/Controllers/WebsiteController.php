@@ -30,4 +30,10 @@ class WebsiteController extends Controller
         	return response($website, 200);
         }
     }
+
+    public function userSites(){
+        $user = Auth::user();
+        $websites = $user->websites;
+        return response($websites, 200);
+    }
 }
