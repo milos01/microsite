@@ -899,7 +899,7 @@ tr {background-color: transparent !important;}
     margin-top: 20px;
     background-color: #e9e7e7;
     font-style: italic;
-    border: 0;
+    /*border: 0;*/
 }
 
 .add-element-expanded [type="file"] {

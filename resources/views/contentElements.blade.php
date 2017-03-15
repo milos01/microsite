@@ -9,7 +9,7 @@
           <div class="add-element-expanded" ng-repeat="cont in form.contacts" style="border-bottom: none">
             <div ng-hide="cont.myValue">
               <p>Please attach files from which developer can use content and paste URL with short explanation where excatly developer should implement content</p>
-              <select ui-select2 data-placeholder="Choose site" style="width: 100%;color: #a9a9a9;border: 0;background-color: #e9e7e7;font-style: italic;border-radius: 10px" name="userSite" ng-model="cont.userSite" required>
+              <select ui-select2 data-placeholder="Choose site" style="width: 100%;color: #a9a9a9;border-color: #ccc ;background-color: #e9e7e7;font-style: italic;border-radius: 4px" name="userSite" ng-model="cont.userSite" required>
                   <option value=""></option>
                   <option ng-repeat="site in sites" value="@{{site.domain}}">@{{site.domain}}</option>
               </select>
@@ -30,16 +30,20 @@
                 
               <div ng-show="cont.showHeadline">
                 <div class="form-group" ng-class="{ 'has-error' : @{{form.name}}.currentHeadline.$invalid && !@{{form.name}}.currentHeadline.$pristine}">
-                  <input type="text" class="form-control" id="current-headline" name="currentHeadline" ng-model="cont.currentHeadline" placeholder="Paste current Headline" required />
+                  <input type="text" class="form-control" id="current-headline" name="currentHeadline" ng-model="cont.currentHeadline" placeholder="Paste current Headline" ng-required="cont.elType === 'Headline'" />
                 </div>
 
                 <div class="form-group" ng-class="{ 'has-error' : @{{form.name}}.newHeadline.$invalid && !@{{form.name}}.newHeadline.$pristine}">
-                  <input type="text" class="form-control" id="new-headline" name="newHeadline" ng-model="cont.newHeadline" placeholder="Type New Headline" required />
+                  <input type="text" class="form-control" id="new-headline" name="newHeadline" ng-model="cont.newHeadline" placeholder="Type New Headline" ng-required="cont.elType === 'Headline'" />
                 </div>
               </div> 
               <div ng-show="cont.showParagraph">
-                <textarea id="current-paragraph" name="currentParagraph" ng-model="cont.currentParagraph" placeholder="Paste Current Paragraph Text"></textarea>
-                <textarea id="new-paragraph" name="newParagraph" ng-model="cont.newParagraph" placeholder="Paste New Paragraph Text"></textarea>
+                <div class="form-group" ng-class="{ 'has-error' : @{{form.name}}.currentParagraph.$invalid && !@{{form.name}}.currentParagraph.$pristine}">
+                  <textarea id="current-paragraph" class="form-control" name="currentParagraph" ng-model="cont.currentParagraph" placeholder="Paste Current Paragraph Text" ng-required="cont.elType === 'Paragraph'"></textarea>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : @{{form.name}}.newParagraph.$invalid && !@{{form.name}}.newParagraph.$pristine}">
+                  <textarea id="new-paragraph" class="form-control" name="newParagraph" ng-model="cont.newParagraph" placeholder="Paste New Paragraph Text" ng-required="cont.elType === 'Paragraph'"></textarea>
+                </div>
               </div>
               <div ng-show="cont.showImage">
                 <div class="drag-drop-area">
