@@ -18,7 +18,7 @@
                 <input class="form-control" type="text" id="element-page-url" placeholder="Type or past e URL of the page where content needs to be implemented" name="url" ng-model="cont.url" required />
               </div>
               <div class="form-group" ng-class="{ 'has-error' : @{{form.name}}.description.$invalid && !@{{form.name}}.description.$pristine}">
-                <input class="form-control" type="text" id="element-section-desc" placeholder="Describe shortly which section" name="description" ng-model="cont.description" required />
+                <textarea class="form-control" type="text" id="element-section-desc" placeholder="Describe shortly which section" name="description" ng-model="cont.description" required ></textarea>
               </div>
             
               <select ui-select2="{minimumResultsForSearch: -1}" name="elType" ng-model="cont.elType" data-placeholder="Choose element type: Healdine, Paragraph, Image" style="width: 100%;color: #a9a9a9;border: 0;background-color: #e9e7e7;font-style: italic;border-radius: 10px; margin-top: 20px" ng-change="showExtraFields(cont.elType, cont)" required>
@@ -74,16 +74,18 @@
     </form>
       <button type="button" class="btn btn-default add-element" ng-click="addElement()"><span class="element-plus">+</span>Add Element</button>
       </div>
+
+
+
     <div class="col-sm-4 tokens-summary-wrapper">
-      <h1 class="token-summary-title">Summary</h1>
-       <div class="tokens-price-wrapper">
-        <p class="summary-single-price" ng-repeat="receve in receves" ng-cloak>@{{receve.type}}  <span>$@{{receve.price}}</span></p>
-       </div>
-       <div clasas="tokens-total-wrapper">
-         <p class="total-price" >Total: <span ng-bind="getTotal()"></span></p>
-         <button type="submit" class="btn btn-default summary-checkout-btn" ng-hide="receves.length === 0" ng-cloak>CHECKOUT</button>
-       </div>
-      
+          <h1 class="token-summary-title" style="margin-top: 20px">Summary</h1>
+           <div class="tokens-price-wrapper">
+            <p class="summary-single-price" ng-repeat="receve in receves" ng-cloak>@{{receve.type}}  <span>$@{{receve.price}}</span></p>
+           </div>
+           <div clasas="tokens-total-wrapper">
+             <p class="total-price" >Total: <span ng-model="totalPrice" ng-bind="getTotal()"></span></p>
+             <a href="{!! route('tokenPaymentPage') !!}" type="submit" class="btn btn-default summary-checkout-btn" ng-hide="receves.length === 0" ng-cloak>CHECKOUT</a>
+           </div>
   </div> 
   </div>
   </div>

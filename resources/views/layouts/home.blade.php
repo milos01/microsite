@@ -11,9 +11,9 @@
     <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="css/custom.css">
-    <link rel="stylesheet" href="bower_components/select2/select2.css">
+    <link rel="stylesheet" type="text/css" href="../font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="../bower_components/select2/select2.css">
     <style type="text/css">
       [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
@@ -33,7 +33,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{!! route('home') !!}"><img src="img/webueno-logo-admin.png" alt="Webueno Logo"></a>
+        <a class="navbar-brand" href="{!! route('home') !!}"><img src="../img/webueno-logo-admin.png" alt="Webueno Logo"></a>
       </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -46,7 +46,7 @@
       <ul id="dd" class="nav navbar-nav">
         <li style="padding: 23px 5px">SC_place</li>        
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="img/account-icon.png" alt="Account icon"></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="../img/account-icon.png" alt="Account icon"></a>
             <ul class="dropdown-menu">
             <li>
             @if(Auth::check())
@@ -70,26 +70,26 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
-    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="bower_components/select2/select2.js"></script>
+    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../bower_components/select2/select2.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-    <script type="text/javascript" src="bower_components/lodash/lodash.js"></script>
-    <script type="text/javascript" src="bower_components/restangular/dist/restangular.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-ui-select2/src/select2.js"></script>
+    <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../bower_components/lodash/lodash.js"></script>
+    <script type="text/javascript" src="../bower_components/restangular/dist/restangular.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-ui-select2/src/select2.js"></script>
 
 
 
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/scripts/user-controller.js"></script>
-    <script type="text/javascript" src="js/scripts/website-controller.js"></script>
-    <script type="text/javascript" src="js/scripts/braintree-controller.js"></script>
-    <script type="text/javascript" src="js/scripts/token-controller.js"></script>
-    <script type="text/javascript" src="js/scripts/user-resource.js"></script>
-    <script type="text/javascript" src="js/scripts/website-resource.js"></script>
-    <script type="text/javascript" src="js/scripts/token-resource.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>
+    <script type="text/javascript" src="../js/scripts/user-controller.js"></script>
+    <script type="text/javascript" src="../js/scripts/website-controller.js"></script>
+    <script type="text/javascript" src="../js/scripts/braintree-controller.js"></script>
+    <script type="text/javascript" src="../js/scripts/token-controller.js"></script>
+    <script type="text/javascript" src="../js/scripts/user-resource.js"></script>
+    <script type="text/javascript" src="../js/scripts/website-resource.js"></script>
+    <script type="text/javascript" src="../js/scripts/token-resource.js"></script>
 
     <script src="https://js.braintreegateway.com/js/braintree-2.30.0.min.js"></script>
     <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->

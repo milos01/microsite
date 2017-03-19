@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('/template/showEditTemplate', 'HomeController@showEditTemplate');
 	Route::get('/new', 'HomeController@showNewSitePage')->name('new');
+	Route::get('/token/payment', 'HomeController@tokenPaymentPage')->name('tokenPaymentPage');
 
 	//User routes
 	Route::get('/profile', 'UserController@profile')->name('profile');
@@ -37,11 +38,13 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/billing', 'BillingController@billing')->name('billing');
 	Route::get('/api/generateToken', 'BillingController@generateBraintreeToken');
 	Route::post('/checkout', 'BillingController@checkout')->name('checkout');
+	Route::post('/payment', 'BillingController@payment')->name('payment');
 	Route::get('/cancelsub', 'BillingController@cancelSubscription')->name('cancelSubscription');
 	Route::get('/renewsub', 'BillingController@renewSubscription')->name('renewSubscription');
 
 	//Token routes
 	Route::get('/tokens', 'TokenController@showTokenPage')->name('tokens');
 	Route::get('/content_elements', 'TokenController@showElementsPage')->name('elements');
-
+	Route::post('/api/content_element', 'TokenController@saveContentElement')->name('saveElement');
+	Route::post('/api/content_oreder', 'TokenController@saveContentOrder')->name('saveOrder');
 });

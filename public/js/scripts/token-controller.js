@@ -5,6 +5,7 @@
 		});
         $scope.forms = [];
         $scope.receves = [];
+       	$scope.tat = "whenever";
 
         $scope.getTotal = function(){
 			var total = 0;
@@ -12,6 +13,7 @@
 			        var receve = $scope.receves[i];
 			        total += receve.price;
 			}
+			$scope.total = total;
 			return '$' + total;
 		}
 
@@ -21,8 +23,10 @@
 		}
 
 		$scope.saveElement = function(form, cont){
-	      $scope.receves.push({type: cont.elType, price: 5});
-	      cont.myValue = true;
+			TokenResource.addTokenElement(cont).then(function(items){});
+	      	$scope.receves.push({type: cont.elType, price: 5});
+	      	cont.myValue = true;
+
 	    }
 
 	    $scope.removeElement = function(idx){
@@ -52,6 +56,17 @@
 	    	}else{
 	    		form.showImage = true;
 	    	}
+	    }
+
+	    $scope.elementsCheckout = function(){
+	    	orderInfo = {
+				tat: $scope.tat,
+				totalPrice: $scope.total,
+			};
+			TokenResource.addTokenOrder(orderInfo).then(function(items){
+				//redirect to payment page
+			});
+	    	
 	    }
 
 		

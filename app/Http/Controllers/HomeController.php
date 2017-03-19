@@ -7,6 +7,7 @@ use App\Theme;
 use App\User;
 use Auth;
 use Carbon\Carbon;
+use App\TokenElement;
 
 class HomeController extends Controller
 {
@@ -44,6 +45,14 @@ class HomeController extends Controller
     public function showNewSitePage(){
         $themes = Theme::all();
         return view('newsite')->with('themes', $themes);
+    }
+
+    public function tokenPaymentPage(){
+        $elements = TokenElement::where('user_id', Auth::id())->where('payed', 0)->get();
+        if($elements->isEmpty()){
+            return redirect('home');
+        }
+        return view('tokenPayment')->with('elements', $elements)->with('total', count($elements)*5);
     }
 
 }

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\User;
 use Auth;
 use Braintree_ClientToken;
+use Braintree_Transaction;
+use App\Events\TokenActivation;
 
 class BillingController extends Controller
 {
@@ -55,5 +57,22 @@ class BillingController extends Controller
     	$user = Auth::user();
     	$user->subscription('main')->resume();
     	return back();
+    }
+
+    public function payment(Request $request){
+
+    	$result = Braintree_Transaction::sale([
+			'amount' => '10.00',
+			'paymentMethodNonce' => $request->payment_method_nonce,
+			'options' => [
+				'submitForSettlement' => True
+			]
+		]);
+    	if(sizeof($result->errors->deepAll()) == 0){
+    		return back()->with('bt_errors', $result->errors->deepAll());
+    	}
+		event(new TokenActivation());
+    	return back();
+		
     }
 }
