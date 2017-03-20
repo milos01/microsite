@@ -8,6 +8,7 @@ use Auth;
 use Braintree_ClientToken;
 use Braintree_Transaction;
 use App\Events\TokenActivation;
+use App\Events\NewTokenOrder;
 
 class BillingController extends Controller
 {
@@ -62,15 +63,18 @@ class BillingController extends Controller
     public function payment(Request $request){
 
     	$result = Braintree_Transaction::sale([
-			'amount' => '10.00',
+			'amount' => '11.00',
 			'paymentMethodNonce' => $request->payment_method_nonce,
 			'options' => [
 				'submitForSettlement' => True
 			]
 		]);
-    	if(sizeof($result->errors->deepAll()) == 0){
+    	if(!$result->success){
     		return back()->with('bt_errors', $result->errors->deepAll());
     	}
+
+
+    	event(new NewTokenOrder($request));
 		event(new TokenActivation());
     	return back();
 		

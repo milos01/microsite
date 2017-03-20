@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\TokenActivation' => [
             'App\Listeners\TokenActivationListener',
         ],
+        'App\Events\NewTokenOrder' => [
+            'App\Listeners\NewTokeOrderListener',
+        ],
     ];
 
     /**

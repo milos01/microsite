@@ -10,6 +10,6 @@ class TokenElement extends Model
 
     public function order()
     {
-        return $this->belongsToMany('App\TokenOrder');
+        return $this->belongsToMany('App\TokenOrder', 'element_orders', 'element_id', 'order_id');
     }
 }

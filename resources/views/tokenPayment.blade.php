@@ -1,17 +1,19 @@
 @extends('layouts.home')
 
 @section('contentDashboard')
+<form method="POST" action="{!! route('payment') !!}">
+{{ csrf_field() }}
 <div class="container"> 
 @if(!$elements->isEmpty())
   <div class="row">
     <div class="col-sm-8 add-element-wrapper">
       <h1 class="token-summary-title">Turnaround Time</h1>
       <div class="turnaround-wrapper">
-            <div><input type="radio" name="tat"  ng-model="tat" value="whenever" ng-checked="true"><label>Whenever</label></div>
-            <div><input type="radio" name="tat" ng-model="tat" value="15"><label>1-5 Hours</label></div>
-            <div><input type="radio" name="tat" ng-model="tat" value="510"><label>5-10 Hours</label></div>
-            <div><input type="radio" name="tat" ng-model="tat" value="1015"><label>10-15 Hours</label></div>
-            <div><input type="radio" name="tat" ng-model="tat" value="1520"><label>15-20 Hours</label></div>
+            <div><input type="radio" name="tat" value="whenever" checked><label>Whenever</label></div>
+            <div><input type="radio" name="tat" value="15"><label>1-5 Hours</label></div>
+            <div><input type="radio" name="tat" value="510"><label>5-10 Hours</label></div>
+            <div><input type="radio" name="tat" value="1015"><label>10-15 Hours</label></div>
+            <div><input type="radio" name="tat" value="1520"><label>15-20 Hours</label></div>
       </div>
     </div>
   </div> 
@@ -28,13 +30,10 @@
                   <div class="panel-body">
                       <div class="row">
                           <div class="col-md-12">
-
-                              <form method="POST" action="{!! route('payment') !!}">
-                                    {{ csrf_field() }}
                                     <div id="dropin-container"></div>
-                                    
+                                    <input type="hidden" name="total" value="{{$total}}">
                                     <input type="submit" class="btn btn-default" value="Make payment" style="margin-top: 20px">
-                              </form>
+                             
                           </div>
                       </div>
                   </div>
@@ -44,4 +43,5 @@
   </div>
   @endif
 </div> 
+</form>
 @endsection
