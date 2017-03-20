@@ -3,6 +3,9 @@
 		TokenResource.getUserSites().then(function(items){
 			$scope.sites = items;
 		});
+		TokenResource.getSavedElements().then(function(items){
+			$scope.oldForms = items;
+		});
         $scope.forms = [];
         $scope.receves = [];
        	$scope.tat = "whenever";

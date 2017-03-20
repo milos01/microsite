@@ -4,6 +4,20 @@
 <div class="container" ng-controller="tokenController"> 
    <div class="row">
     <div class="col-sm-8 add-element-wrapper">
+    <!-- Saved forms -->
+    <form name="@{{'oldform'+$index}}" ng-repeat="oldForm in oldForms" ng-cloak>
+      <div class="element-btns-wrapper" style="margin-bottom: 0px; text-align: left">
+            <div class="elements-summary">
+              <div class="selected-headline"><p>@{{oldForm.element_type}}: @{{oldForm.url}}</p>
+              <div class="edit-element-wrapper">
+               <a href="#" ng-click="updateElement($parent.$index, cont)" class="edit-element"></a>
+               <a href="#" ng-click="removeElement($parent.$index)" class="remove-element"></a>
+              </div>    
+              </div>
+            </div><!-- add-element-wrapper end -->
+      </div>
+    </form>
+    <!-- End saved forms -->
     <form name="@{{form.name}}"
           ng-repeat="form in forms" ng-cloak>
           <div class="add-element-expanded" ng-repeat="cont in form.contacts" style="border-bottom: none">

@@ -10,6 +10,12 @@
 			});
 		}
 
+		retVal.getSavedElements = function(){
+			return Restangular.all('saved_elements').getList().then(function(items){
+				return items;
+			});
+		}
+
 		retVal.addTokenElement = function(element){
 			return Restangular.all('content_element').post(element).then(function(item){
 				return item;

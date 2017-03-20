@@ -45,4 +45,9 @@ class TokenController extends Controller
     	$ws = Website::where('domain', $siteName)->first();
     	return $ws->id;
     }
+
+    public function getSavedElements(){
+        $elements = TokenElement::where('user_id', Auth::id())->where('payed', 0)->get();
+        return response($elements, 200);
+    }
 }

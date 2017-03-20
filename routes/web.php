@@ -47,4 +47,5 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/content_elements', 'TokenController@showElementsPage')->name('elements');
 	Route::post('/api/content_element', 'TokenController@saveContentElement')->name('saveElement');
 	Route::post('/api/content_oreder', 'TokenController@saveContentOrder')->name('saveOrder');
+	Route::get('/api/saved_elements', 'TokenController@getSavedElements');
 });
