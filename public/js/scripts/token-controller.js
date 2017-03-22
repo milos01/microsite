@@ -26,9 +26,22 @@
 		}
 
 		$scope.saveElement = function(form, cont){
-			TokenResource.addTokenElement(cont).then(function(items){});
-	      	$scope.receves.push({type: cont.elType, price: 5});
-	      	cont.myValue = true;
+			if(!cont){
+				var cont = {
+					userSite: form.userSite,
+					url: form.url,
+					description: form.description,
+					elType: form.elType,
+					currentHeadline: form.currentHeadline,
+					newHeadline: form.newHeadline,
+					currentParagraph: form.currentParagraph,
+					newParagraph: form.newParagraph
+				}
+			}
+			console.log(cont);
+			// TokenResource.addTokenElement(cont).then(function(items){});
+	  //     	$scope.receves.push({type: cont.elType, price: 5});
+	  //     	cont.myValue = true;
 
 	    }
 
