@@ -50,4 +50,31 @@ class TokenController extends Controller
         $elements = TokenElement::where('user_id', Auth::id())->where('payed', 0)->get();
         return response($elements, 200);
     }
+
+    public function updateSavedElements(Request $request){
+        $website_id = $this->findSite($request->userSite);
+
+        $token = TokenElement::findorFail($request->id);
+        $token->website_id = $website_id;
+        $token->url = $request->url;
+        $token->description = $request->description;
+        $token->element_type = $request->elType;
+        if ($request->elType == "Headline") {
+            $token->current_headline = $request->currentHeadline;
+            $token->new_headline = $request->newHeadline;
+        }else if($request->elType == "Paragraph"){
+            $token->current_paragraph = $request->currentParagraph;
+            $token->new_paragraph = $request->newParagraph;
+        }else{
+            $token->image = "test.jpeg";
+        }
+        $token->save();
+        return response($token, 200);
+    }
+
+    public function removeElements(Request $request){
+        $token = TokenElement::findorFail($request->id);
+        $token->delete();
+        return response("ok", 200);
+    }
 }

@@ -48,4 +48,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/api/content_element', 'TokenController@saveContentElement')->name('saveElement');
 	Route::post('/api/content_oreder', 'TokenController@saveContentOrder')->name('saveOrder');
 	Route::get('/api/saved_elements', 'TokenController@getSavedElements');
+	Route::put('/api/saved_elements/{id}', 'TokenController@updateSavedElements');
+	Route::delete('/api/saved_elements/{id}', 'TokenController@removeElements');
 });

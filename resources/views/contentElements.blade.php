@@ -5,19 +5,21 @@
    <div class="row">
     <div class="col-sm-8 add-element-wrapper">
     <!-- Saved forms -->
+
     <form name="@{{'oldform'+$index}}" ng-repeat="oldForm in oldForms" ng-cloak>
-      <div class="element-btns-wrapper" style="margin-bottom: 0px; text-align: left">
+  
+      <div class="element-btns-wrapper" ng-hide="oldForm.myValue2"  style="margin-bottom: 0px; text-align: left">
             <div class="elements-summary">
               <div class="selected-headline"><p>@{{oldForm.element_type}}: @{{oldForm.url}}</p>
               <div class="edit-element-wrapper">
-               <a href="#" ng-click="updateElement($parent.$index, cont)" class="edit-element"></a>
-               <a href="#" ng-click="removeElement($parent.$index)" class="remove-element"></a>
+               <a href="#" ng-click="updateElement($parent.$index, oldForm)" class="edit-element"></a>
+               <a href="#" ng-click="removeOldElement($index, oldForm.id)" class="remove-element"></a>
               </div>    
               </div>
             </div><!-- add-element-wrapper end -->
       </div>
       <div class="add-element-expanded" style="border-bottom: none">
-      <div ng-hide="cont.myValue">
+      <div ng-show="oldForm.myValue22">
               <p>Please attach files from which developer can use content and paste URL with short explanation where excatly developer should implement content</p>
               <select ui-select2 data-placeholder="Choose site" style="width: 100%;color: #a9a9a9;border-color: #ccc ;background-color: #e9e7e7;font-style: italic;border-radius: 4px" name="userSite" ng-model="oldForm.userSite" required>
                   <option value=""></option>
@@ -55,6 +57,7 @@
                   <textarea id="new-paragraph" class="form-control" name="newParagraph" ng-model="oldForm.newParagraph" placeholder="Paste New Paragraph Text" ng-required="oldForm.elType === 'Paragraph'"></textarea>
                 </div>
               </div>
+              <input type="hidden" name="elId" ng-model="oldForm.id">
               <div ng-show="oldForm.showImage">
                 <div class="drag-drop-area">
                    <p>DRAG AND DROP FILE</p>
@@ -72,6 +75,7 @@
           </div>
     </form>
     <!-- End saved forms -->
+    <hr style="border-top: 1px solid #d8d8d8">
     <form name="@{{form.name}}"
           ng-repeat="form in forms" ng-cloak>
           <div class="add-element-expanded" ng-repeat="cont in form.contacts" style="border-bottom: none">
@@ -133,7 +137,7 @@
                   <div class="selected-headline"><p>@{{cont.elType}}: @{{cont.url}}</p>
                   <div class="edit-element-wrapper">
                    <a href="#" ng-click="updateElement($parent.$index, cont)" class="edit-element"></a>
-                   <a href="#" ng-click="removeElement($parent.$index)" class="remove-element"></a>
+                   <a href="#" ng-click="removeElement($parent.$index, cont)" class="remove-element"></a>
                   </div>    
                   </div>
                 </div><!-- add-element-wrapper end -->

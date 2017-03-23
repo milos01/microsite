@@ -5,6 +5,9 @@
 		});
 		TokenResource.getSavedElements().then(function(items){
 			$scope.oldForms = items;
+			for (var i = 0; i <  items.length; i++) {
+				$scope.receves.push({type: items[i].element_type, price: 5});
+			}
 		});
         $scope.forms = [];
         $scope.receves = [];
@@ -37,21 +40,45 @@
 					currentParagraph: form.currentParagraph,
 					newParagraph: form.newParagraph
 				}
+				TokenResource.updateTokenElement(cont, form.id).then(function(items){});
+				$scope.receves.push({type: cont.elType, price: 5});
+				form.element_type = form.elType;
+				form.url = form.url;
+				form.myValue2 = false;
+	      		form.myValue22 = false;
+			}else{
+				TokenResource.addTokenElement(cont).then(function(item){
+					$scope.elemId = item.id;
+				});
+				$scope.receves.push({type: cont.elType, price: 5});
+	      		cont.myValue = true;
 			}
 			console.log(cont);
-			// TokenResource.addTokenElement(cont).then(function(items){});
-	  //     	$scope.receves.push({type: cont.elType, price: 5});
-	  //     	cont.myValue = true;
+			
+	      	
 
 	    }
 
-	    $scope.removeElement = function(idx){
+	    $scope.removeElement = function(idx, cont){
 	      $scope.forms.splice(idx, 1);
 	      $scope.receves.splice(idx, 1);
+	      removeElem($scope.elemId);
+	    }
+
+	    $scope.removeOldElement = function(idx, dbId){
+	      $scope.oldForms.splice(idx, 1);
+	      $scope.receves.splice(idx, 1);
+	      removeElem(dbId);
+	    }
+
+	    function removeElem(id){
+	    	return TokenResource.removeTokenElement(id).then(function(items){});
 	    }
 
 	    $scope.updateElement = function(idx, cont){
 	    	cont.myValue = false;
+	    	cont.myValue2 = true;
+	    	cont.myValue22 = true;
 	    	$scope.receves.splice(idx, 1);
 	    }
 

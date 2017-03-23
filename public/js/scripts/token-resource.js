@@ -22,8 +22,20 @@
 			});
 		}
 
+		retVal.updateTokenElement = function(element, id){
+			return Restangular.one('saved_elements', id).put(element).then(function(item){
+				return item;
+			});
+		}
+
 		retVal.addTokenOrder = function(order){
 			return Restangular.all('content_oreder').post(order).then(function(item){
+				return item;
+			});
+		}
+
+		retVal.removeTokenElement = function(id){
+			return Restangular.one('saved_elements', id).remove().then(function(item){
 				return item;
 			});
 		}
