@@ -7,6 +7,7 @@ use App\User;
 use Auth;
 use Braintree_ClientToken;
 use Braintree_Transaction;
+use Braintree_Customer;
 use App\Events\TokenActivation;
 use App\Events\NewTokenOrder;
 
@@ -19,11 +20,9 @@ class BillingController extends Controller
      */
     public function billing(){
     	$user = User::findorFail(Auth::id());
+    	// dd($user->invoicesIncludingPending());
     	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
-    	$totalSum = 0;
-    	foreach ($nonactivesites as $key => $website) {
-    		$totalSum += $website->theme->price;
-    	}
+    	$totalSum = $this->totalCount($nonactivesites);
     	// $invoices = $user->invoices();
     	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum));
     }
@@ -39,11 +38,42 @@ class BillingController extends Controller
 		]);
     }
 
+    private function totalCount($nonactivesites){
+    	$totalSum = 0;
+    	foreach ($nonactivesites as $key => $website) {
+    		$totalSum += $website->theme->price;
+    	}
+    	return $totalSum;
+    }
+
     public function checkout(Request $request){
-    	// dd($request->all());
-    	$token = $request->get('payment_method_nonce');
     	$user = Auth::user();
-    	$user->newSubscription('main', '9qk6')->create($token);
+
+    	if(!$user->braintree_id){
+    		Braintree_Customer::create([
+			    'firstName' => $user->first_name,
+			    'lastName' => $user->last_name,
+			    'email' => $user->email,
+			    'phone' => $user->phone
+			]);
+    	}
+    	$token = $request->payment_method_nonce;
+    	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
+    	$totalSum = $this->totalCount($nonactivesites);
+    	$result = Braintree_Transaction::sale([
+			'amount' => $totalSum,
+			'paymentMethodNonce' => $token,
+			'customerId' => $user->braintree_id,
+			'options' => [
+				'submitForSettlement' => True
+			]
+		]);
+    	if(!$result->success){
+    		dd($result->errors->deepAll());
+    		return back()->with('bt_errors', $result->errors->deepAll());
+    	}
+    	
+    	//event for site activaiton
     	return back();
 
     }
@@ -61,15 +91,19 @@ class BillingController extends Controller
     }
 
     public function payment(Request $request){
-
-    	$result = Braintree_Transaction::sale([
-			'amount' => '11.00',
-			'paymentMethodNonce' => $request->payment_method_nonce,
-			'options' => [
-				'submitForSettlement' => True
-			]
-		]);
+    	$user = Auth::user();
+    	if($user->braintree_id){
+			$result = Braintree_Transaction::sale([
+				'amount' => $request->total,
+				'paymentMethodNonce' => $request->payment_method_nonce,
+				'customerId' => $user->braintree_id,
+				'options' => [
+					'submitForSettlement' => True
+				]
+			]);
+    	}
     	if(!$result->success){
+    		dd($result->errors->deepAll());
     		return back()->with('bt_errors', $result->errors->deepAll());
     	}
 

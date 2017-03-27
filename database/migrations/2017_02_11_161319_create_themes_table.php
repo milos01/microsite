@@ -20,6 +20,7 @@ class CreateThemesTable extends Migration
             $table->string('pictuire');
             $table->longText('description');
             $table->decimal('price', 5, 2);
+            $table->string('plan_id');
             $table->timestamps();
         });
     }
