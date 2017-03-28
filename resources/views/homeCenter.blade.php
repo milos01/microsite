@@ -24,12 +24,13 @@
             <span style="color: black">No active websites!</span>
           </div>
     @else     
-      <a href="#" class="website-link">
-        <div class="table-wrapper">   
-          <button type="submit" class="manage"></button>
+      
          
 
           @foreach($userWebsites as $website)
+          <a href="#" class="website-link">
+          <div class="table-wrapper">   
+            <button type="submit" class="manage"></button>
             <!-- thumbnail -->
             <div class="table-column col-md-2">
               <div class="table-header"><p>Website</p></div>
@@ -52,12 +53,12 @@
               <div class="table-data"><p>@dateformat($website->created_at)</p></div>
             </div>
              <!-- Expire -->
-            <div class="table-column">
+            <!-- <div class="table-column">
               <div class="table-header"><p>Expire</p></div>
               <div class="table-data"><p>@dateformat($website->expire_at)</p></div>
             </div>
              <!-- Status -->
-            <div class="table-column">
+            <!-- <div class="table-column">
               <div class="table-header"><p>Status</p></div>
               <div class="table-data">
                 @if($website->active === 1)
@@ -66,15 +67,16 @@
                  <p>Not active</p>
                 @endif
               </div>
-            </div>
+            </div> -->
             <!-- Price -->
             <div class="table-column">
               <div class="table-header"><p>Monthly Price</p></div>
               <div class="table-data"><p>${{$website->theme->price}}</p></div>
             </div>
+            </div>
+          </a>
           @endforeach
-        </div>
-      </a>
+        
       @endif
     </div>
     <!-- first row ends -->

@@ -10,6 +10,7 @@ use Braintree_Transaction;
 use Braintree_Customer;
 use App\Events\TokenActivation;
 use App\Events\NewTokenOrder;
+use App\Events\ActivateWebsite;
 
 class BillingController extends Controller
 {
@@ -23,7 +24,6 @@ class BillingController extends Controller
     	// dd($user->invoicesIncludingPending());
     	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
     	$totalSum = $this->totalCount($nonactivesites);
-    	// $invoices = $user->invoices();
     	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum));
     }
 
@@ -73,7 +73,7 @@ class BillingController extends Controller
     		return back()->with('bt_errors', $result->errors->deepAll());
     	}
     	
-    	//event for site activaiton
+    	event(new ActivateWebsite($nonactivesites));
     	return back();
 
     }

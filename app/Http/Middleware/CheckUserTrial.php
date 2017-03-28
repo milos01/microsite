@@ -8,6 +8,12 @@ use Carbon\Carbon;
 
 class CheckUserTrial
 {
+    public $now;
+
+    public function __construct()
+    {
+        $this->now = Carbon::now();
+    }
     /**
      * Handle an incoming request.
      *
@@ -18,14 +24,16 @@ class CheckUserTrial
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if($user->trial_ends_at){
-            $expireInDays = Carbon::now()->diffInDays($user->trial_ends_at);
-            if($expireInDays == 0){
-                return redirect('home')->with('trialExpiredText', 'You tral expired go to billing page');
-            }else{
-                return redirect('/home')->with('trialExpiredText', $expireInDays);
+        $userWebsites = $user->websites;
+        foreach ($userWebsites as $key => $site) {
+            if ($site->expire_at && $site->active == 1) {
+                if($this->now->diffInDays($site->expire_at, false) <= 0){
+                    $site->expire_at = Carbon::parse($site->expire_at)->addMonth();
+                    $site->save();
+                }
             }
         }
+        
 
         return $next($request);
     }

@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\NewTokenOrder' => [
             'App\Listeners\NewTokeOrderListener',
         ],
+        'App\Events\ActivateWebsite' => [
+            'App\Listeners\ActivateWebsiteListener',
+        ],
     ];
 
     /**

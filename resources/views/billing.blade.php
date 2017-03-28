@@ -29,7 +29,7 @@
               <th>Theme ID</th>
               <th>Domain</th>
               <th>Created</th>
-              <th>Expire</th>
+              <th>Next payment</th>
               <th>Status</th>
               <th>Monthly Price</th>
               
@@ -53,10 +53,16 @@
             </tbody> 
 
           </table>
-           <hr style="border-top-color: #d8d8d8">
-           <span class="pull-left" style="margin-left: 10px"><h4>total: ${{$totalSum}}</h4></span>
+          @if($websites->isEmpty())
+          <div class="col-md-12" style="text-align: center;padding: 20px 0px;background: #efeded">
+            <span style="color: black">No new websites!</span>
+          </div>
+          @else
+          <hr style="border-top-color: #d8d8d8">
+          <span class="pull-left" style="margin-left: 10px"><h4>total: ${{$totalSum}}</h4></span>
+          @endif
         </div><!-- usage ends -->
-      @if(count($websites))
+
       <!-- Automated Payments -->   
       <div id="table-row" class="row automated-payment-row">   
       <!-- Table Title -->      
@@ -74,9 +80,9 @@
       </div><!-- Automated Payments ends -->
 
       <!-- Billing Alerts -->   
-      <div id="table-row" class="row billing-alerts-row"> 
+      <!-- <div id="table-row" class="row billing-alerts-row">  -->
       <!-- Table Title -->    
-      <div class="billing-alerts-title-wrapper">
+      <!-- <div class="billing-alerts-title-wrapper">
         <p class="billing-alerts-title">Billing Alerts</p> 
       </div>    
         <div class="billing-alerts-wrapper">   
@@ -87,9 +93,10 @@
             <p class="no">NO</p>
           </div>
         </div>
-      </div><!-- Billing Alerts ends -->
+      </div> --><!-- Billing Alerts ends -->
 
       <!-- Payment Method -->
+      @if(!$websites->isEmpty())
       <div id="table-row" class="row payment-method-row">
       <!-- Table Title -->   
       <div class="payment-method-title-wrapper">
@@ -127,7 +134,7 @@
                                                               {{ csrf_field() }}
                                                               <div id="dropin-container"></div>
                                                               
-                                                              <input type="submit" class="btn btn-default" value="Make payment" style="margin-top: 20px">
+                                                              <button type="submit" class="btn btn-default" id="paymentButt" style="margin-top: 20px;display: none">Make payment</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -161,7 +168,8 @@
             </div>
           </ul>  
         </div>  
-      </div>  
+      </div>
+      @endif  
       <!-- Billing History -->    
       <div id="table-row" class="row billing-history-row">
       <!-- Table Title -->    
@@ -187,8 +195,6 @@
           </table>
         </div>
         </div>
-        @else
-          
-        @endif
+     
         <script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
 @endsection

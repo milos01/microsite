@@ -1230,3 +1230,7 @@ padding: 5px 0px
     -moz-box-shadow: none !important;
     box-shadow: none !important;
 }
+
+#accordion{
+	margin-bottom: 0px;
+}

@@ -18,7 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	//Paging routes
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('/template/showEditTemplate', 'HomeController@showEditTemplate');
