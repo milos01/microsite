@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('paypal_email')->nullable();
             $table->string('card_brand')->nullable();
             $table->string('card_last_four')->nullable();
+            $table->boolean('subscribed');
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -8,9 +8,12 @@ use Auth;
 use Braintree_ClientToken;
 use Braintree_Transaction;
 use Braintree_Customer;
+use Braintree_PaymentMethod;
 use App\Events\TokenActivation;
 use App\Events\NewTokenOrder;
 use App\Events\ActivateWebsite;
+use App\Events\GraceWebsites;
+use App\Events\UserPaymentCreds;
 
 class BillingController extends Controller
 {
@@ -23,8 +26,9 @@ class BillingController extends Controller
     	$user = User::findorFail(Auth::id());
     	// dd($user->invoicesIncludingPending());
     	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
+        $activeWebsites = $user->websites()->where('active', 1)->get();
     	$totalSum = $this->totalCount($nonactivesites);
-    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum));
+    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites);
     }
 
     /**
@@ -48,21 +52,26 @@ class BillingController extends Controller
 
     public function checkout(Request $request){
     	$user = Auth::user();
+        $token = $request->payment_method_nonce;
 
     	if(!$user->braintree_id){
-    		Braintree_Customer::create([
+    		$result = Braintree_Customer::create([
 			    'firstName' => $user->first_name,
 			    'lastName' => $user->last_name,
 			    'email' => $user->email,
-			    'phone' => $user->phone
+			    'phone' => $user->phone,
+                'paymentMethodNonce' => $token
 			]);
+            //save user payment creds
+            event(new UserPaymentCreds($result->customer->id, $result->customer->paymentMethods[0]->cardType, $result->customer->paymentMethods[0]->last4));
     	}
-    	$token = $request->payment_method_nonce;
+        
+    	
+      
     	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
     	$totalSum = $this->totalCount($nonactivesites);
     	$result = Braintree_Transaction::sale([
 			'amount' => $totalSum,
-			'paymentMethodNonce' => $token,
 			'customerId' => $user->braintree_id,
 			'options' => [
 				'submitForSettlement' => True
@@ -72,7 +81,11 @@ class BillingController extends Controller
     		dd($result->errors->deepAll());
     		return back()->with('bt_errors', $result->errors->deepAll());
     	}
-    	
+
+    	if($request->subscribed == "no"){
+            //new event for making grace period for new sites
+            event(new GraceWebsites($nonactivesites));
+        }
     	event(new ActivateWebsite($nonactivesites));
     	return back();
 

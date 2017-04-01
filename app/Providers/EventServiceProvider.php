@@ -22,6 +22,15 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ActivateWebsite' => [
             'App\Listeners\ActivateWebsiteListener',
         ],
+        'App\Events\GraceWebsites' => [
+            'App\Listeners\GraceWebsitesListener',
+        ],
+        'App\Events\SubscribeWebsites' => [
+            'App\Listeners\SubscribeWebsitesListener',
+        ],
+        'App\Events\UserPaymentCreds' => [
+            'App\Listeners\UserPaymentCredsListener',
+        ],
     ];
 
     /**

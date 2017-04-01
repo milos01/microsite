@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Auth, Hash;
+use App\Events\GraceWebsites;
+use App\Events\SubscribeWebsites;
 
 class UserController extends Controller
 {
@@ -27,6 +29,10 @@ class UserController extends Controller
     {
     	User::findorFail(Auth::id())->delete();
     	return redirect()->route('login');
+    }
+
+    public function getLoggedUser(){
+        return Auth::user();
     }
 
     /**
@@ -69,5 +75,21 @@ class UserController extends Controller
         }
         $user->save();
         return response($user, 200);
+    }
+
+    public function changeMode(Request $request){
+        $user = Auth::user();
+        $activesites = $user->websites()->with('theme')->where('active', 1)->get();
+        if ($request->val == "yes") {
+            event(new SubscribeWebsites($activesites));
+            $user->subscribed = 1;
+        }else{
+            event(new GraceWebsites($activesites));
+            $user->subscribed = 0;
+
+        }
+
+        $user->save();
+        return $user;
     }
 }

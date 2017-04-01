@@ -63,22 +63,29 @@
           @endif
         </div><!-- usage ends -->
 
-      <!-- Automated Payments -->   
+      <!-- Automated Payments --> 
+      <form method="post" action="{!! route('checkout') !!}" ng-controller="subscriptionController"> 
+      @if(!$activeWebsites->isEmpty()) 
       <div id="table-row" class="row automated-payment-row">   
       <!-- Table Title -->      
       <div class="automated-payment-title-wrapper">
         <p class="automated-payment-title">Automated Payments</p> 
       </div>
-        <div class="automated-payment-wrapper">   
+        <div class="automated-payment-wrapper" >   
           <p class="automated-payment-text">I don’t want to make payments manually every month. Please charge me automatically.</p>      
-          <div class="yes-no-slider-wrapper">
-            <div class="yes-no-slider"></div>
-            <p class="yes">YES</p>
-            <p class="no">NO</p>
-          </div>
+          <!-- <div class="yes-no-slider-wrapper"> -->
+            <!-- <div class="yes-no-slider"></div> -->
+            
+              <input type="radio" name="subscribed" ng-model="subscribed" value="yes" ng-checked="{{Auth::user()->subscribed}} == 1"> yes
+              <input type="radio" name="subscribed" ng-model="subscribed" value="no" ng-checked="{{Auth::user()->subscribed}} == 0"> no
+          <!-- </div> -->
         </div>
       </div><!-- Automated Payments ends -->
-
+      @endif
+      
+      <div ng-show="oneTimer" ng-cloak>
+        <p style="color: red">list all active sites sites (one time payment)</p>
+      </div>
       <!-- Billing Alerts -->   
       <!-- <div id="table-row" class="row billing-alerts-row">  -->
       <!-- Table Title -->    
@@ -130,12 +137,12 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
 
-                                                        <form method="post" action="{!! route('checkout') !!}">
+                                                        
                                                               {{ csrf_field() }}
                                                               <div id="dropin-container"></div>
                                                               
                                                               <button type="submit" class="btn btn-default" id="paymentButt" style="margin-top: 20px;display: none">Make payment</button>
-                                                        </form>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -169,8 +176,10 @@
           </ul>  
         </div>  
       </div>
-      @endif  
+      @endif 
+      </form> 
       <!-- Billing History -->    
+      @if(!$activeWebsites->isEmpty()) 
       <div id="table-row" class="row billing-history-row">
       <!-- Table Title -->    
       <div class="billing-history-title-wrapper">
@@ -195,6 +204,6 @@
           </table>
         </div>
         </div>
-     
+        @endif
         <script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
 @endsection

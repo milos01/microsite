@@ -29,6 +29,8 @@ Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	Route::get('/profile', 'UserController@profile')->name('profile');
 	Route::put('/deactivate', 'UserController@deactivateUser')->name('deactivate');
 	Route::put('/api/update', 'UserController@updateInfo')->name('update');
+	Route::put('/api/user/mode', 'UserController@changeMode')->name('changeMode');
+	Route::get('/api/user', 'UserController@getLoggedUser')->name('loggedUser');
 	
 	//Website routes
 	Route::post('/api/website', 'WebsiteController@newWebsite');

@@ -24,13 +24,15 @@ class CheckUserTrial
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        $userWebsites = $user->websites;
+        $userWebsites = $user->websites()->with('theme')->get();
         foreach ($userWebsites as $key => $site) {
             if ($site->expire_at && $site->active == 1) {
                 if($this->now->diffInDays($site->expire_at, false) <= 0){
                     $site->expire_at = Carbon::parse($site->expire_at)->addMonth();
                     $site->save();
                 }
+                
+                //event for billing
             }
         }
         

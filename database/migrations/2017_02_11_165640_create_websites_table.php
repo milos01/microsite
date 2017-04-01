@@ -25,6 +25,7 @@ class CreateWebsitesTable extends Migration
             $table->foreign('theme_id')->references('id')->on('themes');
             $table->timestamps();
             $table->timestamp('expire_at')->nullable();
+            $table->timestamp('grace_period')->nullable();
         });
     }
 

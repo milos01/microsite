@@ -12,6 +12,12 @@
 			});
 		}
 
+		retVal.changeMode = function(answ){
+			return Restangular.one('user').one('mode').put(answ).then(function(item){
+				return item;
+			});
+		}
+
 		return retVal;
 	})
 	

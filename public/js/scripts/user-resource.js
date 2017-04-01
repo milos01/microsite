@@ -12,6 +12,12 @@
 			});
 		}
 
+		retVal.getLogedUser = function(editInfo){
+			return Restangular.one('user').get().then(function(item){
+				return item;
+			});
+		}
+
 		return retVal;
 	})
 	
