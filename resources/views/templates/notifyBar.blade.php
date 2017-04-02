@@ -6,6 +6,6 @@
     @elseif(isset($userTrialExpired))
     <div class="notification-trial-bar">
       <p class="notification-trial">You Free Trial expired. Please  go to billing page to make payment.</p>
-      <button type="submit" id="upgrade-button" class="btn btn-default">Billing</button>
+      <a href="{!! route('billing') !!}" type="submit" id="upgrade-button" class="btn btn-default">Billing</a>
     </div>
     @endif

@@ -6,7 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "dompdf/dompdf": "0.7.x@dev",
+        "dompdf/dompdf": "0.7.0",
         "laravel/cashier-braintree": "~2.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",

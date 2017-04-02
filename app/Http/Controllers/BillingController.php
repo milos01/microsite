@@ -8,6 +8,7 @@ use Auth;
 use Braintree_ClientToken;
 use Braintree_Transaction;
 use Braintree_Customer;
+use Braintree_PaymentMethodNonce;
 use Braintree_PaymentMethod;
 use App\Events\TokenActivation;
 use App\Events\NewTokenOrder;
@@ -24,11 +25,11 @@ class BillingController extends Controller
      */
     public function billing(){
     	$user = User::findorFail(Auth::id());
-    	// dd($user->invoicesIncludingPending());
+        
     	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
         $activeWebsites = $user->websites()->where('active', 1)->get();
     	$totalSum = $this->totalCount($nonactivesites);
-    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites);
+    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites)->with('invoices', $user->invoicesIncludingPending());
     }
 
     /**
@@ -125,5 +126,34 @@ class BillingController extends Controller
 		event(new TokenActivation());
     	return back();
 		
+    }
+
+    public function samecardPayment(){
+        $user = Auth::user();
+        $customer = Braintree_Customer::find(Auth::user()->braintree_id);
+        $payment_method_token = $customer->paymentMethods[0]->token;
+        $nonce = Braintree_PaymentMethodNonce::create($payment_method_token);
+    
+        $nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
+        $totalSum = $this->totalCount($nonactivesites);
+        $result = Braintree_Transaction::sale([
+                'amount' => $totalSum,
+                'paymentMethodNonce' => $nonce->paymentMethodNonce->nonce,
+                'customerId' => $user->braintree_id,
+                'options' => [
+                    'submitForSettlement' => True
+                ]
+        ]);
+        if(!$result->success){
+            dd($result->errors->deepAll());
+            return back()->with('bt_errors', $result->errors->deepAll());
+        }
+
+        if($user->subscribed == 0){
+            //new event for making grace period for new sites
+            event(new GraceWebsites($nonactivesites));
+        }
+        event(new ActivateWebsite($nonactivesites));
+        return back();
     }
 }

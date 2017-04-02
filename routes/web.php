@@ -16,7 +16,14 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+use Illuminate\Http\Request;
 
+Route::get('user/invoice/{invoice}', function (Request $request, $invoiceId) {
+    return $request->user()->downloadInvoice($invoiceId, [
+        'vendor'  => 'Your Company',
+        'product' => 'Your Product',
+    ]);
+});
 
 Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	//Paging routes
@@ -43,6 +50,7 @@ Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	Route::post('/payment', 'BillingController@payment')->name('payment');
 	Route::get('/cancelsub', 'BillingController@cancelSubscription')->name('cancelSubscription');
 	Route::get('/renewsub', 'BillingController@renewSubscription')->name('renewSubscription');
+	Route::get('/samepayment', 'BillingController@samecardPayment')->name('samecardPayment');
 
 	//Token routes
 	Route::get('/tokens', 'TokenController@showTokenPage')->name('tokens');

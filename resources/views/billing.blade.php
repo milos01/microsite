@@ -75,16 +75,43 @@
           <p class="automated-payment-text">I don’t want to make payments manually every month. Please charge me automatically.</p>      
           <!-- <div class="yes-no-slider-wrapper"> -->
             <!-- <div class="yes-no-slider"></div> -->
-            
+            <div class="pull-right" style="margin-top: 10px">
               <input type="radio" name="subscribed" ng-model="subscribed" value="yes" ng-checked="{{Auth::user()->subscribed}} == 1"> yes
               <input type="radio" name="subscribed" ng-model="subscribed" value="no" ng-checked="{{Auth::user()->subscribed}} == 0"> no
+            </div>
           <!-- </div> -->
         </div>
       </div><!-- Automated Payments ends -->
       @endif
       
-      <div ng-show="oneTimer" ng-cloak>
-        <p style="color: red">list all active sites sites (one time payment)</p>
+      <div ng-show="oneTimer" ng-cloak>   
+        <div id="table-row" class="row automated-payment-row">  
+          <div class="automated-payment-title-wrapper">
+            <p class="automated-payment-title">Active sites</p> 
+          </div>
+          <div class="automated-payment-wrapper" >  
+            <table class="table">
+              <thead>
+                <th>Domain</th>
+               <!--  <th>Theme ID</th>
+                <th>Domain</th>
+                <th>Created</th>
+                <th>Next payment</th>
+                <th>Status</th>
+                <th>Monthly Price</th> -->
+                
+              </thead>  
+              <tbody>
+                @foreach($activeWebsites as $website)
+                <tr>
+                  <td>{{$website->title}}</td>
+                </tr>
+                 @endforeach
+              </tbody> 
+            </table>
+        
+          </div>
+        </div>
       </div>
       <!-- Billing Alerts -->   
       <!-- <div id="table-row" class="row billing-alerts-row">  -->
@@ -103,7 +130,7 @@
       </div> --><!-- Billing Alerts ends -->
 
       <!-- Payment Method -->
-      @if(!$websites->isEmpty())
+      @if(!$websites->isEmpty() and Auth::user()->trial_ends_at == null)
       <div id="table-row" class="row payment-method-row">
       <!-- Table Title -->   
       <div class="payment-method-title-wrapper">
@@ -115,7 +142,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="ibox">
-                        @if (!Auth::user()->subscribed('main'))
+                        @if (Auth::user()->card_last_four == null)
                             <div class="ibox-content" ng-controller="braintreeController">
                                 <div class="panel-group payments-method" id="accordion">
                                     <div class="panel panel-default">
@@ -125,7 +152,7 @@
 
                                                         <p class="m-t">
                                                             
-                                                            Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
+                                                            Please enter your preferred payment method below. You can use a credit card or prepay through PayPalf. 
 
                                                         </p>
                                             <h4 class="panel-title" style="margin-top: 20px">
@@ -151,21 +178,11 @@
                                     </div>
                                 </div>
                             </div>
-                            @elseif(Auth::user()->subscription('main')->onGracePeriod())
-                              <div class="panel-heading" style="background: white">
-                                <h2>Grace period</h2>
-                                <p class="m-t">
-                                    Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
-                                </p>
-                                <a href="{!! route('renewSubscription') !!}" type="button" class="btn btn-default">Renew subscription</a>
-                              </div>
                             @else
                             <div class="panel-heading" style="background: white">
-                              <h2>Subscription</h2>
-                              <p class="m-t">
-                                  Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
-                              </p>
-                              <a href="{!! route('cancelSubscription') !!}" type="button" class="btn btn-default">Cancel subscription</a>
+                              <h2>Pay with same card <h3>{{Auth::user()->card_brand}}: **** **** **** {{Auth::user()->card_last_four}}</h3></h2>
+                              
+                              <a href="{!! route('samecardPayment') !!}" type="button" class="btn btn-default" style="margin-top: 30px">Make payment</a>
                             </div>
                             @endif
                             
@@ -179,7 +196,7 @@
       @endif 
       </form> 
       <!-- Billing History -->    
-      @if(!$activeWebsites->isEmpty()) 
+      @if(!$activeWebsites->isEmpty() and !$invoices->isEmpty()) 
       <div id="table-row" class="row billing-history-row">
       <!-- Table Title -->    
       <div class="billing-history-title-wrapper">
@@ -194,12 +211,16 @@
               <th>Amount</th>
             </thead>       
             <tbody>
+
+            @foreach($invoices as $invoice)
+
               <tr>
-                <td>October 1, 2016</td>
-                <td>Invoice for September</td>
-                <td>$75.00</td>
-                <td><a href="#" class="view-invoice">View Invoice</a></td>
+                <td>{{$invoice->date()->toFormattedDateString()}}</td>
+                <td>{{$invoice->invliceStatus()}}</td>
+                <td>{{$invoice->total() }}</td>
+                <td><a class="view-invoice" href="/user/invoice/{{ $invoice->id }}">Download</a></td>
               </tr>
+            @endforeach
             </tbody> 
           </table>
         </div>

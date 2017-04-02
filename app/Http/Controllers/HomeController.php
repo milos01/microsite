@@ -8,6 +8,7 @@ use App\User;
 use Auth;
 use Carbon\Carbon;
 use App\TokenElement;
+use App\Events\DeactivateWebsites;
 
 class HomeController extends Controller
 {
@@ -30,12 +31,8 @@ class HomeController extends Controller
     {
         $user = User::findorFail(Auth::id());
         $userWebsites = $user->websites()->with('theme')->where('active', 1)->get();
-        $expireInDays = null;
-        if($user->trial_ends_at){
-            $expireInDays = Carbon::now()->diffInDays($user->trial_ends_at);
-        }
        
-        return view('homeCenter')->with('userWebsites', $userWebsites)->with('expireInDays', $expireInDays);
+        return view('homeCenter')->with('userWebsites', $userWebsites);
     }
 
     public function showEditTemplate(){

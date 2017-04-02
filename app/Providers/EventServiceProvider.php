@@ -31,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UserPaymentCreds' => [
             'App\Listeners\UserPaymentCredsListener',
         ],
+        'App\Events\DeactivateWebsites' => [
+            'App\Listeners\DeactivateWebsitesListener',
+        ],
     ];
 
     /**
