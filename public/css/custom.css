@@ -206,14 +206,15 @@ h1 {
 .visited-link:hover {cursor: text;}
 
 .website-link {
-	text-decoration: none !important;
-	margin: 0 !important;
+	/*text-decoration: none !important;*/
+	/*margin: 0 !important;*/
+	margin-bottom: 10px;
 	display: block;
 	border: 1px solid #D8D8D8;
 	border-radius: 5px;
 }
 .website-link:hover {	
-	margin: 0 !important;
+	/*margin: 0 !important;*/
 	display: block;
 	border: 1px solid #f8951d;
 	border-radius: 5px;
@@ -254,6 +255,7 @@ h1 {
 	position: absolute;
 	top: 0;
 	right: 0;
+	cursor: pointer;
 }
 .manage:before {content: url('../img/pencil.png');}
 .manage-two {display: none;}
@@ -320,7 +322,7 @@ h1 {
 }
 .table-wrapper {	
 	margin: 0 !important;
-	z-index: -1 !important;
+	/*z-index: -1 !important;*/
 	position: relative;
 	overflow: hidden;	
 }

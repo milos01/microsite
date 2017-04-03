@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	Route::get('/template/showEditTemplate', 'HomeController@showEditTemplate');
 	Route::get('/new', 'HomeController@showNewSitePage')->name('new');
 	Route::get('/token/payment', 'HomeController@tokenPaymentPage')->name('tokenPaymentPage');
+	Route::get('/admin', 'HomeController@showAdminPage')->name('admin')->middleware('admin');
 
 	//User routes
 	Route::get('/profile', 'UserController@profile')->name('profile');
@@ -38,10 +39,14 @@ Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	Route::put('/api/update', 'UserController@updateInfo')->name('update');
 	Route::put('/api/user/mode', 'UserController@changeMode')->name('changeMode');
 	Route::get('/api/user', 'UserController@getLoggedUser')->name('loggedUser');
+	Route::get('/user/{id}/deactivate', 'UserController@userDeactivate')->name('deactivate2');
+	Route::get('/user/{id}/activate', 'UserController@userActivate')->name('activate');
+	Route::post('/api/addnewuser', 'UserController@addneuser');
 	
 	//Website routes
 	Route::post('/api/website', 'WebsiteController@newWebsite');
 	Route::get('/api/user/websites', 'WebsiteController@userSites');
+	Route::get('/website/{id}/delete', 'WebsiteController@deleteWebsite')->name('deleteWebsite');
 
 	//Billing routes
 	Route::get('/billing', 'BillingController@billing')->name('billing');
@@ -51,6 +56,8 @@ Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	Route::get('/cancelsub', 'BillingController@cancelSubscription')->name('cancelSubscription');
 	Route::get('/renewsub', 'BillingController@renewSubscription')->name('renewSubscription');
 	Route::get('/samepayment', 'BillingController@samecardPayment')->name('samecardPayment');
+	Route::post('/samepaymentonetime', 'BillingController@samecardPaymentOneTime')->name('samecardPaymentOneTime');
+	Route::get('/removePaymentMethod', 'BillingController@removePayment')->name('removePayment');
 
 	//Token routes
 	Route::get('/tokens', 'TokenController@showTokenPage')->name('tokens');

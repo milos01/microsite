@@ -43,11 +43,22 @@ class User extends Authenticatable
      */
     public function hasRole($role)
     {
-            if (  $this->role->name == $role)
+            if (  $this->role->role_name == $role)
             {
                 return true;
             }
         return false;
+    }
+
+    public function roleName($role_id){
+        return $this->role->find($role_id)->role_name;
+    }
+
+    public function userStatus($status_id){
+        if($status_id){
+            return "Not active";
+        }
+        return "Active";
     }
 
     /**

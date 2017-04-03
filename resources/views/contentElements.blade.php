@@ -37,7 +37,7 @@
                   <option value=""></option>
                   <option value="Headline">Headine</option>
                   <option value="Paragraph" >Paragraph</option>
-                  <option value="Image">Image</option>
+                  <!-- <option value="Image" ng-disabled="true">Image</option> -->
               </select>
                 
               <div ng-show="oldForm.showHeadline">
@@ -97,7 +97,7 @@
                   <option value=""></option>
                   <option value="Headline">Headine</option>
                   <option value="Paragraph">Paragraph</option>
-                  <option value="Image">Image</option>
+                  <!-- <option value="Image">Image</option> -->
               </select>
                 
               <div ng-show="cont.showHeadline">

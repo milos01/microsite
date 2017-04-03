@@ -17,5 +17,9 @@ app.controller('websiteController', function(WebsiteResource, $scope, $uibModal,
 		});
 		
 	}
+
+	$scope.emptyErrorArray = function(){
+		$scope.error = [];
+	}
 });
 })(angular);

@@ -18,6 +18,14 @@
 			});
 		}
 
+		retVal.newUser = function(userInfo){
+			return Restangular.all('addnewuser').post(userInfo).then(function(item){
+				return item;
+			}, function(errors){
+				return errors;
+			});
+		}
+
 		return retVal;
 	})
 	

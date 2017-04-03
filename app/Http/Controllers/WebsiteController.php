@@ -36,4 +36,8 @@ class WebsiteController extends Controller
         $websites = $user->websites;
         return response($websites, 200);
     }
+
+    public function deleteWebsite($id){
+        dd($id);
+    }
 }

@@ -16,7 +16,7 @@
     </div>
     <div class="col-xs-12 col-sm-10 side-content">
       @foreach ($themes as $theme)
-      <div class="modal fade" id="myModal{{$theme->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ng-controller="websiteController">
+      <div class="modal fade" id="myModal{{$theme->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ng-controller="websiteController" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -53,7 +53,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="emptyErrorArray(error)">Close</button>
               <button type="submit" class="btn btn-primary" style="background: #f8951d; border-color: #f8951d" ng-click="submitForm({{$theme->id}})">Submit & Checkout</button>
             </div>
           </div>
@@ -61,12 +61,20 @@
       </div>
 
 
-      <div class="col-md-3" style="margin: 10px 20px;" id="imageHolder">
-        <div class="col-md-12" style="border:1px solid white;height: 190px;background: #f8f8f8; text-align: center;">
-          <div class="page-header" data-toggle="modal" data-target="#myModal{{$theme->id}}" style="margin-top: 75px">{{$theme->name}}</div>
-          <button id="toggleSelectButton" data-toggle="modal" data-target="#myModal{{$theme->id}}" class="btn btn-default" style="margin-top: -10px; background: #f8951d;border-color: #f8951d; color: white">Select</button>
+      <div class="col-md-3" style="margin: 10px 20px; overflow:hidden;" id="imageHolder">
+
+        <div class="col-md-12" style="border:1px solid white;background: #f8f8f8; text-align: center;padding-right: 0px;padding-left: 0px; max-height: 190px">
+        <img src="{{$theme->pictuire}}" style="width:100%">
+          <div style="position: absolute;width: 100%;top: 0px;background: black;padding:10px 0px;opacity: 0.6;color: white">
+            {{$theme->name}}
+          </div>
+         
         </div>
-        <div class="col-md-12" style="border:1px solid white;text-align: right; padding: 10px 5px;background: #f8f8f8" >${{$theme->price}}</div>
+        <div class="col-md-12" style="border:1px solid white;text-align: right; padding: 10px 5px;background: #f8f8f8" ><span class="pull-left">
+           <a id="toggleSelectButton" data-toggle="modal" data-target="#myModal{{$theme->id}}"  style="margin-top: -10px;cursor: pointer; color: #f8951d">
+                SELECT
+            </a>
+           </span>${{$theme->price}}</div>
       </div>
       @endforeach
       

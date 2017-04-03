@@ -6,12 +6,17 @@
   <div class="container" ng-controller="profileController">
     <div class="page-header"><h1>SETTINGS</h1></div>
     <!-- Sidebar -->
+    @section('sideBar')
     <div class="col-xs-12 col-sm-2 sidebar">
       <ul>
         <li>PROFILE</li>
+        @if(Auth::user()->hasRole('admin'))
+        <li><a href="{!! route('admin') !!}">ADMIN PANEL</a></li>
+        @endif
         <li><a href="{!! route('billing') !!}">BILLING</a></li>
         <li><a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button></a></li>
       </ul>
+      @show
     </div>
     <div class="col-xs-12 col-sm-10 side-content">
       <p class="full-name" id="hideOriginalName">{{Auth::user()->first_name}} {{Auth::user()->last_name}}<a class="edit" ng-click="showEditField({{Auth::user()}})">edit</a></p>

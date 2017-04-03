@@ -25,7 +25,7 @@ class BillingController extends Controller
      */
     public function billing(){
     	$user = User::findorFail(Auth::id());
-        
+
     	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
         $activeWebsites = $user->websites()->where('active', 1)->get();
     	$totalSum = $this->totalCount($nonactivesites);
@@ -66,9 +66,13 @@ class BillingController extends Controller
             //save user payment creds
             event(new UserPaymentCreds($result->customer->id, $result->customer->paymentMethods[0]->cardType, $result->customer->paymentMethods[0]->last4));
     	}
+
+        if($user->card_brand == null and $user->card_last_four == null and $user->braintree_id){
+            //save user payment creds
+            $result = Braintree_Customer::find($user->braintree_id);
+            event(new UserPaymentCreds($result->id, $result->paymentMethods[0]->cardType, $result->paymentMethods[0]->last4));
+        }
         
-    	
-      
     	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
     	$totalSum = $this->totalCount($nonactivesites);
     	$result = Braintree_Transaction::sale([
@@ -79,7 +83,6 @@ class BillingController extends Controller
 			]
 		]);
     	if(!$result->success){
-    		dd($result->errors->deepAll());
     		return back()->with('bt_errors', $result->errors->deepAll());
     	}
 
@@ -117,7 +120,6 @@ class BillingController extends Controller
 			]);
     	}
     	if(!$result->success){
-    		dd($result->errors->deepAll());
     		return back()->with('bt_errors', $result->errors->deepAll());
     	}
 
@@ -145,7 +147,6 @@ class BillingController extends Controller
                 ]
         ]);
         if(!$result->success){
-            dd($result->errors->deepAll());
             return back()->with('bt_errors', $result->errors->deepAll());
         }
 
@@ -154,6 +155,40 @@ class BillingController extends Controller
             event(new GraceWebsites($nonactivesites));
         }
         event(new ActivateWebsite($nonactivesites));
+        return back();
+    }
+
+    public function samecardPaymentOneTime(Request $request){
+        $totalSum = $request->total;
+        $user = Auth::user();
+
+        $customer = Braintree_Customer::find(Auth::user()->braintree_id);
+        $payment_method_token = $customer->paymentMethods[0]->token;
+        $nonce = Braintree_PaymentMethodNonce::create($payment_method_token);
+    
+        $result = Braintree_Transaction::sale([
+                'amount' => $totalSum,
+                'paymentMethodNonce' => $nonce->paymentMethodNonce->nonce,
+                'customerId' => $user->braintree_id,
+                'options' => [
+                    'submitForSettlement' => True
+                ]
+        ]);
+        if(!$result->success){
+            return back()->with('bt_errors', $result->errors->deepAll());
+        }
+
+        event(new NewTokenOrder($request));
+        event(new TokenActivation());
+        return back();
+    }
+
+    public function removePayment(){
+        $user = Auth::user();
+        $user->card_brand = null;
+        $user->card_last_four = null;
+        $user->save();
+
         return back();
     }
 }

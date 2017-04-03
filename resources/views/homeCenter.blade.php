@@ -25,14 +25,18 @@
           </div>
     @else     
       @foreach($userWebsites as $website)
-        <a href="#" class="website-link">
+        <div class="website-link">
           <div class="table-wrapper">   
-            <button type="submit" class="manage"></button>
+            <button type="submit" class="manage" ></button>
             <!-- thumbnail -->
             <div class="table-column col-md-2">
               <div class="table-header"><p>Website</p></div>
               <div id="website" class="table-data"><p>{{$website->title}}</p></div>
-              <div id="website-thumbnail-img">Image here</div>
+              <div id="website-thumbnail-img" style="overflow: hidden; max-height: 85px">
+            
+                <img src="{{$website->theme->pictuire}}" style="width: 100%">
+              
+              </div>
             </div>        
             <!-- theme IDl -->
             <div class="table-column">
@@ -50,12 +54,17 @@
               <div class="table-data"><p>@dateformat($website->created_at)</p></div>
             </div>
             
-            <div class="table-column">
+            <!-- <div class="table-column">
               <div class="table-header"><p>Monthly Price</p></div>
               <div class="table-data"><p>${{$website->theme->price}}</p></div>
+            </div> -->
+
+            <div class="table-column">
+              <div class="table-header"><p>Actions</p></div>
+              <div class="table-data"><a href="{!! route('deleteWebsite', $website->id) !!}" class="btn btn-danger btn-xs">Delete</a></div>
             </div>
             </div>
-          </a>
+          </div>
         @endforeach
       @endif
     </div>

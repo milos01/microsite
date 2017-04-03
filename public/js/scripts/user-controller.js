@@ -65,4 +65,28 @@ app.controller('editUserCtrl', function($scope, $window, $uibModalInstance, User
 		$uibModalInstance.dismiss('cancel');
 	};
 });
+
+app.controller('newUserController', function($scope, $window, UserResource){
+	$scope.submitNewUserForm = function(){
+		userInfo = {
+			firstName: $scope.f_name,
+			lastName: $scope.l_name,
+			email: $scope.email,
+			role: $scope.role,
+
+		};
+		UserResource.newUser(userInfo).then(function(item){
+			if(item.data){
+					$scope.error = item.data;
+			}else{
+					$window.location.reload();
+			}
+		});
+	}
+
+	$scope.emptyErrorArray = function(){
+		$scope.error = [];
+	}
+	
+});
 })(angular);

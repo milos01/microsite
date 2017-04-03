@@ -12,8 +12,13 @@
         <li><a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button></a></li>
       </ul>
     </div>
+  <!--  <div id="table-row" class="row">  
+        
+        </div> -->
     <!-- tabs -->
     <div class="col-sm-10 ">
+      <!-- Errors -->
+      
       <!-- Usage -->    
       <div id="table-row" class="row">   
       <!-- Table Title -->
@@ -138,12 +143,19 @@
       </div>
         <div class="payment-method-wrapper">  
           <ul class="nav nav-tabs">
-             <div class="wrapper wrapper-content animated fadeInRight">
+             <div class="wrapper wrapper-content animated fadeInRight" ng-controller="braintreeController">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="ibox">
+                        @if (session('bt_errors'))
+                          @foreach(session('bt_errors') as $error)
+                            <div class="alert alert-danger">
+                                 {{$error->message}}
+                            </div>
+                            @endforeach
+                        @endif
                         @if (Auth::user()->card_last_four == null)
-                            <div class="ibox-content" ng-controller="braintreeController">
+                            <div class="ibox-content">
                                 <div class="panel-group payments-method" id="accordion">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" style="background: white">
@@ -182,7 +194,10 @@
                             <div class="panel-heading" style="background: white">
                               <h2>Pay with same card <h3>{{Auth::user()->card_brand}}: **** **** **** {{Auth::user()->card_last_four}}</h3></h2>
                               
-                              <a href="{!! route('samecardPayment') !!}" type="button" class="btn btn-default" style="margin-top: 30px">Make payment</a>
+                              <a href="{!! route('samecardPayment') !!}" type="button" class="btn btn-default" ng-click="clickPayButt()" style="margin-top: 30px">Make payment 
+                              <i ng-show="showSpin"  class="fa fa-spinner fa-spin fa-fw" ng-cloak></i>
+                              <span class="sr-only">Loading...</span></a>
+                              <a href="{!! route('removePayment') !!}" type="button" class="btn btn-danger" style="margin-top: 30px">Remove this card</a>
                             </div>
                             @endif
                             
@@ -196,7 +211,7 @@
       @endif 
       </form> 
       <!-- Billing History -->    
-      @if(!$activeWebsites->isEmpty() and !$invoices->isEmpty()) 
+      @if(!$invoices->isEmpty()) 
       <div id="table-row" class="row billing-history-row">
       <!-- Table Title -->    
       <div class="billing-history-title-wrapper">

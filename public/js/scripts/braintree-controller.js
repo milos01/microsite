@@ -14,6 +14,10 @@ app.controller('braintreeController', function($scope, $http){
 
     });
 
+    $scope.clickPayButt = function(){
+      $scope.showSpin = true;
+    }
+
 });
 
 app.controller('subscriptionController', function($scope, WebsiteResource, UserResource){

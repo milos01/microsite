@@ -52,4 +52,9 @@ class HomeController extends Controller
         return view('tokenPayment')->with('elements', $elements)->with('total', count($elements)*5);
     }
 
+    public function showAdminPage(){
+        $users = User::where('id','!=',Auth::id())->withTrashed()->get() ;
+        return view('admin')->with('users', $users);
+    }
+
 }

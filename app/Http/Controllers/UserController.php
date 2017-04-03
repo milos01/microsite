@@ -92,4 +92,37 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
+
+    public function userDeactivate($id){
+        $user = User::findorFail($id);
+        $user->delete();
+
+        return back();
+    }
+
+    public function userActivate($id){
+        $user = User::withTrashed()->findorFail($id);
+        $user->deleted_at = null;
+        $user->save();
+
+        return back();
+    }
+
+    public function addneuser(Request $request){
+        $this->validate($request, [
+            'firstName' => 'required|max:255',
+            'lastName' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'role' => 'required|max:255',
+        ]);
+
+        return User::create([
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'email' => $request->email,
+            'role_id' => $request->role,
+            'password' => bcrypt('webueno'),
+        ]);
+    }
+
 }
