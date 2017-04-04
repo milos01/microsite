@@ -38,6 +38,8 @@ class WebsiteController extends Controller
     }
 
     public function deleteWebsite($id){
-        dd($id);
+        $website = Website::findorFail($id);
+        $website->delete();
+        return back();
     }
 }

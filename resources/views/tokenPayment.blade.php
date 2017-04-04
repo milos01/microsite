@@ -77,7 +77,7 @@
                               </p>
                               <div id="dropin-container"></div>
                               <input type="hidden" name="total" value="{{$total}}">
-                              <input type="submit" class="btn btn-default" value="Make payment" style="margin-top: 20px">  
+                              <input type="submit" class="btn btn-default" value="Make payment" id="paymentButt" style="margin-top: 20px;display: none">  
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
              
                                 <h2>Pay with same card <h3>{{Auth::user()->card_brand}}: **** **** **** {{Auth::user()->card_last_four}}</h3></h2>
                                 <input type="hidden" name="total" value="{{$total}}">
-                                <button type="submit" class="btn btn-default" ng-click="clickPayButt()" style="margin-top: 30px">Make payment 
+                                <button type="submit" class="btn btn-default" ng-click="clickPayButt()" style="margin-top: 30px;">Make payment 
                                 <i ng-show="showSpin"  class="fa fa-spinner fa-spin fa-fw" ng-cloak></i>
                                 <span class="sr-only">Loading...</span></button>
                                 <a href="{!! route('removePayment') !!}" type="button" class="btn btn-danger" style="margin-top: 30px">Remove this card</a>

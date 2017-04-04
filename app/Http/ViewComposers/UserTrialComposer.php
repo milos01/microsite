@@ -40,6 +40,8 @@ class UserTrialComposer
             }else if($expireInDays > 0){
                 $view->with('userTrial', $expireInDays);
             }
+        }else{
+            $view->with('userTrialExpired', 'Expired, go to billing page');
         }
     }
 }

@@ -8,6 +8,9 @@
     <div class="col-sm-2 sidebar">
       <ul>
         <li><a href="{!! route('profile') !!}">PROFILE</a></li>
+        @if(Auth::user()->hasRole('admin'))
+        <li><a href="{!! route('admin') !!}">ADMIN PANEL</a></li>
+        @endif
         <li>BILLING</li>
         <li><a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button></a></li>
       </ul>
@@ -40,19 +43,32 @@
               
             </thead>  
             <tbody>
+
               @foreach($websites as $website)
+          
               <tr>
                 <td>{{$website->title}}</td>
                 <td>{{$website->theme->theme_id}}</td>
                 <td>{{$website->domain}}</td>
                 <td>@dateformat($website->created_at)</td>
                 <td>@dateformat($website->expire_at)</td>
-                @if($website->active === 1)
-                 <td>Active</td>
+
+                @if($website->user->trial_ends_at)
+                    <td>Trial</td>
                 @else
-                 <td>Not active</td>
+                  @if($website->active === 1)
+                    <td>Active</td>
+                  @else if 
+                   <td>Not active</td>
+                  @endif
                 @endif
-                <td>${{$website->theme->price}}</td>
+                <td>
+                @if($website->active === 1)
+                  $0.00
+                @else
+                  ${{$website->theme->price}}
+                @endif
+                </td>
               </tr>
                @endforeach
             </tbody> 
@@ -164,14 +180,14 @@
 
                                                         <p class="m-t">
                                                             
-                                                            Please enter your preferred payment method below. You can use a credit card or prepay through PayPalf. 
+                                                            Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
 
                                                         </p>
                                             <h4 class="panel-title" style="margin-top: 20px">
                                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapsePP" style="color:#1c84c6;text-decoration: none">Choose method</a>
                                             </h4>
                                         </div>
-                                        <div id="collapsePP" class="panel-collapse collapse">
+                                        <div id="collapsePP" class="panel-collapse">
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -211,7 +227,7 @@
       @endif 
       </form> 
       <!-- Billing History -->    
-      @if(!$invoices->isEmpty()) 
+      @if($invoices) 
       <div id="table-row" class="row billing-history-row">
       <!-- Table Title -->    
       <div class="billing-history-title-wrapper">
@@ -233,7 +249,7 @@
                 <td>{{$invoice->date()->toFormattedDateString()}}</td>
                 <td>{{$invoice->invliceStatus()}}</td>
                 <td>{{$invoice->total() }}</td>
-                <td><a class="view-invoice" href="/user/invoice/{{ $invoice->id }}">Download</a></td>
+                <td><a class="view-invoice" href="">Download</a></td>
               </tr>
             @endforeach
             </tbody> 

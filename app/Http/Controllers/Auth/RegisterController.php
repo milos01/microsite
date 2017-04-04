@@ -77,5 +77,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'trial_ends_at' => $this->now->addDays(15),
         ]);
+
+        return $user;
     }
 }

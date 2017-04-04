@@ -17,12 +17,29 @@ Route::get('/', function () {
 
 Auth::routes();
 use Illuminate\Http\Request;
+// use Braintree_PaymentMethod;
 
 Route::get('user/invoice/{invoice}', function (Request $request, $invoiceId) {
     return $request->user()->downloadInvoice($invoiceId, [
         'vendor'  => 'Your Company',
         'product' => 'Your Product',
     ]);
+});
+
+Route::get('/test', function(){
+	$collection = Braintree_CreditCardVerification::search([
+		// Braintree_CreditCardVerificationSearch::customerEmail()->is("ivanpredojev@gmail.com"),
+		  // Braintree_CreditCardVerificationSearch::creditCardCardholderName()->is("Tom Smith"),
+		  // Braintree_CreditCardVerificationSearch::creditCardExpirationDate()->is("05/2012"),
+		  // Braintree_CreditCardVerificationSearch::creditCardNumber()->startsWith("4111"),
+		  // Braintree_CreditCardVerificationSearch::creditCardNumber()->endsWith("1111"),
+		  Braintree_CreditCardVerificationSearch::creditCardCardType()->is(Braintree_CreditCard::VISA),
+		  // Braintree_CreditCardVerificationSearch::creditCardExpirationDate()->is("02/16"),
+	]);
+	// dd($collection);
+	foreach($collection as $verification) {
+    var_dump($verification->billing);
+	}
 });
 
 Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {

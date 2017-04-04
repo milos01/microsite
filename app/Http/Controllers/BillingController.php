@@ -26,10 +26,16 @@ class BillingController extends Controller
     public function billing(){
     	$user = User::findorFail(Auth::id());
 
-    	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
+    	$nonactivesites = $user->websites()->with('theme')->get();
         $activeWebsites = $user->websites()->where('active', 1)->get();
     	$totalSum = $this->totalCount($nonactivesites);
-    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites)->with('invoices', $user->invoicesIncludingPending());
+
+        $invoices = null;
+        if($user->braintree_id){
+            // $invoices = $user->invoicesIncludingPending();
+        }
+       
+    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites)->with('invoices', $invoices);
     }
 
     /**
@@ -109,7 +115,8 @@ class BillingController extends Controller
 
     public function payment(Request $request){
     	$user = Auth::user();
-    	if($user->braintree_id){
+        $result = null;
+    	if($user->braintree_id and $user->card_brand and $user->card_last_four){
 			$result = Braintree_Transaction::sale([
 				'amount' => $request->total,
 				'paymentMethodNonce' => $request->payment_method_nonce,
@@ -118,11 +125,47 @@ class BillingController extends Controller
 					'submitForSettlement' => True
 				]
 			]);
+            if(!$result->success){
+                return back()->with('bt_errors', $result->errors->deepAll());
+            }
     	}
-    	if(!$result->success){
-    		return back()->with('bt_errors', $result->errors->deepAll());
-    	}
+    	
 
+        if($user->card_brand == null and $user->card_last_four == null and $user->braintree_id){
+            // //save user payment creds
+            
+            
+            $customer = Braintree_Customer::find($user->braintree_id);
+            
+
+            $result = Braintree_PaymentMethod::create([
+                'customerId' => $user->braintree_id,
+                'paymentMethodNonce' => $request->payment_method_nonce,
+                'options' => [
+                     'makeDefault' => true
+                 ]
+            ]);
+            if($result->success){
+                $resultt = Braintree_Transaction::sale([
+                    'amount' => $request->total,
+                    'customerId' => $user->braintree_id,
+                    'options' => [
+                        'submitForSettlement' => True
+                    ]
+                ]);
+
+                $ct = null;
+                $l4 = null;
+                foreach ($resultt->transaction->creditCard as $key => $value) {
+                    if($key == "cardType"){
+                        $ct = $value;
+                    }else if($key ==  "last4"){
+                        $l4 = $value;
+                    }
+                }
+                event(new UserPaymentCreds($customer->id, $ct, $l4));
+            }
+        }
 
     	event(new NewTokenOrder($request));
 		event(new TokenActivation());
@@ -174,9 +217,12 @@ class BillingController extends Controller
                     'submitForSettlement' => True
                 ]
         ]);
+
+
         if(!$result->success){
             return back()->with('bt_errors', $result->errors->deepAll());
         }
+
 
         event(new NewTokenOrder($request));
         event(new TokenActivation());
