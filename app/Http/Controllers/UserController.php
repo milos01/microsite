@@ -125,4 +125,23 @@ class UserController extends Controller
         ]);
     }
 
+    public function loadInvoices(){
+        $user = Auth::user();
+        $retDict = [];
+
+        if(Auth::user()->braintree_id){
+            $invoices = $user->invoicesIncludingPending();
+            
+            foreach ($invoices as $key => $invoice) {
+                array_push($retDict, [
+                                    $invoice->date()->toFormattedDateString(),
+                                    $invoice->invliceStatus(),
+                                    $invoice->total(),
+                                    $invoice->id,
+                                    ]);
+            }
+        }
+        return response($retDict, 200);
+    }
+
 }

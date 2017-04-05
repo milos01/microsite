@@ -12,7 +12,7 @@ class Website extends Model
     protected $fillable = ['theme_id', 'user_id', 'company_name', 'title', 'domain', 'active', 'expire_at'];
 
     protected $hidden = [];
-    protected $dates = ['expire_at', 'deleted_at'];
+    protected $dates = ['expire_at', 'deleted_at', 'grace_period'];
 	/**
      * Get the theme record associated with the website.
      */

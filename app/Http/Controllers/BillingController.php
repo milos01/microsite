@@ -26,16 +26,12 @@ class BillingController extends Controller
     public function billing(){
     	$user = User::findorFail(Auth::id());
 
-    	$nonactivesites = $user->websites()->with('theme')->get();
+    	$allsites = $user->websites()->with('theme')->get();
         $activeWebsites = $user->websites()->where('active', 1)->get();
-    	$totalSum = $this->totalCount($nonactivesites);
-
-        $invoices = null;
-        if($user->braintree_id){
-            // $invoices = $user->invoicesIncludingPending();
-        }
+        $notactiveWebsites = $user->websites()->where('active', 0)->get();
+    	$totalSum = $this->totalCount($notactiveWebsites);
        
-    	return view('billing')->with('websites', $nonactivesites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites)->with('invoices', $invoices);
+    	return view('billing')->with('websites', $allsites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites);
     }
 
     /**

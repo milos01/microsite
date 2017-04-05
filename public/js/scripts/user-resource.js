@@ -25,6 +25,13 @@
 				return errors;
 			});
 		}
+		
+		retVal.loadInvoices = function(){
+			return Restangular.one('user').all('invoices').getList().then(function(items){
+				return items;
+			});
+		}
+
 
 		return retVal;
 	})

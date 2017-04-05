@@ -26,7 +26,7 @@
       <div id="table-row" class="row">   
       <!-- Table Title -->
       <div class="usage-title-wrapper">
-        <p class="usage-title">Usage</p> 
+        <p class="usage-title">Billing overview</p> 
       </div>      
         <div class="usage-wrapper"> 
 
@@ -37,7 +37,12 @@
               <th>Theme ID</th>
               <th>Domain</th>
               <th>Created</th>
-              <th>Next payment</th>
+              @if(Auth::user()->subscribed == 1)
+                <th>Next payment</th>
+              @else
+                <th>Expire at</th>
+              @endif
+             
               <th>Status</th>
               <th>Monthly Price</th>
               
@@ -50,15 +55,20 @@
                 <td>{{$website->title}}</td>
                 <td>{{$website->theme->theme_id}}</td>
                 <td>{{$website->domain}}</td>
-                <td>@dateformat($website->created_at)</td>
-                <td>@dateformat($website->expire_at)</td>
+                <td>{{$website->created_at->format('m/d/Y')}}</td>
+                @if($website->expire_at)
+                  <td>{{$website->expire_at->format('m/d/Y')}}</td>
+                @else
+                  <td>{{$website->grace_period->format('m/d/Y')}} (grace period)</td>
+                @endif
+                
 
                 @if($website->user->trial_ends_at)
                     <td>Trial</td>
                 @else
                   @if($website->active === 1)
                     <td>Active</td>
-                  @else if 
+                  @else 
                    <td>Not active</td>
                   @endif
                 @endif
@@ -79,8 +89,10 @@
             <span style="color: black">No new websites!</span>
           </div>
           @else
-          <hr style="border-top-color: #d8d8d8">
-          <span class="pull-left" style="margin-left: 10px"><h4>total: ${{$totalSum}}</h4></span>
+            @if(!Auth::user()->trial_ends_at)
+              <hr style="border-top-color: #d8d8d8">
+              <span class="pull-left" style="margin-left: 10px"><h4>Outstanding balance: ${{$totalSum}}</h4></span>
+            @endif
           @endif
         </div><!-- usage ends -->
 
@@ -105,35 +117,6 @@
       </div><!-- Automated Payments ends -->
       @endif
       
-      <div ng-show="oneTimer" ng-cloak>   
-        <div id="table-row" class="row automated-payment-row">  
-          <div class="automated-payment-title-wrapper">
-            <p class="automated-payment-title">Active sites</p> 
-          </div>
-          <div class="automated-payment-wrapper" >  
-            <table class="table">
-              <thead>
-                <th>Domain</th>
-               <!--  <th>Theme ID</th>
-                <th>Domain</th>
-                <th>Created</th>
-                <th>Next payment</th>
-                <th>Status</th>
-                <th>Monthly Price</th> -->
-                
-              </thead>  
-              <tbody>
-                @foreach($activeWebsites as $website)
-                <tr>
-                  <td>{{$website->title}}</td>
-                </tr>
-                 @endforeach
-              </tbody> 
-            </table>
-        
-          </div>
-        </div>
-      </div>
       <!-- Billing Alerts -->   
       <!-- <div id="table-row" class="row billing-alerts-row">  -->
       <!-- Table Title -->    
@@ -227,13 +210,13 @@
       @endif 
       </form> 
       <!-- Billing History -->    
-      @if($invoices) 
-      <div id="table-row" class="row billing-history-row">
+      <div id="table-row" class="row billing-history-row" ng-controller= "invoiceController">
       <!-- Table Title -->    
       <div class="billing-history-title-wrapper">
         <p class="billing-history-title">Billing History</p> 
       </div>     
         <div class="billing-history-wrapper">  
+        @if(Auth::user()->braintree_id)
           <table class="table">
                 
             <thead>
@@ -242,20 +225,20 @@
               <th>Amount</th>
             </thead>       
             <tbody>
-
-            @foreach($invoices as $invoice)
-
-              <tr>
-                <td>{{$invoice->date()->toFormattedDateString()}}</td>
-                <td>{{$invoice->invliceStatus()}}</td>
-                <td>{{$invoice->total() }}</td>
-                <td><a class="view-invoice" href="">Download</a></td>
+              <tr ng-repeat="invoice in invoices" ng-cloak>
+                <td ng-bind="invoice[0]"></td>
+                <td ng-bind="invoice[1]"></td>
+                <td ng-bind="invoice[2]"></td>
+                <td><a class="view-invoice" href="/user/invoice/@{{invoice[3]}}">Download</a></td>
               </tr>
-            @endforeach
             </tbody> 
           </table>
+          <p style="padding-top: 10px;margin-left: 8px" ng-show="showLoadInvoices" ng-cloak>Generating invoices...</p>
+          @else
+          <p style="padding-top: 10px">No invoices yet!</p>
+          @endif
         </div>
         </div>
-        @endif
+       
         <script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
 @endsection

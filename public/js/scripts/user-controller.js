@@ -89,4 +89,12 @@ app.controller('newUserController', function($scope, $window, UserResource){
 	}
 	
 });
+
+app.controller('invoiceController', function($scope, UserResource){
+	$scope.showLoadInvoices = true;
+	UserResource.loadInvoices().then(function(items){
+		$scope.invoices = items;
+		$scope.showLoadInvoices = false;
+	})
+});
 })(angular);

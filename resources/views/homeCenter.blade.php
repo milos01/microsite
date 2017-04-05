@@ -51,7 +51,7 @@
             <!-- Created -->
             <div class="table-column">
               <div class="table-header"><p>Created</p></div>
-              <div class="table-data"><p>@dateformat($website->created_at)</p></div>
+              <div class="table-data"><p>{{$website->created_at->format('m/d/Y')}}</p></div>
             </div>
             
             <!-- <div class="table-column">

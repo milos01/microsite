@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 
 Route::get('user/invoice/{invoice}', function (Request $request, $invoiceId) {
     return $request->user()->downloadInvoice($invoiceId, [
-        'vendor'  => 'Your Company',
+        'vendor'  => 'Webueno',
         'product' => 'Your Product',
     ]);
 });
@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	Route::get('/user/{id}/deactivate', 'UserController@userDeactivate')->name('deactivate2');
 	Route::get('/user/{id}/activate', 'UserController@userActivate')->name('activate');
 	Route::post('/api/addnewuser', 'UserController@addneuser');
+	Route::get('/api/user/invoices', 'UserController@loadInvoices');
 	
 	//Website routes
 	Route::post('/api/website', 'WebsiteController@newWebsite');
