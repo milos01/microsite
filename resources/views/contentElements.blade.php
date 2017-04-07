@@ -37,7 +37,7 @@
                   <option value=""></option>
                   <option value="Headline">Headine</option>
                   <option value="Paragraph" >Paragraph</option>
-                  <!-- <option value="Image" ng-disabled="true">Image</option> -->
+                  <option value="Image">Image</option>
               </select>
                 
               <div ng-show="oldForm.showHeadline">
@@ -59,13 +59,11 @@
               </div>
               <input type="hidden" name="elId" ng-model="oldForm.id">
               <div ng-show="oldForm.showImage">
-                <div class="drag-drop-area">
-                   <p>DRAG AND DROP FILE</p>
-                   <label class="upload-label">
-                   <input type="file" name="file" />
-                   <span>Upload From</span>
-                   </label>
-                </div>
+                  <div ng-init="init(oldForm)">
+                    <input type="hidden" name="image" ng-model="oldForm.image">
+                    <button dropzone="dropzoneConfig" class="dropzone" id="myDropzone" style="width: 100%; margin-top: 20px"> @{{cont.imageErrors}}</button>
+                  </div>
+                
               </div>
               <div class="element-btns-wrapper" ng-hide="cont.myValue" style="border-bottom: 1px solid #d8d8d8; padding-bottom: 50px">
                 <!-- <button class="btn btn-default element-cancel-btn">CANCEL</button> -->
@@ -97,7 +95,7 @@
                   <option value=""></option>
                   <option value="Headline">Headine</option>
                   <option value="Paragraph">Paragraph</option>
-                  <!-- <option value="Image">Image</option> -->
+                  <option value="Image">Image</option>
               </select>
                 
               <div ng-show="cont.showHeadline">
@@ -118,15 +116,11 @@
                 </div>
               </div>
               <div ng-show="cont.showImage">
-                <div class="drag-drop-area">
-                   <p>DRAG AND DROP FILE</p>
-                   <label class="upload-label">
-                   <input type="file" name="file" />
-                   <span>Upload From</span>
-                   </label>
+                <div ng-init="init(cont)">
+                  <input type="hidden" name="image" ng-model="cont.image">
+                  <button dropzone="dropzoneConfig" class="dropzone" id="myDropzone" style="width: 100%; margin-top: 20px"> @{{cont.imageErrors}}</button>
                 </div>
               </div>
-              
           </div>
           <div class="element-btns-wrapper" ng-hide="cont.myValue" style="border-bottom: 1px solid #d8d8d8; padding-bottom: 50px">
                 <!-- <button class="btn btn-default element-cancel-btn">CANCEL</button> -->
@@ -142,11 +136,12 @@
                   </div>
                 </div><!-- add-element-wrapper end -->
           </div>
-        </div>
+        
     </form>
+      
+      </div>
       <button type="button" class="btn btn-default add-element" ng-click="addElement()"><span class="element-plus">+</span>Add Element</button>
       </div>
-
 
 
     <div class="col-sm-4 tokens-summary-wrapper">

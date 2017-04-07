@@ -30,6 +30,7 @@
 
 		$scope.saveElement = function(form, cont){
 			if(!cont){
+				
 				var cont = {
 					userSite: form.userSite,
 					url: form.url,
@@ -38,7 +39,8 @@
 					currentHeadline: form.currentHeadline,
 					newHeadline: form.newHeadline,
 					currentParagraph: form.currentParagraph,
-					newParagraph: form.newParagraph
+					newParagraph: form.newParagraph,
+					image: form.image
 				}
 				TokenResource.updateTokenElement(cont, form.id).then(function(items){});
 				$scope.receves.push({type: cont.elType, price: 5});
@@ -47,16 +49,21 @@
 				form.myValue2 = false;
 	      		form.myValue22 = false;
 			}else{
-				TokenResource.addTokenElement(cont).then(function(item){
-					$scope.elemId = item.id;
-				});
+				
+				if(cont.update){
+					TokenResource.updateTokenElement(cont, $scope.elemId).then(function(items){});
+				}else{
+
+					TokenResource.addTokenElement(cont).then(function(item){
+						cont.update = true;
+						$scope.elemId = item.id;
+						var idk = item.id;
+					});
+				}
 				$scope.receves.push({type: cont.elType, price: 5});
 	      		cont.myValue = true;
+	      		cont.mv = true;
 			}
-			console.log(cont);
-			
-	      	
-
 	    }
 
 	    $scope.removeElement = function(idx, cont){
@@ -87,6 +94,7 @@
 	    	form.newHeadline = '';
 	    	form.currentParagraph = '';
 	    	form.newParagraph = '';
+	    	Dropzone.forElement("#myDropzone").removeAllFiles(true);
 
 	    	form.showHeadline = false;
 	    	form.showParagraph = false;
@@ -111,8 +119,51 @@
 			});
 	    	
 	    }
+	    $scope.init = function(cont)
+		 {
+		 	
+		    $scope.dropzoneConfig = {
+			    'options': {
+			      'url': '/api/upload',
+			      'addRemoveLinks': true,
+			      'maxFiles': 1,
+			    },
+			    
+			    
+			    'eventHandlers': {
+			      'sending': function (file, xhr, formData) {
+			      		formData.append("_token", $('meta[name="csrf-token"]').attr('content')); 
+			      },
+			      'success': function (file, response) {
 
+			      	if(response.file){
+			      		file.previewElement.classList.add("dz-error");
+			      		_ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+			      		_results = [];
+			      		
+			      		for (_i = 0, _len = response.file.length; _i < _len; _i++) {
+					      node = _ref[_i];
+					      _results.push(node.textContent = response.file[0]);
+					    }
+			      		
+			      		return _results;
+			      	}
+			      	cont.image = response;
+			      }
+			    }
+			  }
+		 };
 		
 	});
+
+	app.controller('dropzoneController', function($scope){
+
+
+	})
+
+	 
+	
+
+
 	
 })(angular);

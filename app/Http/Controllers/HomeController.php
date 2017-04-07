@@ -30,7 +30,7 @@ class HomeController extends Controller
     public function index()
     {
         $user = User::findorFail(Auth::id());
-        $userWebsites = $user->websites()->with('theme')->where('active', 1)->get();
+        $userWebsites = $user->websites()->with('theme')->withTrashed()->orderBy('created_at')->get();
        
         return view('homeCenter')->with('userWebsites', $userWebsites);
     }

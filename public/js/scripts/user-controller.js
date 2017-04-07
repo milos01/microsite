@@ -93,6 +93,16 @@ app.controller('newUserController', function($scope, $window, UserResource){
 app.controller('invoiceController', function($scope, UserResource){
 	$scope.showLoadInvoices = true;
 	UserResource.loadInvoices().then(function(items){
+		for (var i = items.length - 1; i >= 0; i--) {
+			if(items[i][1] == 'submitted_for_settlement'){
+				items[i][1] = 'Pending...';
+			}else if(items[i][1] == 'settled'){
+				items[i][1] = 'Paid';
+			}else if(items[i][1] == 'gateway_rejected'){
+				items[i][1] = 'Rejected';
+			}
+		}
+		
 		$scope.invoices = items;
 		$scope.showLoadInvoices = false;
 	})

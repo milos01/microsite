@@ -25,6 +25,11 @@ class TokenController extends Controller
     	$token->website_id = $website_id;
     	$token->user_id = Auth::id();
     	$token->url = $request->url;
+        $token->current_headline = null;
+        $token->new_headline = null;
+        $token->current_paragraph = null;
+        $token->new_paragraph = null;
+        $token->image = null;
     	$token->description = $request->description;
     	$token->element_type = $request->elType;
     	if ($request->elType == "Headline") {
@@ -34,7 +39,7 @@ class TokenController extends Controller
     		$token->current_paragraph = $request->currentParagraph;
     		$token->new_paragraph = $request->newParagraph;
     	}else{
-    		$token->image = "test.jpeg";
+    		$token->image = $request->image;
     	}
     	$token->payed = 0;
     	$token->save();
@@ -52,12 +57,18 @@ class TokenController extends Controller
     }
 
     public function updateSavedElements(Request $request){
+
         $website_id = $this->findSite($request->userSite);
 
         $token = TokenElement::findorFail($request->id);
         $token->website_id = $website_id;
         $token->url = $request->url;
         $token->description = $request->description;
+        $token->current_headline = null;
+        $token->new_headline = null;
+        $token->current_paragraph = null;
+        $token->new_paragraph = null;
+        $token->image = null;
         $token->element_type = $request->elType;
         if ($request->elType == "Headline") {
             $token->current_headline = $request->currentHeadline;
@@ -66,7 +77,7 @@ class TokenController extends Controller
             $token->current_paragraph = $request->currentParagraph;
             $token->new_paragraph = $request->newParagraph;
         }else{
-            $token->image = "test.jpeg";
+            $token->image = $request->image;
         }
         $token->save();
         return response($token, 200);

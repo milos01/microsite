@@ -48,7 +48,7 @@
         </li>
         <li>
           <p><span class="type">Memeber Since: </span>
-            @dateformat(Auth::user()->created_at)
+           {{Auth::user()->created_at->format('m/d/Y')}}
           </p>
          </li>
         </li>

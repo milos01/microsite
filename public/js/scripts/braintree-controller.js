@@ -8,7 +8,9 @@ app.controller('braintreeController', function($scope, $http){
         braintree.setup(res.data.token, 'dropin', {
           container: 'dropin-container',
           onReady: function(){
-            $("#paymentButt").show();
+            $("#paymentPart1").show();
+            $("#paymentPart2").show();
+            $("#paymentPart3").show();
           }
         });
 
@@ -20,7 +22,7 @@ app.controller('braintreeController', function($scope, $http){
 
 });
 
-app.controller('subscriptionController', function($scope, WebsiteResource, UserResource){
+app.controller('subscriptionController', function($scope, WebsiteResource, UserResource, $window){
     UserResource.getLogedUser().then(function(item){
        if (item.subscribed == 0) {
           $scope.oneTimer = true;
@@ -40,7 +42,7 @@ app.controller('subscriptionController', function($scope, WebsiteResource, UserR
             }
 
             WebsiteResource.changeMode(sVal).then(function(){
-
+                $window.location.reload();
             })
         }
     });

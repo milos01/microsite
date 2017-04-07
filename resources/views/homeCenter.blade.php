@@ -54,14 +54,27 @@
               <div class="table-data"><p>{{$website->created_at->format('m/d/Y')}}</p></div>
             </div>
             
-            <!-- <div class="table-column">
-              <div class="table-header"><p>Monthly Price</p></div>
-              <div class="table-data"><p>${{$website->theme->price}}</p></div>
-            </div> -->
+            <div class="table-column">
+              <div class="table-header"><p>Status</p></div>
+              <div class="table-data"><p>
+                @if(!$website->deleted_at)
+                  Active
+                @else
+                  Not active
+                @endif
+              </p></div>
+            </div>
 
             <div class="table-column">
               <div class="table-header"><p>Actions</p></div>
-              <div class="table-data"><a href="{!! route('deleteWebsite', $website->id) !!}" class="btn btn-danger btn-xs">Delete</a></div>
+              <div class="table-data">
+                @if(!$website->deleted_at)
+                  <a href="{!! route('deleteWebsite', $website->id) !!}" class="btn btn-danger btn-xs">Deactivate</a>
+                @else
+                  Deactivated at: {{$website->deleted_at->format('m/d/Y')}}
+                @endif
+                
+              </div>
             </div>
             </div>
           </div>

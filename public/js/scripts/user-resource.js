@@ -29,6 +29,8 @@
 		retVal.loadInvoices = function(){
 			return Restangular.one('user').all('invoices').getList().then(function(items){
 				return items;
+			}, function(errors){
+				return errors;
 			});
 		}
 

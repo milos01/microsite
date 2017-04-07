@@ -31,7 +31,7 @@ class BillingController extends Controller
         $notactiveWebsites = $user->websites()->where('active', 0)->get();
     	$totalSum = $this->totalCount($notactiveWebsites);
        
-    	return view('billing')->with('websites', $allsites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites);
+    	return view('billing')->with('websites', $allsites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites)->with('nonactivesites', $notactiveWebsites);
     }
 
     /**
@@ -57,37 +57,69 @@ class BillingController extends Controller
     	$user = Auth::user();
         $token = $request->payment_method_nonce;
 
+        $nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
+        $totalSum = $this->totalCount($nonactivesites);
+
     	if(!$user->braintree_id){
     		$result = Braintree_Customer::create([
 			    'firstName' => $user->first_name,
 			    'lastName' => $user->last_name,
 			    'email' => $user->email,
 			    'phone' => $user->phone,
-                'paymentMethodNonce' => $token
+                'paymentMethodNonce' => $token,
+                // 'creditCard' => [
+                //     'cardholderName' => $request->cardholder
+                // ]
 			]);
             //save user payment creds
             event(new UserPaymentCreds($result->customer->id, $result->customer->paymentMethods[0]->cardType, $result->customer->paymentMethods[0]->last4));
     	}
+        if($user->card_brand and $user->card_last_four and $user->braintree_id){
+            $result = Braintree_Transaction::sale([
+                'amount' => $totalSum,
+                'customerId' => $user->braintree_id,
+                'options' => [
+                    'submitForSettlement' => True
+                ]
+            ]);
+            if(!$result->success){
+                return back()->with('bt_errors', $result->errors->deepAll());
+            }
+        }
 
         if($user->card_brand == null and $user->card_last_four == null and $user->braintree_id){
             //save user payment creds
-            $result = Braintree_Customer::find($user->braintree_id);
-            event(new UserPaymentCreds($result->id, $result->paymentMethods[0]->cardType, $result->paymentMethods[0]->last4));
+            $customer = Braintree_Customer::find($user->braintree_id);
+            $result = Braintree_PaymentMethod::create([
+                'customerId' => $user->braintree_id,
+                'paymentMethodNonce' => $request->payment_method_nonce,
+                // 'cardholderName' => $request->cardholder,
+                'options' => [
+                     'makeDefault' => true
+                 ]
+            ]);
+            if($result->success){
+                $resultt = Braintree_Transaction::sale([
+                    'amount' => $totalSum,
+                    'customerId' => $user->braintree_id,
+                    'options' => [
+                        'submitForSettlement' => True
+                    ]
+                ]);
+                $ct = null;
+                $l4 = null;
+                foreach ($resultt->transaction->creditCard as $key => $value) {
+                    if($key == "cardType"){
+                        $ct = $value;
+                    }else if($key ==  "last4"){
+                        $l4 = $value;
+                    }
+                }
+                event(new UserPaymentCreds($customer->id, $ct, $l4));
+            }
+            
         }
         
-    	$nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
-    	$totalSum = $this->totalCount($nonactivesites);
-    	$result = Braintree_Transaction::sale([
-			'amount' => $totalSum,
-			'customerId' => $user->braintree_id,
-			'options' => [
-				'submitForSettlement' => True
-			]
-		]);
-    	if(!$result->success){
-    		return back()->with('bt_errors', $result->errors->deepAll());
-    	}
-
     	if($request->subscribed == "no"){
             //new event for making grace period for new sites
             event(new GraceWebsites($nonactivesites));
@@ -137,6 +169,7 @@ class BillingController extends Controller
             $result = Braintree_PaymentMethod::create([
                 'customerId' => $user->braintree_id,
                 'paymentMethodNonce' => $request->payment_method_nonce,
+                // 'cardholderName' => $request->cardholder,
                 'options' => [
                      'makeDefault' => true
                  ]

@@ -4,16 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="{{ csrf_token() }}" name="csrf-token">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>
       @yield('title')
     </title>
-    <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="img/favicon.png" />
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="../css/custom.css">
     <link rel="stylesheet" href="../bower_components/select2/select2.css">
+    <!-- <link rel="stylesheet" href="../bower_components/dropzone/dist/basic.css"> -->
+    <link rel="stylesheet" href="../bower_components/dropzone/dist/dropzone.css">
+    <!-- <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css"> -->
     <style type="text/css">
       [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
@@ -33,7 +37,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{!! route('home') !!}"><img src="../img/webueno-logo-admin.png" alt="Webueno Logo"></a>
+        <a class="navbar-brand" href="{!! route('home') !!}"><img src="../img/micromedic-logo.png" alt="Webueno Logo"></a>
       </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -62,6 +66,7 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
+
   @show
   <!-- HEADER end -->
   
@@ -79,6 +84,8 @@
     <script type="text/javascript" src="../bower_components/restangular/dist/restangular.min.js"></script>
     <script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="../bower_components/angular-ui-select2/src/select2.js"></script>
+    <script type="text/javascript" src="../bower_components/dropzone/dist/dropzone.js"></script>
+    <!-- <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script> -->
 
 
 

@@ -60,6 +60,9 @@ Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	Route::get('/user/{id}/activate', 'UserController@userActivate')->name('activate');
 	Route::post('/api/addnewuser', 'UserController@addneuser');
 	Route::get('/api/user/invoices', 'UserController@loadInvoices');
+
+	//Picture routes
+	Route::post('/api/upload', 'PictureController@uploadPicture');
 	
 	//Website routes
 	Route::post('/api/website', 'WebsiteController@newWebsite');

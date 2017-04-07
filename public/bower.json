@@ -19,6 +19,7 @@
     "lodash": "^4.17.4",
     "restangular": "^1.6.1",
     "angular-bootstrap": "^2.5.0",
-    "angular-ui-select2": "^0.0.5"
+    "angular-ui-select2": "^0.0.5",
+    "dropzone": "^4.3.0"
   }
 }

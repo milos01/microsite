@@ -11,35 +11,8 @@
       <div class="panel-group payments-method" id="accordion">
           <div class="panel panel-default">
               <div class="panel-heading" style="background: white">
-              
-                  <!-- <div class="col-sm-4 add-element-wrapper" style="padding-top: 20px">
-                    <div class="add-element-expanded" style="border-bottom: none">
-                      <div class="form-group col-md-6" ng-class="{ 'has-error' : .newHeadline.$invalid && !.newHeadline.$pristine}">
-                        <input type="text" class="form-control" id="new-headline" name="newHeadline" ng-model="oldForm.newHeadline" placeholder="First Name" />
-                      </div>
-
-                      <div class="form-group col-md-6" ng-class="{ 'has-error' : .newHeadline.$invalid && !.newHeadline.$pristine}">
-                        <input type="text" class="form-control" id="new-headline" name="newHeadline" ng-model="oldForm.newHeadline" placeholder="Last Name" />
-                      </div>
-
-                      <div class="form-group col-md-12" ng-class="{ 'has-error' : .newHeadline.$invalid && !.newHeadline.$pristine}">
-                        <input type="text" class="form-control" id="new-headline" name="newHeadline" ng-model="oldForm.newHeadline" placeholder="Street Address" />
-                      </div>
-
-                      <div class="form-group col-md-8" ng-class="{ 'has-error' : .newHeadline.$invalid && !.newHeadline.$pristine}">
-                        <input type="text" class="form-control" id="new-headline" name="newHeadline" ng-model="oldForm.newHeadline" placeholder="City" />
-                      </div>
-
-                      <div class="form-group col-md-4" ng-class="{ 'has-error' : .newHeadline.$invalid && !.newHeadline.$pristine}">
-                        <input type="text" class="form-control" id="new-headline" name="newHeadline" ng-model="oldForm.newHeadline" placeholder="Postal Code" />
-                      </div>
-
-                      <div class="form-group col-md-12" ng-class="{ 'has-error' : .newHeadline.$invalid && !.newHeadline.$pristine}">
-                        <input type="text" class="form-control" id="new-headline" name="newHeadline" ng-model="oldForm.newHeadline" placeholder="Country" />
-                      </div>
-                    </div>
-                    
-                  </div> -->
+                
+                 
                   <div class="col-md-12">
                   @if (session('bt_errors'))
                           @foreach(session('bt_errors') as $error)
@@ -50,7 +23,7 @@
                   @endif
                   </div>
                   @if (Auth::user()->card_last_four == null)
-                  <form method="POST" action="{!! route('payment') !!}">
+                  <form method="POST" action="{!! route('payment') !!}" name="paymentForm" novalidate>
 
                     <div class="panel-body">
 
@@ -66,21 +39,31 @@
                                           <div><input type="radio" name="tat" value="1520"><label>15-20 Hours</label></div>
                                     </div>
                                   </div>
-                                </div>
+                            </div>
 
                                 <h2>Summary</h2>
                                 <strong>Price:</strong> <span class="text-navy">${{$total}}</span>
              
-                            
+                          
+
                               <p class="m-t">
                                 Please select your preferred payment method below. You can use a credit card or PayPal. 
                               </p>
+
+                              <!-- <div class="col-sm-5 add-element-wrapper" id="paymentPart1" style="padding-top: 20px; margin-left: -15px; margin-bottom: -30px; display: none">
+                                <div class="add-element-expanded" style="border-bottom: none">
+                                  <div class="form-group col-md-6" ng-class="{ 'has-error' : paymentForm.cardholder.$invalid && !paymentForm.cardholder.$pristine}">
+                                    <input type="text" class="form-control" id="new-headline" name="cardholder" ng-model="cardholder" placeholder="Cardhodler name" required />
+                                  </div>
+                              </div> -->
+                                
+                              </div>
                               <div id="dropin-container"></div>
                               <input type="hidden" name="total" value="{{$total}}">
-                              <input type="submit" class="btn btn-default" value="Make payment" id="paymentButt" style="margin-top: 20px;display: none">  
+                              <input type="submit" class="btn btn-default" value="Make payment" id="paymentPart2" style="margin-top: 20px;display: none">  
                             </div>
                         </div>
-                    </div>
+                  
                     {{ csrf_field() }}
                   </form>
                   @else

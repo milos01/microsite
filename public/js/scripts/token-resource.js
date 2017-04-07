@@ -35,6 +35,7 @@
 		}
 
 		retVal.removeTokenElement = function(id){
+			console.log(id);
 			return Restangular.one('saved_elements', id).remove().then(function(item){
 				return item;
 			});
