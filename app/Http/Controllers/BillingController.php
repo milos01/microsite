@@ -15,25 +15,12 @@ use App\Events\NewTokenOrder;
 use App\Events\ActivateWebsite;
 use App\Events\GraceWebsites;
 use App\Events\UserPaymentCreds;
+use App\Http\Controllers\Helpers\UserHelper as Usr;
 
 class BillingController extends Controller
 {
-	/**
-     * Show the billing on users profile.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function billing(){
-    	$user = User::findorFail(Auth::id());
-
-    	$allsites = $user->websites()->with('theme')->get();
-        $activeWebsites = $user->websites()->where('active', 1)->get();
-        $notactiveWebsites = $user->websites()->where('active', 0)->get();
-    	$totalSum = $this->totalCount($notactiveWebsites);
-       
-    	return view('billing')->with('websites', $allsites)->with('totalSum', sprintf("%.2f", $totalSum))->with('activeWebsites', $activeWebsites)->with('nonactivesites', $notactiveWebsites);
-    }
-
+	
+    use Usr;
     /**
      * Generate braintree client token.
      *
@@ -41,18 +28,15 @@ class BillingController extends Controller
      */
     public function generateBraintreeToken(Request $request){
     	return response()->json([
-		    'token' => Braintree_ClientToken::generate(),
-		]);
+          'token' => Braintree_ClientToken::generate(),
+          ]);
     }
 
-    private function totalCount($nonactivesites){
-    	$totalSum = 0;
-    	foreach ($nonactivesites as $key => $website) {
-    		$totalSum += $website->theme->price;
-    	}
-    	return $totalSum;
-    }
-
+    /**
+     * Checkout payment form.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function checkout(Request $request){
     	$user = Auth::user();
         $token = $request->payment_method_nonce;
@@ -60,146 +44,146 @@ class BillingController extends Controller
         $nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
         $totalSum = $this->totalCount($nonactivesites);
 
-    	if(!$user->braintree_id){
-    		$result = Braintree_Customer::create([
-			    'firstName' => $user->first_name,
-			    'lastName' => $user->last_name,
-			    'email' => $user->email,
-			    'phone' => $user->phone,
-                'paymentMethodNonce' => $token,
+        if(!$user->braintree_id){
+          $result = Braintree_Customer::create([
+             'firstName' => $user->first_name,
+             'lastName' => $user->last_name,
+             'email' => $user->email,
+             'phone' => $user->phone,
+             'paymentMethodNonce' => $token,
                 // 'creditCard' => [
                 //     'cardholderName' => $request->cardholder
                 // ]
-			]);
+             ]);
             //save user payment creds
-            event(new UserPaymentCreds($result->customer->id, $result->customer->paymentMethods[0]->cardType, $result->customer->paymentMethods[0]->last4));
-    	}
-        if($user->card_brand and $user->card_last_four and $user->braintree_id){
-            $result = Braintree_Transaction::sale([
+          event(new UserPaymentCreds($result->customer->id, $result->customer->paymentMethods[0]->cardType, $result->customer->paymentMethods[0]->last4));
+      }
+      if($user->card_brand and $user->card_last_four and $user->braintree_id){
+        $result = Braintree_Transaction::sale([
+            'amount' => $totalSum,
+            'customerId' => $user->braintree_id,
+            'options' => [
+            'submitForSettlement' => True
+            ]
+            ]);
+        if(!$result->success){
+            return back()->with('bt_errors', $result->errors->deepAll());
+        }
+    }
+
+    if($user->card_brand == null and $user->card_last_four == null and $user->braintree_id){
+            //save user payment creds
+        $customer = Braintree_Customer::find($user->braintree_id);
+        $result = Braintree_PaymentMethod::create([
+            'customerId' => $user->braintree_id,
+            'paymentMethodNonce' => $request->payment_method_nonce,
+                // 'cardholderName' => $request->cardholder,
+            'options' => [
+            'makeDefault' => true
+            ]
+            ]);
+        if($result->success){
+            $resultt = Braintree_Transaction::sale([
                 'amount' => $totalSum,
                 'customerId' => $user->braintree_id,
                 'options' => [
-                    'submitForSettlement' => True
+                'submitForSettlement' => True
                 ]
-            ]);
-            if(!$result->success){
-                return back()->with('bt_errors', $result->errors->deepAll());
-            }
-        }
-
-        if($user->card_brand == null and $user->card_last_four == null and $user->braintree_id){
-            //save user payment creds
-            $customer = Braintree_Customer::find($user->braintree_id);
-            $result = Braintree_PaymentMethod::create([
-                'customerId' => $user->braintree_id,
-                'paymentMethodNonce' => $request->payment_method_nonce,
-                // 'cardholderName' => $request->cardholder,
-                'options' => [
-                     'makeDefault' => true
-                 ]
-            ]);
-            if($result->success){
-                $resultt = Braintree_Transaction::sale([
-                    'amount' => $totalSum,
-                    'customerId' => $user->braintree_id,
-                    'options' => [
-                        'submitForSettlement' => True
-                    ]
                 ]);
-                $ct = null;
-                $l4 = null;
-                foreach ($resultt->transaction->creditCard as $key => $value) {
-                    if($key == "cardType"){
-                        $ct = $value;
-                    }else if($key ==  "last4"){
-                        $l4 = $value;
-                    }
+            $ct = null;
+            $l4 = null;
+            foreach ($resultt->transaction->creditCard as $key => $value) {
+                if($key == "cardType"){
+                    $ct = $value;
+                }else if($key ==  "last4"){
+                    $l4 = $value;
                 }
-                event(new UserPaymentCreds($customer->id, $ct, $l4));
             }
-            
+            event(new UserPaymentCreds($customer->id, $ct, $l4));
         }
-        
-    	if($request->subscribed == "no"){
-            //new event for making grace period for new sites
-            event(new GraceWebsites($nonactivesites));
-        }
-    	event(new ActivateWebsite($nonactivesites));
-    	return back();
 
     }
 
+    if($request->subscribed == "no"){
+            //new event for making grace period for new sites
+        event(new GraceWebsites($nonactivesites));
+    }
+    event(new ActivateWebsite($nonactivesites));
+    return back();
+
+}
+
     public function cancelSubscription(){
-    	$user = Auth::user();
-    	$user->subscription('main')->cancelNow();
-    	return back();
+       $user = Auth::user();
+       $user->subscription('main')->cancelNow();
+       return back();
     }
 
     public function renewSubscription(){
-    	$user = Auth::user();
-    	$user->subscription('main')->resume();
-    	return back();
+       $user = Auth::user();
+       $user->subscription('main')->resume();
+       return back();
     }
 
     public function payment(Request $request){
-    	$user = Auth::user();
-        $result = null;
-    	if($user->braintree_id and $user->card_brand and $user->card_last_four){
-			$result = Braintree_Transaction::sale([
-				'amount' => $request->total,
-				'paymentMethodNonce' => $request->payment_method_nonce,
-				'customerId' => $user->braintree_id,
-				'options' => [
-					'submitForSettlement' => True
-				]
-			]);
-            if(!$result->success){
-                return back()->with('bt_errors', $result->errors->deepAll());
-            }
-    	}
-    	
-
-        if($user->card_brand == null and $user->card_last_four == null and $user->braintree_id){
-            // //save user payment creds
-            
-            
-            $customer = Braintree_Customer::find($user->braintree_id);
-            
-
-            $result = Braintree_PaymentMethod::create([
-                'customerId' => $user->braintree_id,
-                'paymentMethodNonce' => $request->payment_method_nonce,
-                // 'cardholderName' => $request->cardholder,
-                'options' => [
-                     'makeDefault' => true
-                 ]
+       $user = Auth::user();
+       $result = null;
+       if($user->braintree_id and $user->card_brand and $user->card_last_four){
+         $result = Braintree_Transaction::sale([
+            'amount' => $request->total,
+            'paymentMethodNonce' => $request->payment_method_nonce,
+            'customerId' => $user->braintree_id,
+            'options' => [
+            'submitForSettlement' => True
+            ]
             ]);
-            if($result->success){
-                $resultt = Braintree_Transaction::sale([
-                    'amount' => $request->total,
-                    'customerId' => $user->braintree_id,
-                    'options' => [
-                        'submitForSettlement' => True
-                    ]
+         if(!$result->success){
+            return back()->with('bt_errors', $result->errors->deepAll());
+        }
+    }
+
+
+    if($user->card_brand == null and $user->card_last_four == null and $user->braintree_id){
+                // //save user payment creds
+
+
+        $customer = Braintree_Customer::find($user->braintree_id);
+
+
+        $result = Braintree_PaymentMethod::create([
+            'customerId' => $user->braintree_id,
+            'paymentMethodNonce' => $request->payment_method_nonce,
+                    // 'cardholderName' => $request->cardholder,
+            'options' => [
+            'makeDefault' => true
+            ]
+            ]);
+        if($result->success){
+            $resultt = Braintree_Transaction::sale([
+                'amount' => $request->total,
+                'customerId' => $user->braintree_id,
+                'options' => [
+                'submitForSettlement' => True
+                ]
                 ]);
 
-                $ct = null;
-                $l4 = null;
-                foreach ($resultt->transaction->creditCard as $key => $value) {
-                    if($key == "cardType"){
-                        $ct = $value;
-                    }else if($key ==  "last4"){
-                        $l4 = $value;
-                    }
+            $ct = null;
+            $l4 = null;
+            foreach ($resultt->transaction->creditCard as $key => $value) {
+                if($key == "cardType"){
+                    $ct = $value;
+                }else if($key ==  "last4"){
+                    $l4 = $value;
                 }
-                event(new UserPaymentCreds($customer->id, $ct, $l4));
             }
+            event(new UserPaymentCreds($customer->id, $ct, $l4));
         }
+    }
 
-    	event(new NewTokenOrder($request));
-		event(new TokenActivation());
-    	return back();
-		
+    event(new NewTokenOrder($request));
+    event(new TokenActivation());
+    return back();
+
     }
 
     public function samecardPayment(){
@@ -207,45 +191,50 @@ class BillingController extends Controller
         $customer = Braintree_Customer::find(Auth::user()->braintree_id);
         $payment_method_token = $customer->paymentMethods[0]->token;
         $nonce = Braintree_PaymentMethodNonce::create($payment_method_token);
-    
+        
         $nonactivesites = $user->websites()->with('theme')->where('active', 0)->get();
         $totalSum = $this->totalCount($nonactivesites);
         $result = Braintree_Transaction::sale([
-                'amount' => $totalSum,
-                'paymentMethodNonce' => $nonce->paymentMethodNonce->nonce,
-                'customerId' => $user->braintree_id,
-                'options' => [
-                    'submitForSettlement' => True
-                ]
-        ]);
+            'amount' => $totalSum,
+            'paymentMethodNonce' => $nonce->paymentMethodNonce->nonce,
+            'customerId' => $user->braintree_id,
+            'options' => [
+            'submitForSettlement' => True
+            ]
+            ]);
         if(!$result->success){
             return back()->with('bt_errors', $result->errors->deepAll());
         }
 
         if($user->subscribed == 0){
-            //new event for making grace period for new sites
+                //new event for making grace period for new sites
             event(new GraceWebsites($nonactivesites));
         }
         event(new ActivateWebsite($nonactivesites));
         return back();
     }
 
+    /**
+     * Pay with saved payment method.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function samecardPaymentOneTime(Request $request){
         $totalSum = $request->total;
-        $user = Auth::user();
+        $user = $this->loggedUser();
 
-        $customer = Braintree_Customer::find(Auth::user()->braintree_id);
+        $customer = Braintree_Customer::find($user->braintree_id);
         $payment_method_token = $customer->paymentMethods[0]->token;
         $nonce = Braintree_PaymentMethodNonce::create($payment_method_token);
-    
+        
         $result = Braintree_Transaction::sale([
-                'amount' => $totalSum,
-                'paymentMethodNonce' => $nonce->paymentMethodNonce->nonce,
-                'customerId' => $user->braintree_id,
-                'options' => [
-                    'submitForSettlement' => True
-                ]
-        ]);
+            'amount' => $totalSum,
+            'paymentMethodNonce' => $nonce->paymentMethodNonce->nonce,
+            'customerId' => $user->braintree_id,
+            'options' => [
+            'submitForSettlement' => True
+            ]
+            ]);
 
 
         if(!$result->success){
@@ -258,8 +247,13 @@ class BillingController extends Controller
         return back();
     }
 
+    /**
+     * Remove saved payment method.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function removePayment(){
-        $user = Auth::user();
+        $user = $this->loggedUser();
         $user->card_brand = null;
         $user->card_last_four = null;
         $user->save();

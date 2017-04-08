@@ -6,15 +6,22 @@ use Illuminate\Http\Request;
 use App\Website;
 use Carbon\Carbon;
 use Auth;
+use App\Http\Controllers\Helpers\UserHelper as Usr;
 
 class WebsiteController extends Controller
 {
+    use Usr;
+    /**
+     * Create new website.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function newWebsite(Request $request){
     	$this->validate($request, [
-                'companyName' => 'required|max:255',
-                'websiteTitle' => 'required|max:255',
-                'domain' => 'required|max:255',
-        ]);
+            'companyName' => 'required|max:255',
+            'websiteTitle' => 'required|max:255',
+            'domain' => 'required|max:255',
+            ]);
         $now = Carbon::now();
 
         $website = new Website();
@@ -22,21 +29,19 @@ class WebsiteController extends Controller
         $website->title = $request->websiteTitle;
         $website->domain = $request->domain;
         $website->active = 0;
-        $website->user_id = Auth::id();
+        $website->user_id = $this->loggedUserId();
         $website->theme_id = $request->theme_id;
         $website->expire_at = $now->addMonth();
 
-        if($website->save()){
-        	return response($website, 200);
-        }
+        $website->save();
+        return response($website, 200);
     }
 
-    public function userSites(){
-        $user = Auth::user();
-        $websites = $user->websites;
-        return response($websites, 200);
-    }
-
+    /**
+     * Soft delete website.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function deleteWebsite($id){
         $website = Website::findorFail($id);
         $website->delete();
