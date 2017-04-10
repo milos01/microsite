@@ -26,6 +26,7 @@ class CreateWebsitesTable extends Migration
             $table->timestamps();
             $table->timestamp('expire_at')->nullable();
             $table->timestamp('grace_period')->nullable();
+            $table->softDeletes();
         });
     }
 
