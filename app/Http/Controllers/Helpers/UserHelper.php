@@ -4,22 +4,43 @@ use App\User;
 use Auth;
 
 trait UserHelper {
-    public static function findUserById($id) {
+
+     /**
+     * Find user by id.
+     *
+     * @return User
+     */
+    public function findUserById($id) {
         $user = User::findorFail($id);
         return $user;
     }
 
-    public static function findUserWithTrashed($id) {
+     /**
+     * Find both acticve and inactive users by id.
+     *
+     * @return User
+     */
+    public function findUserWithTrashed($id) {
         $user = Auth::withTrashed()->findorFail($id);
         return $user;
     }
 
+     /**
+     * Get logged user.
+     *
+     * @return User
+     */
     public function loggedUser() {
         $user = Auth::user();
         return $user;
     }
 
-    public static function loggedUserId() {
+    /**
+     * Get logged user id.
+     *
+     * @return Integer
+     */
+    public function loggedUserId() {
         $id = Auth::id();
         return $id;
     }
