@@ -47,8 +47,7 @@
         <li {{{ (Request::is('tokens') ? 'class=active' : '') }}}><a href="{!! route('tokens') !!}">TOKENS</a></li>
         <li><a href="#">SUPPORT</a></li>     
       </ul>
-      <ul id="dd" class="nav navbar-nav">
-        <li style="padding: 23px 5px">SC_place</li>        
+      <ul id="dd" class="nav navbar-nav">      
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="../img/account-icon.png" alt="Account icon"></a>
             <ul class="dropdown-menu">

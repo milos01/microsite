@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Theme;
 use App\User;
 use Auth;
-use Carbon\Carbon;
 use App\TokenElement;
 use App\Events\DeactivateWebsites;
 use App\Http\Controllers\Helpers\UserHelper as Usr;
