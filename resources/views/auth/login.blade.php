@@ -3,20 +3,18 @@
 @section('navbar')
 @stop
 @section('contentDashboard')
-    <div class="container">
+    <div class="container" id="login-form-container">
+    <div class="form-logo">
+    <a href="https://micromedic.io/"><img src="img/micromedic-logo.png" alt="webueno-form-logo" /></a>
+    </div>
         <div class="login-form-wrapper">
-            <div class="form-logo">
-                <!-- <img src="http://www.webueno.com/wp-content/uploads/2016/12/webueno-footer-logo-1.png" alt="webueno-form-logo" /> -->
-            </div>
-            <h1 class="login-form-page-title">LOGIN</h1>
+            <h1 class="login-form-page-title">Login</h1>
             <form class="form-horizontal" method="POST" action="{{ url('/login') }}" novalidate>
                 {{ csrf_field() }}
                 <fieldset>
                 <div class="reg-form-field-wrap">
-                    <div class="reg-form-label">
-                       <label>EMAIL</label>
-                    </div>
-                        <input id="projectname" type="email" name="email" placeholder="" value="{{ old('email') }}" required autofocus>
+                    
+                        <input id="projectname" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
                         <div class="reg-form-field-error">
                             @if ($errors->has('email'))
                                 <span class="help-block">
@@ -26,10 +24,8 @@
                         </div>
                     </div>
                     <div class="reg-form-field-wrap">
-                        <div class="reg-form-label">
-                            <label>PASSWORD</label>
-                        </div>
-                        <input type="password" id="password" name="password" placeholder="" required>
+                        
+                        <input type="password" id="password" name="password" placeholder="password" required>
                         <div class="reg-form-field-error">
                             @if ($errors->has('password'))
                                 <span class="help-block">
@@ -43,7 +39,9 @@
                 </div>
                 </fieldset>
             </form>
+            <a href="{!! route('password.request') !!}" class="forgot-pass-a">Forgot password?</a>
         </div>
+        <p class="sign-up-link">Don't have an account? <a href="{!! route('register') !!}">Sign up</a></p>
     </div>
 @endsection
 

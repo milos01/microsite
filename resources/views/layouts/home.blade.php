@@ -45,7 +45,7 @@
       <ul class="nav navbar-nav main-menu-border">
         <li {{{ (Request::is('home') ? 'class=active' : '') }}}><a href="{!! route('home') !!}">WEBSITES <span class="sr-only">(current)</span></a></li>
         <li {{{ (Request::is('tokens') ? 'class=active' : '') }}}><a href="{!! route('tokens') !!}">TOKENS</a></li>
-        <li><a href="#">SUPPORT</a></li>     
+        <li style="display: none"><a href="#">SUPPORT</a></li>     
       </ul>
       <ul id="dd" class="nav navbar-nav">      
         <li class="dropdown">
