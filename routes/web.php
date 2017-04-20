@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', 'PageController@index');
 
 Auth::routes();
 use Illuminate\Http\Request;
@@ -31,7 +29,7 @@ Route::get('/test', function(){});
 
 Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	//Paging routes
-	Route::get('/home', 'PageController@index')->name('home');
+	Route::get('/', 'PageController@index')->name('home');
 	Route::get('/template/showEditTemplate', 'PageController@showEditTemplate');
 	Route::get('/new', 'PageController@showNewSitePage')->name('new');
 	Route::get('/token/payment', 'PageController@tokenPaymentPage')->name('tokenPaymentPage');

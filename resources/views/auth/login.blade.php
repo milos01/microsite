@@ -5,7 +5,9 @@
 @section('contentDashboard')
     <div class="container">
         <div class="login-form-wrapper">
-            <div class="form-logo"><img src="http://www.webueno.com/wp-content/uploads/2016/12/webueno-footer-logo-1.png" alt="webueno-form-logo" /></div>
+            <div class="form-logo">
+                <!-- <img src="http://www.webueno.com/wp-content/uploads/2016/12/webueno-footer-logo-1.png" alt="webueno-form-logo" /> -->
+            </div>
             <h1 class="login-form-page-title">LOGIN</h1>
             <form class="form-horizontal" method="POST" action="{{ url('/login') }}" novalidate>
                 {{ csrf_field() }}

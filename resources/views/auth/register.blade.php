@@ -5,7 +5,9 @@
 @section('contentDashboard')
     <div class="container">
         <div class="registration-form-wrapper">
-        <div class="form-logo"><img src="http://www.webueno.com/wp-content/uploads/2016/12/webueno-footer-logo-1.png" alt="webueno-form-logo" /></div>
+        <div class="form-logo">
+            <!-- <img src="http://www.webueno.com/wp-content/uploads/2016/12/webueno-footer-logo-1.png" alt="webueno-form-logo" /> -->
+        </div>
    
         <h1 class="reg-form-page-title">CREATE YOUR ACCOUNT</h1>
 
