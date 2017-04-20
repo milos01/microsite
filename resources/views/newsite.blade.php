@@ -64,7 +64,7 @@
       <div class="col-md-3" style="margin: 10px 20px; overflow:hidden;" id="imageHolder">
 
         <div class="col-md-12" style="border:1px solid white;background: #f8f8f8; text-align: center;padding-right: 0px;padding-left: 0px; max-height: 190px">
-        <img src="{{$theme->pictuire}}" style="width:100%">
+        <img src="/img/{{$theme->picture}}" style="width:100%">
           <div style="position: absolute;width: 100%;top: 0px;background: black;padding:10px 0px;opacity: 0.6;color: white">
             {{$theme->name}}
           </div>
