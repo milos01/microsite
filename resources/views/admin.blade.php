@@ -54,7 +54,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="emptyErrorArray()" >Close</button>
-              <button type="submit" class="btn btn-primary" style="background: #f8951d; border-color: #f8951d" ng-click="submitNewUserForm()">Add</button>
+              <button type="submit" class="btn btn-primary" style="background: #f8951d ; border-color: #f8951d" ng-click="submitNewUserForm()">Add</button>
             </div>
           </div>
         </div>
