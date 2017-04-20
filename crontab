@@ -1,0 +1,1 @@
+* * * * * php /Users/macbookpro/Documents/LaravelDev/freelance/microsite/artisan schedule:run >> /dev/null 2>&1

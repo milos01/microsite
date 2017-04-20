@@ -76,3 +76,7 @@ Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
 	Route::put('/api/saved_elements/{id}', 'TokenController@updateSavedElements');
 	Route::delete('/api/saved_elements/{id}', 'TokenController@removeElements');
 });
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
