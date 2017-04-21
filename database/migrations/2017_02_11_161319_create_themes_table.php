@@ -17,7 +17,7 @@ class CreateThemesTable extends Migration
             $table->increments('id');
             $table->integer('theme_id');
             $table->string('name');
-            $table->string('pictuire');
+            $table->string('picture');
             $table->longText('description');
             $table->decimal('price', 5, 2);
             $table->string('plan_id');

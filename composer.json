@@ -12,7 +12,8 @@
         "laravel/cashier-braintree": "~2.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
-        "tcg/voyager": "^0.11.9"
+        "tcg/voyager": "^0.11.9",
+        "guzzlehttp/guzzle": "~5.3|~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

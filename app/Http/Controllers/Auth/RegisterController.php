@@ -6,6 +6,8 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Services\ActivationService;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class RegisterController extends Controller
@@ -29,18 +31,53 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+
     protected $now;
+    protected $activationService;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ActivationService $activationService)
     {
         $this->middleware('guest');
         $this->now = Carbon::now();
-    
+        $this->activationService = $activationService;
+    }
 
+    public function register(Request $request){
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $user = $this->create($request->all());
+
+        $this->activationService->sendActivationMail($user);
+
+        return redirect('/welcome');
+    }
+
+    public function authenticated(Request $request, $user){
+        if (!$user->activated) {
+            $this->activationService->sendActivationMail($user);
+            auth()->logout();
+            return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+        }
+        return redirect()->intended($this->redirectPath());
+    }
+
+    public function activateUser($token){
+        if ($user = $this->activationService->activateUser($token)) {
+            auth()->login($user);
+            return redirect($this->redirectPath());
+        }
+        abort(404);
     }
 
     /**

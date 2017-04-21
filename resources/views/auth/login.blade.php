@@ -9,6 +9,16 @@
     </div>
         <div class="login-form-wrapper">
             <h1 class="login-form-page-title">Login</h1>
+            @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
+@if (session('warning'))
+    <div class="alert alert-warning">
+        {{ session('warning') }}
+    </div>
+@endif
             <form class="form-horizontal" method="POST" action="{{ url('/login') }}" novalidate>
                 {{ csrf_field() }}
                 <fieldset>
