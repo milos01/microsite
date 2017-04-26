@@ -14,7 +14,7 @@
                 <fieldset>
                 <div class="reg-form-field-wrap">
                     
-                        <input id="projectname" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
+                        <input id="projectname" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
                         <div class="reg-form-field-error">
                             @if ($errors->has('email'))
                                 <span class="help-block">
@@ -25,7 +25,7 @@
                     </div>
                     <div class="reg-form-field-wrap">
                         
-                        <input type="password" id="password" name="password" placeholder="password" required>
+                        <input type="password" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required>
                         <div class="reg-form-field-error">
                             @if ($errors->has('password'))
                                 <span class="help-block">

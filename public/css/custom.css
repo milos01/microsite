@@ -635,13 +635,14 @@ tr {background-color: transparent !important;}
 	text-align: center;
 	display: block;
 	margin: 0 auto;
-    max-width: 260px;
+    max-width: 120px;
     margin-top: 10px;
     margin-bottom: 30px;
     border: 0 !important;
-    color: #212121 !important;
+    color: #47525d !important;
     text-transform: none !important;
     letter-spacing: 0.07em;
+
  }
 
 /* form logo */
@@ -685,6 +686,7 @@ tr {background-color: transparent !important;}
    padding: 10px 10px 10px 20px;
    outline: none !important;
    letter-spacing: 0.03em;
+   border: 2px solid rgba(197, 197, 197, 0.14) !important;
 
  }
 
@@ -794,7 +796,7 @@ letter-spacing: 0.02em;
     margin-top: 20px;
     margin-bottom: 30px;
     border: 0 !important;
-    color: #212121 !important;
+    color: #47525d !important;
     text-transform: none !important;
     letter-spacing: 0.07em;
     font-size: 32px;
