@@ -8,23 +8,13 @@
     <a href="https://micromedic.io/"><img src="img/micromedic-logo.png" alt="webueno-form-logo" /></a>
     </div>
         <div class="login-form-wrapper">
-            <h1 class="login-form-page-title">Login</h1>
-            @if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
-@endif
-@if (session('warning'))
-    <div class="alert alert-warning">
-        {{ session('warning') }}
-    </div>
-@endif
+            <h1 class="login-form-page-title">Log in</h1>
             <form class="form-horizontal" method="POST" action="{{ url('/login') }}" novalidate>
                 {{ csrf_field() }}
                 <fieldset>
                 <div class="reg-form-field-wrap">
                     
-                        <input id="projectname" type="email" name="email" placeholder="Email" value="{{ old('email') }}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'"  required>
+                        <input id="projectname" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
                         <div class="reg-form-field-error">
                             @if ($errors->has('email'))
                                 <span class="help-block">
@@ -35,7 +25,7 @@
                     </div>
                     <div class="reg-form-field-wrap">
                         
-                        <input type="password" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required>
+                        <input type="password" id="password" name="password" placeholder="password" required>
                         <div class="reg-form-field-error">
                             @if ($errors->has('password'))
                                 <span class="help-block">

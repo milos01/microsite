@@ -666,7 +666,7 @@ tr {background-color: transparent !important;}
  }
 
  .reg-form-field-wrap {
- 	margin-bottom: 35px;
+ 	margin-bottom: 15px;
     padding-top: 5px;
  }
 
@@ -677,13 +677,14 @@ tr {background-color: transparent !important;}
    font-size: 16px !important;
    font-weight: 200 !important;
    color: #777777 !important;
-   background: #EAEAEA !important;
+   background: #f3f3f3 !important;
    height: 40px !important;
    border: 0 !important;
    height: 55px !important;
    border-radius: 2px;
-   padding: 10px;
+   padding: 10px 10px 10px 20px;
    outline: none !important;
+   letter-spacing: 0.03em;
 
  }
 
@@ -709,9 +710,9 @@ tr {background-color: transparent !important;}
   background-color: #f57d3d;
     border: 0;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 300;
     font-family: Lato;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.03em;
     padding: 12px 35px;
     transition: all 0.5s;
     margin: 0 auto;
@@ -731,7 +732,7 @@ tr {background-color: transparent !important;}
     font-size: 15px;
     text-align: center;
     display: block;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .forgot-pass-a:hover { 
@@ -743,11 +744,15 @@ color: #999999;
 .sign-up-link {
 	text-align: center;
 	margin-top: 30px;
+	font-size: 16px;
+	line-height: 21px;
 }
 
 .sign-up-link a { 
 text-decoration: underline;
 color: #212121;
+font-weight: bold;
+letter-spacing: 0.02em;
  }
 
 .sign-up-link a:hover { 
@@ -774,7 +779,7 @@ color: #212121;
    max-width: 500px;
    padding-top: 70px;
    background-color: #fff;
-   padding: 20px;
+   padding: 30px;
    margin-top: 50px;
    -webkit-box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.10);
   -moz-box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.10);
@@ -786,12 +791,13 @@ color: #212121;
 	display: block;
 	margin: 0 auto;
     max-width: 100px;
-    margin-top: 0px;
+    margin-top: 20px;
     margin-bottom: 30px;
     border: 0 !important;
     color: #212121 !important;
     text-transform: none !important;
     letter-spacing: 0.07em;
+    font-size: 32px;
 }
 /*-- END LOGIN PAGE *--/
 
