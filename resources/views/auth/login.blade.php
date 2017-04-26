@@ -8,7 +8,7 @@
     <a href="https://micromedic.io/"><img src="img/micromedic-logo.png" alt="webueno-form-logo" /></a>
     </div>
         <div class="login-form-wrapper">
-            <h1 class="login-form-page-title">Log in</h1>
+            <h1 class="login-form-page-title">Log In</h1>
             <form class="form-horizontal" method="POST" action="{{ url('/login') }}" novalidate>
                 {{ csrf_field() }}
                 <fieldset>
