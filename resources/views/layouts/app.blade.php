@@ -12,13 +12,12 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/custom-app-style.css">
 
     <!-- Scripts -->
 </head>
-<body>
+<body class="app-body">
     <div id="app">
-      
-
         @yield('content')
     </div>
 

@@ -70,7 +70,7 @@
                             <label>PHONE</label>
                             <span class="reg-form-req-symbol">*</span>  
                         </div> -->
-                        <input id="email" type="number" placeholder="Phone" name="phone" value="{{ old('phone') }}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone'" required>
+                        <input id="email" pattern="[0-9.]+" type="number" placeholder="Phone" name="phone" value="{{ old('phone') }}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone'" required>
                         <div class="reg-form-field-error">
                         @if ($errors->has('phone'))
                                 <span class="help-block">
@@ -113,5 +113,7 @@
                 </fieldset>
             </form>
         </div> 
+
+        <p class="sign-up-link">Already have an account? <a href="http://dashboard.micromedic.io/login">Log In</a></p>
     </div>
 @endsection
