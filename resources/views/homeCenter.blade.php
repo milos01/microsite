@@ -25,7 +25,6 @@
           </div>
     @else     
       @foreach($userWebsites as $website)
-      {{$website->theme}}
         <div class="website-link">
           <div class="table-wrapper">   
             <button type="submit" class="manage" ></button>
