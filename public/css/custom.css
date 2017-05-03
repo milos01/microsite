@@ -35,7 +35,7 @@ body {background-color: #f4f4f4;}
 /*menu - active link and background*/
 .navbar-nav>.active>a {
 	background-color: #fff !important;
-	color: #f8951d !important;
+	color: #54D1D1 !important;
 	font-size: 14px;
 	font-weight: 400;
 	letter-spacing: 0.04em;	
@@ -196,6 +196,50 @@ h1 {
 	color: #212121;
 	border: 0;
 }
+
+#add-website-circle-btn .plus { 
+    font-size: 50px;
+    line-height: 50px;
+    color: #fff;
+    background-color: #54D1D1;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    border-radius: 50%;
+    text-align: center;
+    margin: 0;
+    padding-left: 15px;
+    padding-top: 3px;
+    float: left;
+   transform-style: preserve-3d;
+   transition: all 0.3s linear;
+
+ }
+
+ #add-website-circle-btn:hover { min-width: 200px; }
+
+ #add-website-circle-btn:hover .plus {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+#add-website-circle-btn .add-btn-text {
+    margin-top: 20px;
+    display: block;
+    margin-left: 10px;
+    float: left;
+    position: absolute;
+    opacity: 0;
+    transform-style: preserve-3d;
+   transition: all 0.3s linear;
+}
+
+#add-website-circle-btn:hover .add-btn-text {
+	opacity: 1; 
+	transform: translate(60px, 0px);
+
+}
+
 .btn-default:active:hover, .btn-default:active:focus, .btn-default:active:visited {
 	box-shadow: none;
 	background-color: rgba(255,255,255,.0);
@@ -365,11 +409,11 @@ h1 {
 	font-size: 13px;
 	font-weight: 500;
 	font-style: italic;
-	color: #f8951d;
+	color: #54D1D1;
 }
 .edit:hover {
 	text-decoration: none;
-	color: rgba(248,149,29,.6);
+	color: rgba(84,209,209,.6);
 	cursor: pointer;
 }/*-----PROFILE end-----*/
 
@@ -385,7 +429,7 @@ h1 {
 }
 .usage-title, .automated-payment-title, .billing-alerts-title, .payment-method-title, .billing-history-title {
 	display: inline;
-	background-color: #EFEDED;
+	background-color: #f4f4f4;
 	padding: 0 10px;
 	text-transform: uppercase;
 	color: #351414 !important;
@@ -632,6 +676,12 @@ tr {background-color: transparent !important;}
 /* REGISTRATION PAGE */
 
 /* REGISTRATION FORM STYLING */
+
+.help-block strong { 
+
+color: #f84545 !important;
+
+ }
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -1092,6 +1142,116 @@ letter-spacing: 0.02em;
 padding: 5px 0px 
 }
 
+.token-body { 
+min-height: 150px; 
+}
+
+/* MODAL STYLING */
+
+.select-site-modal .modal-header { 
+border: 0 !important; 
+}
+
+.select-site-modal .modal-content {
+border-radius: 0 !important;
+}
+
+.select-site-modal .modal-body {
+	padding: 0px 15px !important
+}
+
+.select-site-modal .modal-footer { 
+border: 0 !important; 
+padding-bottom: 30px;
+}
+
+.select-site-modal input[type="text"] {
+   width: 100%;
+   font-family: Lato;
+   font-style: italic;
+   font-size: 15px !important;
+   font-weight: 200 !important;
+   color: #777777 !important;
+   background: #f3f3f3 !important;
+   height: 40px !important;
+   border: 0 !important;
+   height: 50px !important;
+   border-radius: 2px;
+   padding: 10px 10px 10px 15px;
+   outline: none !important;
+   letter-spacing: 0.03em;
+   border: 2px solid rgba(197, 197, 197, 0.14) !important;
+   box-shadow: none !important
+
+}
+
+.profile-edit-input-wrapper input[type="text"], .profile-edit-input-wrapper input[type="password"], 
+.profile-edit-input-wrapper input[type="phone"] {
+   width: 100%;
+   font-family: Lato;
+   font-style: italic;
+   font-size: 15px !important;
+   font-weight: 200 !important;
+   color: #777777 !important;
+   background: #f3f3f3 !important;
+   height: 40px !important;
+   border: 0 !important;
+   height: 50px !important;
+   border-radius: 2px;
+   padding: 10px 10px 10px 15px;
+   outline: none !important;
+   letter-spacing: 0.03em;
+   border: 2px solid rgba(197, 197, 197, 0.14) !important;
+   box-shadow: none !important
+
+}
+
+.modal-submit-btn {
+  background-color: #f57d3d;
+    border: 0;
+    font-size: 15px;
+    font-weight: 300;
+    font-family: Lato;
+    letter-spacing: 0.03em;
+    padding: 12px 15px;
+    transition: all 0.5s;
+    margin: 0 auto;
+    color: white;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.modal-submit-btn:hover {
+	background-color: #ff6512 !important;
+	color: #fff;
+	text-decoration: none; 
+ }
+
+ .modal-close-btn {
+    font-size: 15px;
+    font-weight: 300;
+    font-family: Lato;
+    letter-spacing: 0.03em;
+    padding: 12px 15px;
+    transition: all 0.5s;
+    cursor: pointer;
+    text-transform: uppercase;
+ }
+
+.modal-close-btn:hover {  
+ background-color: #d7d1d1
+}
+
+.profile-modal-body, .profile-modal-header, .profile-modal-footer { border: 0 !important; }
+
+.profile-modal-header { padding-bottom: 0 !important }
+
+.profile-modal-body { padding: 0px 15px !important }
+
+.profile-modal-footer { padding-bottom: 30px !important; }
+
+/* END MODAL STYLING */
+
 /*--MEDIA QUERIES--*/
 @media screen and (min-width: 1201px) and (max-width: 1440px) {
 	.domain-input {width: 88%;} 
@@ -1288,8 +1448,8 @@ padding: 5px 0px
 
 .nameEditField{
 	border: none;
-    border-bottom: 1px solid #f89559;
-    background: #efeded;
+    border-bottom: 1px solid #54D1D1;
+    background: #f4f4f4;
     height: 30px;
     font-weight: 500;
     font-size: 24px;

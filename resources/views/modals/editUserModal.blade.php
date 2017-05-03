@@ -33,18 +33,18 @@
     <button class="btn btn-default" type="button" ng-click= "vm.addNewApp()">Add</button>
     <button class="btn btn-default" type="button" ng-click="vm.cancel()">Cancel</button>
 </div> -->     
-<div class="modal-header">
+<div class="modal-header profile-modal-header">
   <h5 class="modal-title" id="exampleModalLabel">Update @{{edType}}</h5>
 </div>
-<div class="modal-body">
+<div class="modal-body profile-modal-body">
     <div class="container" style="padding-bottom: 0px ">
         <form name="editForm" novalidate>
          {{ csrf_field() }}     
           <div class="form-group" style="padding: 20px 20px; margin-bottom: 0px">
             <div ng-show="edType === 'email'">
-                <label for="email" class="col-md-4 control-label" style="text-align: right;">Email</label>
-                <div class="col-md-6">
-                  <input id="email" type="text" class="form-control" name="email" style="margin-top: -9px; margin-left: -15px" ng-model="email" placeholder="{{Auth::user()->email}}">
+                
+                <div class="col-md-12 profile-edit-input-wrapper">
+                  <input id="email" type="text" class="form-control" name="email"  ng-model="email" placeholder="{{Auth::user()->email}}" onfocus="this.placeholder = ''"> 
                 </div>
             </div>
 
@@ -60,22 +60,17 @@
                 </div>
             </div>
             <div ng-show="edType === 'password'">
-                
-                    <label for="oldPassword" class="col-md-4 control-label" style="text-align: right;">Old password</label>
-                    <div class="col-md-6">
-                      <input id="oldPassword" type="password" class="form-control" name="oldPassword" style="margin-top: -9px; margin-left: -15px" ng-model="oldPassword">
+                <div class="col-md-12 profile-edit-input-wrapper">
+                      <input id="oldPassword" type="password" class="form-control" name="oldPassword" ng-model="oldPassword"placeholder="Old Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Old Password'">
                     </div>
-
-                    <label for="password" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">New password</label>
-                    <div class="col-md-6" style="margin-top: 20px">
-                      <input id="password" type="password" class="form-control" name="password" style="margin-top: -9px; margin-left: -15px" ng-model="password">
+                <div class="col-md-12 profile-edit-input-wrapper" style="margin-top: 20px">
+                      <input id="password" type="password" class="form-control" name="password" ng-model="password" placeholder="New Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'New Password'">
                     </div>
               
             </div>
             <div ng-show="edType === 'phone'">
-            <label for="phone" class="col-md-4 control-label" style="text-align: right;">Phone</label>
-            <div class="col-md-6">
-              <input id="phone" type="text" class="form-control" name="phone" style="margin-top: -9px;margin-left: -15px" ng-model="phone" placeholder="{{Auth::user()->phone}}">
+            <div class="col-md-12 profile-edit-input-wrapper">
+              <input id="phone" type="text" class="form-control" name="phone" ng-model="phone" placeholder="{{Auth::user()->phone}}" onfocus="this.placeholder = ''">
             </div>
             </div>
             
@@ -91,8 +86,8 @@
         </div>
     </div>
 </div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" ng-click="cancel()" data-dismiss="modal">Close</button>
-  <button type="submit" class="btn btn-primary" ng-click="submitForm(edType)" style="background: #f8951d; border-color: #f8951d">Update @{{edType}}</button>
+<div class="modal-footer profile-modal-footer">
+  <button type="button" class="btn btn-secondary modal-close-btn" ng-click="cancel()" data-dismiss="modal">Close</button>
+  <button type="submit" class="btn btn-primary modal-submit-btn" ng-click="submitForm(edType)" style="background: #f8951d; border-color: #f8951d">Update @{{edType}}</button>
 </div>
   

@@ -71,7 +71,7 @@
         <li>ADMIN PANEL</li>
         @endif
         <li><a href="{!! route('billing') !!}">BILLING</a></li>
-        <li><a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button></a></li>
+        <li><a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span><span class="add-btn-text">ADD WEBSITE</span></button></a></li>
       </ul>
     </div>
     <button class="btn btn-info" style="background: #f8951d; margin-bottom: 10px; border-color: #f8951d" data-toggle="modal" data-target="#addUserModal">Add new user</button>

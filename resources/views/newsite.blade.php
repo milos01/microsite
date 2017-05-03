@@ -16,7 +16,7 @@
     </div>
     <div class="col-xs-12 col-sm-10 side-content">
       @foreach ($themes as $theme)
-      <div class="modal fade" id="myModal{{$theme->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ng-controller="websiteController" data-backdrop="static" data-keyboard="false">
+      <div class="modal fade select-site-modal" id="myModal{{$theme->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ng-controller="websiteController" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -28,19 +28,19 @@
                {{ csrf_field() }}     
                 <div class="form-group" style="padding: 20px 20px">
                       <!-- <div class="container" style="height:0px"> -->
-                          <label for="companyName" class="col-md-4 control-label" style="text-align: right;">Company name</label>
-                          <div class="col-md-6">
-                            <input id="companyName" type="text" class="form-control" name="companyName" style="margin-top: -9px; margin-left: -15px" ng-model="companyName">
+                          
+                          <div class="col-md-12">
+                            <input id="companyName" type="text" class="form-control" name="companyName" style="margin-top: -9px; margin-left: -15px" ng-model="companyName" placeholder="Company Name">
                           </div>
 
-                          <label for="websiteTitle" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">Website title</label>
-                          <div class="col-md-6" style="margin-top: 20px">
-                            <input id="websiteTitle" type="text" class="form-control" name="websiteTitle" style="margin-top: -9px; margin-left: -15px" ng-model="websiteTitle">
+                          
+                          <div class="col-md-12" style="margin-top: 20px">
+                            <input id="websiteTitle" type="text" class="form-control" name="websiteTitle" style="margin-top: -9px; margin-left: -15px" ng-model="websiteTitle" placeholder="Website Title">
                           </div>
 
-                          <label for="domain" class="col-md-4 control-label" style="text-align: right;margin-top: 18px">Domain</label>
-                          <div class="col-md-6" style="margin-top: 20px">
-                            <input id="domain" type="text" class="form-control" name="domain" style="margin-top: -9px; margin-left: -15px" ng-model="domain">
+                          
+                          <div class="col-md-12" style="margin-top: 20px">
+                            <input id="domain" type="text" class="form-control" name="domain" style="margin-top: -9px; margin-left: -15px" ng-model="domain" placeholder="Domain">
                           </div>
                       <!-- </div> -->
                 </div>
@@ -53,8 +53,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="emptyErrorArray(error)">Close</button>
-              <button type="submit" class="btn btn-primary" style="background: #f8951d; border-color: #f8951d" ng-click="submitForm({{$theme->id}})">Submit & Checkout</button>
+              <button type="button" class="btn btn-secondary modal-close-btn" data-dismiss="modal" ng-click="emptyErrorArray(error)">Close</button>
+              <button type="submit" class="btn btn-primary modal-submit-btn"ng-click="submitForm({{$theme->id}})">Submit & Checkout</button>
             </div>
           </div>
         </div>

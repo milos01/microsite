@@ -16,7 +16,7 @@
   <div class="container">
     <!-- first row starts -->    
     <div class="table-name-wrapper">
-      <p class="table-name">Site Name</p> 
+      
     </div>
     <div id="table-row" class="row">
      @if($userWebsites->isEmpty())
@@ -84,6 +84,6 @@
     <!-- first row ends -->
 
     <!-- add website button -->
-    <a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website"><span class="plus">+</span>ADD WEBSITE</button>
+    <a href="{!! route('new') !!}"><button type="button" class="btn btn-default add-website" id="add-website-circle-btn"><span class="plus">+</span><span class="add-btn-text">ADD WEBSITE</span></button>
   </div></a>
 @endsection
