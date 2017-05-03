@@ -63,7 +63,7 @@ class PageController extends Controller
     public function tokenPaymentPage(){
     	$elements = TokenElement::where('user_id', $this->loggedUserId())->where('payed', 0)->get();
     	if($elements->isEmpty()){
-    		return redirect('home');
+    		return redirect('/');
     	}
     	return view('tokenPayment')->with('elements', $elements)->with('total', count($elements)*5);
     }

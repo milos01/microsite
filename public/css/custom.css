@@ -335,7 +335,7 @@ h1 {
 #website {display: none;}
 #website-thumbnail-img {
 	margin-top: 10px;
-	background-image: url('../img/plumbueno.jpg') !important;	
+	/*background-image: url('../img/plumbueno.jpg') !important;	*/
 	background-repeat: no-repeat;
 	background-position: center top;
 	background-size: 100% !important;

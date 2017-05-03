@@ -32,9 +32,9 @@
             <div class="table-column col-md-2">
               <div class="table-header"><p>Website</p></div>
               <div id="website" class="table-data"><p>{{$website->title}}</p></div>
-              <div id="website-thumbnail-img" style="overflow: hidden; max-height: 85px">
-            
-                <img src="{{$website->theme->pictuire}}" style="width: 100%">
+              <div id="website-thumbnail-img" style="overflow: hidden; max-height: 85px;">
+                
+                <img src="img/{{$website->theme->picture}}" style="width: 100%">
               
               </div>
             </div>        
