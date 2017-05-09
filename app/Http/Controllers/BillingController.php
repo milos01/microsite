@@ -15,6 +15,7 @@ use App\Events\NewTokenOrder;
 use App\Events\ActivateWebsite;
 use App\Events\GraceWebsites;
 use App\Events\UserPaymentCreds;
+use App\Events\RemoveUserCard;
 use App\Http\Controllers\Helpers\UserHelper as Usr;
 use App\Http\Controllers\Helpers\BraintreeHelper as Brain3;
 
@@ -35,7 +36,7 @@ class BillingController extends Controller
     }
 
     /**
-     * CPayment on billing page.
+     * Payment on billing page.
      *
      * @return \Illuminate\Http\Response
      */
@@ -49,23 +50,37 @@ class BillingController extends Controller
 
         if(!$user->braintree_id){
           $result = $this->b3CreateCustomer($user, $token);
+          if(!$result->success){
+            dd($result->errors->deepAll());
+          }
 
           event(new UserPaymentCreds($result->customer->id, $result->customer->paymentMethods[0]->cardType, $result->customer->paymentMethods[0]->last4));
         }
         if($user->card_brand and $user->card_last_four and $user->braintree_id){
             $result = $this->b3Sale($user, $totalSum, false, false);
-            
             if(!$result->success){
-                return back()->with('bt_errors', $result->errors->deepAll());
+                $this->b3RemoveCustomer($user->braintree_id);
+                event(new RemoveUserCard(Auth::user()));
+                if($result->transaction->status == 'processor_declined'){
+                    return back()->with('bt_errors', 'Payment/card declined');
+                }      
+            }else{
+                $this->updateUserCardCreds($result);
             }
         }
 
         if($user->card_brand == null and $user->card_last_four == null and $user->braintree_id){
             $result = $this->b3CreatePaymentMethod($user, $token);
-            
+
             if($result->success){
                 $saleResult = $this->b3Sale($user, $totalSum, false, false);
-                $this->updateUserCardCreds($saleResult);
+                if(!$saleResult->success){
+                    if($saleResult->transaction->status == 'processor_declined'){
+                        return back()->with('bt_errors', 'Payment/card declined');
+                    }
+                }else{
+                    $this->updateUserCardCreds($saleResult);
+                }
             }
         }
 
@@ -75,7 +90,7 @@ class BillingController extends Controller
         event(new ActivateWebsite($nonactivesites));
         return back();
     }
-    
+   
      /**
      * Payment on token page.
      *
@@ -144,7 +159,7 @@ class BillingController extends Controller
             return back()->with('bt_errors', $result->errors->deepAll());
         }
 
-        if($user->subscribed == 0){
+        if($user->subscribed == 1){
             event(new GraceWebsites($nonactivesites));
         }
         event(new ActivateWebsite($nonactivesites));

@@ -56,11 +56,16 @@
             <td>{{$website->theme->theme_id}}</td>
             <td>{{$website->domain}}</td>
             <td>{{$website->created_at->format('m/d/Y')}}</td>
-            @if($website->expire_at)
-            <td>{{$website->expire_at->format('m/d/Y')}}</td>
+            @if($website->active === 0)
+              <td>After you pay</td>
             @else
-            <td>{{$website->grace_period->format('m/d/Y')}} (grace period)</td>
+              @if($website->expire_at)
+                <td>{{$website->expire_at->format('m/d/Y')}}</td>
+              @else
+                <td>{{$website->grace_period->format('m/d/Y')}} (grace period)</td>
+              @endif
             @endif
+            
 
 
             @if($website->user->trial_ends_at)
@@ -147,34 +152,32 @@
               <div class="col-lg-12">
                 <div class="ibox">
                   @if (session('bt_errors'))
-                  @foreach(session('bt_errors') as $error)
                   <div class="alert alert-danger">
-                   {{$error->message}}
-                 </div>
-                 @endforeach
-                 @endif
-                 @if (Auth::user()->card_last_four == null)
-                 <div class="ibox-content">
-                  <div class="panel-group payments-method" id="accordion">
-                    <div class="panel panel-default">
-                      <div class="panel-heading" style="background: white">
-                        <h2>Summary</h2>
-                        <strong>Price:</strong> <span class="text-navy">${{$totalSum}}</span>
+                    {{session('bt_errors')}}
+                  </div>
+                  @endif
+                  @if (Auth::user()->card_last_four == null)
+                  <div class="ibox-content">
+                    <div class="panel-group payments-method" id="accordion">
+                      <div class="panel panel-default">
+                        <div class="panel-heading" style="background: white">
+                          <h2>Summary</h2>
+                          <strong>Price:</strong> <span class="text-navy">${{$totalSum}}</span>
 
-                        <p class="m-t">
+                          <p class="m-t">
 
-                          Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
+                            Please enter your preferred payment method below. You can use a credit card or prepay through PayPal. 
 
-                        </p>
-                        <h4 class="panel-title" style="margin-top: 20px">
-                          <a data-toggle="collapse" data-parent="#accordion" href="#collapsePP" style="color:#1c84c6;text-decoration: none"></a>
-                        </h4>
-                      </div>
-                      <div id="collapsePP" class="panel-collapse">
-                        <div class="panel-body">
-                          <div class="row">
+                          </p>
+                          <h4 class="panel-title" style="margin-top: 20px">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapsePP" style="color:#1c84c6;text-decoration: none"></a>
+                          </h4>
+                        </div>
+                        <div id="collapsePP" class="panel-collapse">
+                          <div class="panel-body">
+                            <div class="row">
 
-                            <div class="col-md-12">
+                              <div class="col-md-12">
                             <!-- <div class="form-group col-md-5" id="paymentPart3" ng-class="{ 'has-error' : paymentForm.cardholder.$invalid && !paymentForm.cardholder.$pristine}" style="margin-left: -15px; display: none;">
                                 <input type="text" class="form-control" id="new-headline" name="cardholder" ng-model="cardholder" placeholder="Cardhodler name" required />
                               </div> -->

@@ -98,4 +98,12 @@ trait BraintreeHelper {
      		]);
      	return $result;
      }
+     /**
+     * Braintree remove customer.
+     *
+     * @return Braintree_Transaction
+     */
+     public function b3RemoveCustomer($customerId){
+        Braintree_Customer::delete($customerId);
+     }
  }

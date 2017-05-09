@@ -38,7 +38,7 @@ class Activation extends Model
     {
 
         $token = $this->getToken();
-        $this->db->table($table)->where('user_id', $user->id)->update([
+        $this->db->table($this->table)->where('user_id', $user->id)->update([
             'token' => $token,
             'created_at' => new Carbon()
         ]);

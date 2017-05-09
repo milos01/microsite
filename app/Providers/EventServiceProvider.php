@@ -34,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\DeactivateWebsites' => [
             'App\Listeners\DeactivateWebsitesListener',
         ],
+        'App\Events\RemoveUserCard' => [
+            'App\Listeners\RemoveUserCardListener',
+        ],
     ];
 
     /**
