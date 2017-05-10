@@ -79,9 +79,9 @@
             @endif
             <td>
               @if($website->active === 1)
-              $0.00
+              0.00 &euro;
               @else
-              ${{$website->theme->price}}
+              {{$website->theme->price}} &euro;
               @endif
             </td>
           </tr>
@@ -96,7 +96,7 @@
       @else
       @if(!Auth::user()->trial_ends_at)
       <hr style="border-top-color: #d8d8d8">
-      <span class="pull-left" style="margin-left: 10px"><h4>Outstanding balance: ${{$totalSum}}</h4></span>
+      <span class="pull-left" style="margin-left: 10px"><h4>Outstanding balance: {{$totalSum}} &euro;</h4></span>
       @endif
       @endif
     </div><!-- usage ends -->
@@ -162,7 +162,7 @@
                       <div class="panel panel-default">
                         <div class="panel-heading" style="background: white">
                           <h2>Summary</h2>
-                          <strong>Price:</strong> <span class="text-navy">${{$totalSum}}</span>
+                          <strong>Price:</strong> <span class="text-navy">{{$totalSum}} &euro;</span>
 
                           <p class="m-t">
 

@@ -74,7 +74,7 @@
            <a id="toggleSelectButton" data-toggle="modal" data-target="#myModal{{$theme->id}}"  style="margin-top: -10px;cursor: pointer; color: #f8951d">
                 SELECT
             </a>
-           </span>${{$theme->price}}</div>
+           </span>{{$theme->price}} &euro;</div>
       </div>
       @endforeach
       
