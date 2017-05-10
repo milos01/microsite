@@ -157,13 +157,13 @@ class BillingController extends Controller
         
         if(!$result->success){
             return back()->with('bt_errors', $result->errors->deepAll());
+        }else{
+            if($user->subscribed == 1){
+                event(new GraceWebsites($nonactivesites));
+            }
+            event(new ActivateWebsite($nonactivesites));
+            return back();
         }
-
-        if($user->subscribed == 1){
-            event(new GraceWebsites($nonactivesites));
-        }
-        event(new ActivateWebsite($nonactivesites));
-        return back();
     }
 
     /**

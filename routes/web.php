@@ -27,7 +27,7 @@ Route::get('user/invoice/{invoice}', function (Request $request, $invoiceId) {
 //Test route
 Route::get('/test', function(){});
 
-Route::group(['middleware' => ['auth', 'userExpireTrial']], function () {
+Route::group(['middleware' => ['auth']], function () {
 	//Paging routes
 	Route::get('/', 'PageController@index')->name('home');
 	Route::get('/template/showEditTemplate', 'PageController@showEditTemplate');

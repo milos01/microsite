@@ -6,9 +6,11 @@ use Illuminate\Console\Command;
 use App\Website;
 use Carbon\Carbon;
 use Log;
+use App\Services\PaymentService as PService;
 
 class CheckExpireDate extends Command
 {
+    public $pService;
     /**
      * The name and signature of the console command.
      *
@@ -28,9 +30,10 @@ class CheckExpireDate extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PService $pservice)
     {
         parent::__construct();
+        $this->pService = $pservice;
 
     }
 
@@ -39,15 +42,59 @@ class CheckExpireDate extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle(){
+        $userTotal = 0;
+        $uId = -1;
+        $indexList = [];
+        $userInfo = [];
+
         $now = Carbon::now();
-        $webistes = Website::all();
-        foreach ($webistes as $key => $website) {
+        $websites = Website::with('theme')->get();
+        foreach ($websites as $key => $website) {
             if($website->grace_period && $website->active == 1 && $now->diffInDays($website->grace_period, false) <= 0){
                 $website->active = 0;
+                
                 $website->save();
+            }else if($website->expire_at && $website->active == 1 && $now->diffInDays($website->expire_at, false) <= 0){
+                if($uId == -1){
+                    $uId = $website->user->id;
+                    array_push($indexList, $uId);
+                    $userTotal = $this->groupUserInfo($websites, $uId, $userTotal, $now);
+                    $userInfoItem = [
+                        'id' => $uId,
+                        'totalPrice' => $userTotal
+                    ];
+                    array_push($userInfo, $userInfoItem);
+                    $userTotal = 0;
+                }else{
+                    $uId = $website->user->id;
+                    if(!in_array($uId, $indexList)){
+                        $uId = $website->user->id;
+                        
+                        array_push($indexList, $uId);
+                        $userTotal = $this->groupUserInfo($websites, $uId, $userTotal, $now);
+                        $userInfoItem = [
+                            'id' => $uId,
+                            'totalPrice' => $userTotal
+                        ];
+                        array_push($userInfo, $userInfoItem);
+                        $userTotal = 0;
+                    }
+                }
             }
         }
+        $this->pService->automatedPaymentExpired($userInfo);
+        $indexList = [];
+    }
+
+    private function groupUserInfo($websites, $uid, $userTotal, $now){
+        foreach ($websites as $key => $webSite) {
+            if($webSite->expire_at && $webSite->active == 1 && $now->diffInDays($webSite->expire_at, false) <= 0){
+                if($webSite->user->id == $uid){
+                    $userTotal += $webSite->theme->price;
+                }
+            }
+        }
+        return $userTotal;
     }
 }

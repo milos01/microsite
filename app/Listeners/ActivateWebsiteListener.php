@@ -29,18 +29,20 @@ class ActivateWebsiteListener
      */
     public function handle(ActivateWebsite $event)
     {
+        echo "uso";
+        $monthAhead = $this->now->addMonth();
         foreach ($event->website as $key => $site) {
             $site->active = 1;
-            if($site->expire_at && Auth::user()->subscribed == 1){
-                $site->expire_at = $this->now->addMonth();
-            }else if($site->expire_at && Auth::user()->subscribed == 0){
-                $site->grace_period = $this->now->addMonth();
+            if($site->expire_at != '' && Auth::user()->subscribed == 1){
+                $site->expire_at = $monthAhead;
+            }else if($site->expire_at != null && Auth::user()->subscribed == 0){
+                $site->grace_period = $monthAhead;
                 $site->expire_at = null;
-            }else if($site->grace_period && Auth::user()->subscribed == 1){
-                $site->expire_at = $this->now->addMonth();
+            }else if($site->grace_period != null && Auth::user()->subscribed == 1){
+                $site->expire_at = $monthAhead;
                 $site->grace_period = null;
             }else{
-                 $site->expire_at = $this->now->addMonth();
+                 $site->grace_period = $monthAhead;
             }
             $site->save();
         }
